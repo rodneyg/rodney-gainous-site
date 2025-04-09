@@ -13,9 +13,9 @@ const Footer = () => {
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
     >
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
         <div>&copy; {currentYear} Rodney Gainous Jr. All rights reserved.</div>
-        <div className="flex gap-6">
+        <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
           <a href="#projects" className="hover:text-primary transition-colors">Projects</a>
           <a href="#writing" className="hover:text-primary transition-colors">Writing</a>
           <a href="#about" className="hover:text-primary transition-colors">About</a>

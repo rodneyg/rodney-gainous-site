@@ -19,6 +19,43 @@ const projects = [
     githubUrl: "https://github.com/saferlab/safedose"
   },
   {
+    title: "Dosis",
+    description: "Open-source animal-to-human equivalent dose calculator for drug research, translating trial data across species and administration routes.",
+    image: "/placeholder.svg",
+    demoUrl: "#",
+    githubUrl: "https://github.com/saferlab/dosis",
+    demoLabel: "Try Now"
+  },
+  {
+    title: "Reconstitute",
+    description: "A guided calculator providing instructions on how to mix powder and liquid medications (peptides, hormones, antibiotics).",
+    image: "/placeholder.svg",
+    demoUrl: "#",
+    githubUrl: "https://github.com/saferlab/reconstitute",
+    demoLabel: "Calculate"
+  },
+  {
+    title: "Blood Interpreter",
+    description: "Upload lab results, decode values using clinical/AI insights, and highlight actionable ranges. Coming Soon.",
+    image: "/placeholder.svg",
+    demoUrl: "#",
+    demoLabel: "Coming Soon"
+  },
+  {
+    title: "HealthTools.ai",
+    description: "A storefront and distribution base; a curated directory of SafeLab and potentially community-submitted health, AI, and privacy tools.",
+    image: "/placeholder.svg",
+    demoUrl: "https://healthtools.ai",
+    demoLabel: "Visit"
+  },
+  {
+    title: "FlowBot",
+    description: "SMS-based tracker for monitoring daily flow state (clarity, tension, energy) to quantify performance and correlate with behaviors or dosing.",
+    image: "/placeholder.svg",
+    demoUrl: "#",
+    demoLabel: "Try Now"
+  },
+  {
     title: "JustTalk",
     description: "Transcribe and convert speech into email, stories, and summaries using Whisper + GPT. Your voice, reformatted.",
     image: "/placeholder.svg",
@@ -63,11 +100,12 @@ const ProjectsSection = () => {
   const filteredProjects = activeTab === 'all' 
     ? projects 
     : projects.filter(project => {
-        // This is just a placeholder filter - in a real app you'd have categories for each project
+        // Filter logic based on project categories
         if (activeTab === 'open-source') return project.githubUrl;
-        if (activeTab === 'AI') return project.title.includes('AI') || project.description.includes('AI') || project.title === "JustTalk" || project.title === "ScreenHawk";
-        if (activeTab === 'health') return project.title === "SafeDose";
-        if (activeTab === 'experiments') return project.title === "TempleToss" || project.title === "Letters to Luigi" || project.title === "Redflagged";
+        if (activeTab === 'AI') return project.title.includes('AI') || project.description.includes('AI') || 
+          ['JustTalk', 'ScreenHawk', 'SafeDose', 'Blood Interpreter'].includes(project.title);
+        if (activeTab === 'health') return ['SafeDose', 'Dosis', 'Reconstitute', 'Blood Interpreter', 'HealthTools.ai'].includes(project.title);
+        if (activeTab === 'experiments') return ['TempleToss', 'Letters to Luigi', 'Redflagged', 'FlowBot'].includes(project.title);
         return false;
       });
 

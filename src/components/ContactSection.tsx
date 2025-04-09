@@ -29,7 +29,7 @@ const ContactSection = () => {
   return (
     <section id="contact" className="py-24 px-6">
       <motion.div
-        className="max-w-md mx-auto text-center"
+        className="max-w-3xl mx-auto text-center"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
@@ -46,7 +46,7 @@ const ContactSection = () => {
         </motion.h3>
         
         <motion.div 
-          className="space-y-6"
+          className="flex flex-wrap justify-center gap-4"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -55,7 +55,7 @@ const ContactSection = () => {
           {contacts.map((contact, index) => (
             <motion.div 
               key={index}
-              className="flex items-center justify-center gap-4 bg-card hover:bg-slate-50 p-4 rounded-xl transition-colors"
+              className="flex items-center gap-4 bg-card hover:bg-slate-50 p-4 rounded-xl transition-colors"
               whileHover={{ y: -5, transition: { duration: 0.2 } }}
             >
               <Button variant="outline" size="icon" className="bg-white text-primary border-primary/20" asChild>
@@ -70,7 +70,7 @@ const ContactSection = () => {
               </Button>
               <a 
                 href={contact.href} 
-                className="text-lg font-medium hover:text-primary transition-colors flex-grow text-left"
+                className="text-lg font-medium hover:text-primary transition-colors"
                 target="_blank" 
                 rel="noopener noreferrer"
               >
