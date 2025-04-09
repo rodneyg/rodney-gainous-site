@@ -27,7 +27,7 @@ const contacts = [
 
 const ContactSection = () => {
   return (
-    <section id="contact" className="py-20 px-6">
+    <section id="contact" className="py-24 px-6">
       <motion.div
         className="max-w-md mx-auto text-center"
         initial={{ opacity: 0 }}
@@ -35,16 +35,30 @@ const ContactSection = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <h3 className="text-3xl font-semibold mb-10">Contact</h3>
+        <motion.h3 
+          className="text-4xl font-bold mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          Let's <span className="text-primary">Connect</span>
+        </motion.h3>
         
-        <div className="space-y-4">
+        <motion.div 
+          className="space-y-6"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+        >
           {contacts.map((contact, index) => (
             <motion.div 
               key={index}
-              className="flex items-center justify-center gap-4"
-              whileHover={{ x: 5 }}
+              className="flex items-center justify-center gap-4 bg-card hover:bg-slate-50 p-4 rounded-xl transition-colors"
+              whileHover={{ y: -5, transition: { duration: 0.2 } }}
             >
-              <Button variant="outline" size="icon" asChild>
+              <Button variant="outline" size="icon" className="bg-white text-primary border-primary/20" asChild>
                 <a 
                   href={contact.href} 
                   target="_blank" 
@@ -56,7 +70,7 @@ const ContactSection = () => {
               </Button>
               <a 
                 href={contact.href} 
-                className="text-lg hover:text-primary transition-colors"
+                className="text-lg font-medium hover:text-primary transition-colors flex-grow text-left"
                 target="_blank" 
                 rel="noopener noreferrer"
               >
@@ -64,7 +78,7 @@ const ContactSection = () => {
               </a>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </motion.div>
     </section>
   );
