@@ -46,7 +46,7 @@ const ContactSection = () => {
         </motion.h3>
         
         <motion.div 
-          className="flex flex-wrap justify-center gap-4"
+          className="flex flex-row justify-center items-center gap-6 flex-wrap"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

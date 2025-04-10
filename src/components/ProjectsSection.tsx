@@ -35,53 +35,68 @@ const projects = [
     demoLabel: "Calculate"
   },
   {
+    title: "Reddit Post Time Analyzer",
+    description: "Find the best time to post on any subreddit, based on real engagement data. Analyzes recent posts, calculates optimal times, and visualizes with heatmaps and GPT insights.",
+    image: "/placeholder.svg",
+    demoUrl: "#",
+    githubUrl: "https://github.com/rodneygainous/reddit-time-analyzer",
+    demoLabel: "Analyze"
+  },
+  {
     title: "Blood Interpreter",
     description: "Upload lab results, decode values using clinical/AI insights, and highlight actionable ranges. Coming Soon.",
     image: "/placeholder.svg",
     demoUrl: "#",
-    demoLabel: "Coming Soon"
+    demoLabel: "Coming Soon",
+    githubUrl: "https://github.com/saferlab/blood-interpreter"
   },
   {
     title: "HealthTools.ai",
     description: "A storefront and distribution base; a curated directory of SafeLab and potentially community-submitted health, AI, and privacy tools.",
     image: "/placeholder.svg",
     demoUrl: "https://healthtools.ai",
-    demoLabel: "Visit"
+    demoLabel: "Visit",
+    githubUrl: "https://github.com/saferlab/healthtools"
   },
   {
     title: "FlowBot",
     description: "SMS-based tracker for monitoring daily flow state (clarity, tension, energy) to quantify performance and correlate with behaviors or dosing.",
     image: "/placeholder.svg",
     demoUrl: "#",
-    demoLabel: "Try Now"
+    demoLabel: "Try Now",
+    githubUrl: "https://github.com/rodneygainous/flowbot"
   },
   {
     title: "JustTalk",
     description: "Transcribe and convert speech into email, stories, and summaries using Whisper + GPT. Your voice, reformatted.",
     image: "/placeholder.svg",
     demoUrl: "#",
-    demoLabel: "Try Now"
+    demoLabel: "Try Now",
+    githubUrl: "https://github.com/rodneygainous/justtalk"
   },
   {
     title: "TempleToss",
     description: "Minimalist mobile game with subtle backend flex. Built for flow, fun, and dopamine return loops.",
     image: "/placeholder.svg",
     demoUrl: "#",
-    demoLabel: "Play"
+    demoLabel: "Play",
+    githubUrl: "https://github.com/rodneygainous/templetoss"
   },
   {
     title: "Letters to Luigi",
     description: "Send letters to a prisoner. Read replies. Explore public archives. A platform on justice, raw speech, and moral ambiguity.",
     image: "/placeholder.svg",
     demoUrl: "#",
-    demoLabel: "Explore"
+    demoLabel: "Explore",
+    githubUrl: "https://github.com/rodneygainous/letters-to-luigi"
   },
   {
     title: "Redflagged",
     description: "View and share anonymous red flags from interviews. Transparent. Filterable. Anonymous accountability layer.",
     image: "/placeholder.svg",
     demoUrl: "#",
-    demoLabel: "Submit"
+    demoLabel: "Submit",
+    githubUrl: "https://github.com/rodneygainous/redflagged"
   },
   {
     title: "ScreenHawk",
