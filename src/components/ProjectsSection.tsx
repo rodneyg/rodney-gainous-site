@@ -1,222 +1,150 @@
-
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import ProjectCard from './ProjectCard';
-import { 
-  Carousel, 
-  CarouselContent, 
-  CarouselItem, 
-  CarouselNext, 
-  CarouselPrevious 
-} from "@/components/ui/carousel";
+// Assuming you have an icon library like react-icons
+// import { FiGithub, FiExternalLink, FiEye, FiCpu } from 'react-icons/fi'; // Example icons
 
+// --- Filtered and Enhanced Project Data ---
 const projects = [
   {
-    title: "SafeDose",
-    description: "AI-powered syringe dosing assistant. Visual UI guides and protects users from overdose. Open-source. Clinical-ready.",
-    image: "/placeholder.svg",
-    demoUrl: "https://safedose.healthtools.ai",
-    githubUrl: "https://github.com/saferlab/safedose"
-  },
-  {
-    title: "Dosis",
-    description: "Open-source animal-to-human equivalent dose calculator for drug research, translating trial data across species and administration routes.",
-    image: "/placeholder.svg",
-    demoUrl: "#",
-    githubUrl: "https://github.com/saferlab/dosis",
-    demoLabel: "Try Now"
-  },
-  {
-    title: "Reconstitute",
-    description: "A guided calculator providing instructions on how to mix powder and liquid medications (peptides, hormones, antibiotics).",
-    image: "/placeholder.svg",
-    demoUrl: "#",
-    githubUrl: "https://github.com/saferlab/reconstitute",
-    demoLabel: "Calculate"
-  },
-  {
     title: "Reddit Post Time Analyzer",
-    description: "Find the best time to post on any subreddit, based on real engagement data. Analyzes recent posts, calculates optimal times, and visualizes with heatmaps and GPT insights.",
-    image: "/placeholder.svg",
-    demoUrl: "#",
-    githubUrl: "https://github.com/rodneygainous/reddit-time-analyzer",
-    demoLabel: "Analyze"
+    inspiration: "I noticed myself guessing the 'right' time to share something on Reddit, often feeling like it got lost. I wondered: could data reveal the actual peak engagement moments for any community?",
+    description: "An analyzer that digs into subreddit activity to find the optimal posting times based on recent engagement data. Visualizes insights with heatmaps and offers GPT-powered suggestions.",
+    demoUrl: "https://reddit-analytics-nu.vercel.app/",
+    githubUrl: "https://github.com/rodneyg/reddit-analytics",
+    icon: '📊' // Simple emoji icon placeholder
   },
   {
-    title: "Blood Interpreter",
-    description: "Upload lab results, decode values using clinical/AI insights, and highlight actionable ranges. Coming Soon.",
-    image: "/placeholder.svg",
-    demoUrl: "#",
-    demoLabel: "Coming Soon",
-    githubUrl: "https://github.com/saferlab/blood-interpreter"
+    title: "SafeDose",
+    inspiration: "The potential for tiny errors in medication dosing leading to significant harm felt unacceptable. I envisioned a visual guide, an AI safety layer directly on the syringe itself, to prevent overdose.",
+    description: "An AI-powered visual assistant for syringe dosing. It guides users to draw the correct amount, aiming to drastically reduce errors. Open-source and designed with clinical readiness in mind.",
+    demoUrl: "https://safedoseai.com/", // Updated URL
+    githubUrl: "https://github.com/rodneyg/SafeDose", // Updated URL
+    icon: '💉'
   },
   {
-    title: "HealthTools.ai",
-    description: "A storefront and distribution base; a curated directory of SafeLab and potentially community-submitted health, AI, and privacy tools.",
-    image: "/placeholder.svg",
-    demoUrl: "https://healthtools.ai",
-    demoLabel: "Visit",
-    githubUrl: "https://github.com/saferlab/healthtools"
-  },
-  {
-    title: "FlowBot",
-    description: "SMS-based tracker for monitoring daily flow state (clarity, tension, energy) to quantify performance and correlate with behaviors or dosing.",
-    image: "/placeholder.svg",
-    demoUrl: "#",
-    demoLabel: "Try Now",
-    githubUrl: "https://github.com/rodneygainous/flowbot"
-  },
-  {
-    title: "JustTalk",
-    description: "Transcribe and convert speech into email, stories, and summaries using Whisper + GPT. Your voice, reformatted.",
-    image: "/placeholder.svg",
-    demoUrl: "#",
-    demoLabel: "Try Now",
-    githubUrl: "https://github.com/rodneygainous/justtalk"
-  },
-  {
-    title: "TempleToss",
-    description: "Minimalist mobile game with subtle backend flex. Built for flow, fun, and dopamine return loops.",
-    image: "/placeholder.svg",
-    demoUrl: "#",
-    demoLabel: "Play",
-    githubUrl: "https://github.com/rodneygainous/templetoss"
-  },
-  {
-    title: "Letters to Luigi",
-    description: "Send letters to a prisoner. Read replies. Explore public archives. A platform on justice, raw speech, and moral ambiguity.",
-    image: "/placeholder.svg",
-    demoUrl: "#",
-    demoLabel: "Explore",
-    githubUrl: "https://github.com/rodneygainous/letters-to-luigi"
-  },
-  {
-    title: "Redflagged",
-    description: "View and share anonymous red flags from interviews. Transparent. Filterable. Anonymous accountability layer.",
-    image: "/placeholder.svg",
-    demoUrl: "#",
-    demoLabel: "Submit",
-    githubUrl: "https://github.com/rodneygainous/redflagged"
+    title: "Did TikTok Get Banned?",
+    inspiration: "Amidst constant speculation and confusing headlines, the simple question 'Is TikTok banned *right now*?' lacked a clear, immediate answer. I wanted to create that definitive, single-source status check.",
+    description: "A minimalist, single-purpose site that directly answers whether TikTok is currently banned in the US, cutting through the noise with a clear status.",
+    demoUrl: "https://www.didtiktokgetbanned.com/",
+    githubUrl: "https://github.com/rodneyg/tiktok-ban-site",
+    icon: '🚫'
   },
   {
     title: "ScreenHawk",
-    description: "Capture any web page screenshot and interrogate it using GPT-4 Vision. Chrome extension for visual reasoning and fast insight.",
-    image: "/placeholder.svg",
-    demoUrl: "#",
-    demoLabel: "Add to Chrome",
-    githubUrl: "https://github.com/saferlab/screenhawk"
+    inspiration: "How many times do we screenshot complex charts, UIs, or data visualizations and wish we could just *ask* the image questions? I wanted a way to directly query the visual content of my screen.",
+    description: "A Chrome extension leveraging GPT-4 Vision to analyze screenshots. Capture any part of a webpage and instantly ask questions about its content for rapid visual reasoning.",
+    demoUrl: null, // No live demo link provided
+    githubUrl: "https://github.com/rodneyg/ScreenHawk", // Updated URL
+    demoLabel: "View on GitHub", // Specific label since no demo
+    icon: '🦅'
+  },
+  {
+    title: "TempleToss",
+    inspiration: "There's a specific kind of mental flow state found in simple, rewarding loops. I felt the need to craft a minimalist game focused purely on that satisfying cycle of action, feedback, and dopamine.",
+    description: "A deliberately simple mobile game built for focused engagement and satisfying feedback loops. Minimalist aesthetic meets subtle backend mechanics for pure flow.",
+    demoUrl: "https://temple-toss.vercel.app/",
+    githubUrl: "https://github.com/rodneyg/TempleToss", // Updated URL
+    icon: '🎯'
   }
 ];
 
-const ProjectsSection = () => {
-  const [activeTab, setActiveTab] = useState('all');
-  const categories = ['all', 'open-source', 'AI', 'health', 'experiments'];
-
-  const filteredProjects = activeTab === 'all' 
-    ? projects 
-    : projects.filter(project => {
-        // Filter logic based on project categories
-        if (activeTab === 'open-source') return project.githubUrl;
-        if (activeTab === 'AI') return project.title.includes('AI') || project.description.includes('AI') || 
-          ['JustTalk', 'ScreenHawk', 'SafeDose', 'Blood Interpreter'].includes(project.title);
-        if (activeTab === 'health') return ['SafeDose', 'Dosis', 'Reconstitute', 'Blood Interpreter', 'HealthTools.ai'].includes(project.title);
-        if (activeTab === 'experiments') return ['TempleToss', 'Letters to Luigi', 'Redflagged', 'FlowBot'].includes(project.title);
-        return false;
-      });
-
+// --- Refactored Projects Section Component ---
+const ProjectsNarrative = () => {
   return (
-    <section id="projects" className="py-28 px-6 bg-slate-50">
+    <section id="projects" className="py-24 md:py-32 px-6 bg-gradient-to-br from-slate-50 to-gray-100 overflow-hidden">
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="max-w-7xl mx-auto"
+        className="max-w-5xl mx-auto" // Wider max-width for side-by-side layout
       >
-        <motion.h3 
-          className="text-4xl font-bold mb-4 text-center"
+        {/* Section Header */}
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
+          className="text-center mb-16 md:mb-24"
         >
-          Featured <span className="text-primary">Projects</span>
-        </motion.h3>
-        
-        <motion.p 
-          className="text-xl text-center mb-12 text-muted-foreground max-w-3xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-        >
-          A showcase of my work building products that solve real problems
-        </motion.p>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 tracking-tight">
+            Sparks & Responses
+          </h2>
+          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto font-serif italic">
+            Every tool starts with a question, an itch, an observation. Below are explorations born from noticing something... and deciding to build.
+          </p>
+        </motion.div>
 
-        {/* Category filters */}
-        <motion.div 
-          className="flex justify-center flex-wrap gap-2 mb-10"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          {categories.map((category) => (
-            <button
-              key={category}
-              className={`px-4 py-2 rounded-full transition-all ${
-                activeTab === category 
-                  ? 'bg-primary text-white' 
-                  : 'bg-secondary hover:bg-secondary/70'
-              }`}
-              onClick={() => setActiveTab(category)}
+        {/* Project Entries */}
+        <div className="space-y-20 md:space-y-28">
+          {projects.map((project, index) => (
+            <motion.div
+              key={project.title}
+              initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }} // Slide in from alternating sides
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className={`md:grid md:grid-cols-12 md:gap-12 items-center ${index % 2 !== 0 ? 'md:grid-flow-row-dense' : ''}`} // Alternating layout using grid-flow
             >
-              {category.charAt(0).toUpperCase() + category.slice(1)}
-            </button>
-          ))}
-        </motion.div>
+              {/* --- The Spark (Inspiration) --- */}
+              <div className={`md:col-span-5 ${index % 2 !== 0 ? 'md:col-start-8' : ''} mb-6 md:mb-0`}>
+                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 relative">
+                   {/* Decorative element */}
+                   <span className="absolute -top-3 -left-3 text-4xl opacity-10" aria-hidden="true">
+                    {/* <FiEye /> */} {/* Placeholder for an 'observation' icon */}
+                    👀
+                   </span>
+                   <p className="text-gray-600 italic leading-relaxed">
+                     {project.inspiration}
+                   </p>
+                </div>
+              </div>
 
-        {/* Mobile view: Carousel */}
-        <div className="md:hidden">
-          <Carousel className="w-full">
-            <CarouselContent>
-              {filteredProjects.map((project, index) => (
-                <CarouselItem key={index}>
-                  <div className="p-1">
-                    <ProjectCard {...project} />
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <div className="flex justify-center mt-4">
-              <CarouselPrevious className="relative static" />
-              <CarouselNext className="relative static" />
-            </div>
-          </Carousel>
+              {/* --- The Response (Project Details) --- */}
+              <div className={`md:col-span-7 ${index % 2 !== 0 ? 'md:col-start-1 md:row-start-1' : ''}`}>
+                 {/* Icon + Title */}
+                 <div className="flex items-center gap-3 mb-3">
+                    <span className="text-3xl" aria-hidden="true">{project.icon || '💡'}</span>
+                    <h3 className="text-2xl md:text-3xl font-semibold text-primary">
+                        {project.title}
+                    </h3>
+                 </div>
+                <p className="text-lg text-gray-800 mb-5 leading-relaxed">
+                  {project.description}
+                </p>
+                <div className="flex items-center flex-wrap gap-x-5 gap-y-2 text-sm">
+                  {project.demoUrl && (
+                    <a
+                      href={project.demoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 font-medium text-indigo-600 hover:text-indigo-800 transition-colors group"
+                    >
+                      {/* <FiExternalLink className="w-4 h-4 group-hover:scale-110 transition-transform" /> */}
+                      <span className="inline-block w-4 h-4">🔗</span>
+                      Explore Live
+                    </a>
+                  )}
+                  {project.githubUrl && (
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 font-medium text-gray-600 hover:text-gray-900 transition-colors group"
+                    >
+                      {/* <FiGithub className="w-4 h-4 group-hover:scale-110 transition-transform" /> */}
+                      <span className="inline-block w-4 h-4">💻</span>
+                      {project.demoLabel || 'View Source'} {/* Use specific label if provided */}
+                    </a>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
-
-        {/* Desktop view: Grid */}
-        <motion.div 
-          className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
-          {filteredProjects.map((project, index) => (
-            <ProjectCard
-              key={index}
-              {...project}
-            />
-          ))}
-        </motion.div>
-
-        {filteredProjects.length === 0 && (
-          <p className="text-center text-muted-foreground mt-8">No projects in this category yet.</p>
-        )}
       </motion.div>
     </section>
   );
 };
 
-export default ProjectsSection;
+export default ProjectsNarrative;
