@@ -68,10 +68,10 @@ const ProjectsNarrative = () => {
           className="text-center mb-16 md:mb-24"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 tracking-tight">
-            Sparks & Responses
+          Projects That Started With Questions
           </h2>
           <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto font-serif italic">
-            Every tool starts with a question, an itch, an observation. Below are explorations born from noticing something... and deciding to build.
+           Every tool I create begins with a question or observation. Here are some problems I noticed and decided to solve.
           </p>
         </motion.div>
 

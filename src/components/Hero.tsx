@@ -23,8 +23,8 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          Founder. Engineer.<br />
-          <span className="text-primary">Systems Thinker.</span>
+          Builder. Engineer.<br />
+          <span className="text-primary">Problem-solver.</span>
         </motion.h2>
         <motion.p 
           className="text-xl md:text-2xl text-muted-foreground mx-auto mb-10 max-w-3xl leading-relaxed"
@@ -32,7 +32,7 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          I build secure software, health tools, and tech experiments that scale. From Java bots at 13 to founding a venture-backed security startup, I've been solving problems across cybersecurity, AI, healthtech, and digital infrastructure for over a decade.
+          I've been building software since I was 13, starting with Java bots and eventually founding my own venture-backed security startup. For over a decade, I've tackled challenges across cybersecurity, AI, health technology, and digital infrastructure. My work focuses on creating secure software, health tools, and experimental tech that scales.
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
