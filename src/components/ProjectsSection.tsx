@@ -22,6 +22,14 @@ const projects = [
     icon: '💉'
   },
   {
+    title: "AI Safety & Transparency Demo",
+    inspiration: "I wanted to explore what happens when AI systems proactively detect bias and protect private data—especially in conversational interfaces where subtle manipulation or memory leaks can occur.",
+    description: "This demo simulates real-time bias detection and security monitoring in an AI assistant interface. It flags loaded prompts, reframes questions, and verifies identity when someone tries to access private information.",
+    demoUrl: "https://v0-bias-detection-system.vercel.app/", // Update if your actual URL differs
+    githubUrl: "https://github.com/rodneyg/AI-Safety-1/tree/main", // Replace with real repo if public
+    icon: '🛡️'
+  },
+  {
     title: "Did TikTok Get Banned?",
     inspiration: "Amidst constant speculation and confusing headlines, the simple question 'Is TikTok banned *right now*?' lacked a clear, immediate answer. I wanted to create that definitive, single-source status check.",
     description: "A minimalist, single-purpose site that directly answers whether TikTok is currently banned in the US, cutting through the noise with a clear status.",
