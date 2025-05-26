@@ -12,6 +12,7 @@ export interface ProjectProps {
   demoUrl?: string;
   githubUrl?: string;
   demoLabel?: string;
+  tech?: string; // Added tech field for displaying tech stack
 }
 
 const ProjectCard = ({ 
@@ -20,7 +21,8 @@ const ProjectCard = ({
   image, 
   demoUrl, 
   githubUrl,
-  demoLabel = "Launch" 
+  demoLabel = "Launch",
+  tech
 }: ProjectProps) => {
   return (
     <motion.div 
@@ -41,7 +43,10 @@ const ProjectCard = ({
       </div>
       <div className="p-6">
         <h4 className="font-bold text-2xl mb-2 group-hover:text-primary transition-colors duration-300">{title}</h4>
-        <p className="text-muted-foreground mb-6 line-clamp-2">{description}</p>
+        <p className="text-muted-foreground mb-2 line-clamp-2">{description}</p>
+        {tech && (
+          <p className="text-sm text-muted-foreground mb-4">Tech: {tech}</p>
+        )}
         <div className="flex gap-3">
           {demoUrl && (
             <Button className="flex-1" asChild>

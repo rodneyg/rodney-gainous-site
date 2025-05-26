@@ -12,7 +12,8 @@ const projects = [
     demoUrl: "https://seenclearly.com",
     githubUrl: null, // Private repository or not yet public
     demoLabel: "See Clearly",
-    icon: '🔍'
+    icon: '🔍',
+    tech: "React • NextJS • TailwindCSS • OpenAI • Vercel"
   },
   {
     title: "Reddit Post Time Analyzer",
@@ -20,7 +21,8 @@ const projects = [
     description: "An analyzer that digs into subreddit activity to find the optimal posting times based on recent engagement data. Visualizes insights with heatmaps and offers GPT-powered suggestions.",
     demoUrl: "https://reddit-analytics-nu.vercel.app/",
     githubUrl: "https://github.com/rodneyg/reddit-analytics",
-    icon: '📊' // Simple emoji icon placeholder
+    icon: '📊', // Simple emoji icon placeholder
+    tech: "React • NextJS • TypeScript • Reddit API • GPT-4 • Vercel"
   },
   {
     title: "SafeDose",
@@ -28,7 +30,8 @@ const projects = [
     description: "An AI-powered visual assistant for syringe dosing. It guides users to draw the correct amount, aiming to drastically reduce errors. Open-source and designed with clinical readiness in mind.",
     demoUrl: "https://safedoseai.com/", // Updated URL
     githubUrl: "https://github.com/rodneyg/SafeDose", // Updated URL
-    icon: '💉'
+    icon: '💉',
+    tech: "React Native • Expo • TypeScript • OpenAI Vision • Firebase"
   },
   {
     title: "Did TikTok Get Banned?",
@@ -36,7 +39,8 @@ const projects = [
     description: "A minimalist, single-purpose site that directly answers whether TikTok is currently banned in the US, cutting through the noise with a clear status.",
     demoUrl: "https://www.didtiktokgetbanned.com/",
     githubUrl: "https://github.com/rodneyg/tiktok-ban-site",
-    icon: '🚫'
+    icon: '🚫',
+    tech: "React • NextJS • TailwindCSS • Vercel"
   },
   {
     title: "ScreenHawk",
@@ -45,7 +49,8 @@ const projects = [
     demoUrl: null, // No live demo link provided
     githubUrl: "https://github.com/rodneyg/ScreenHawk", // Updated URL
     demoLabel: "View on GitHub", // Specific label since no demo
-    icon: '🦅'
+    icon: '🦅',
+    tech: "Chrome Extension • JavaScript • GPT-4 Vision • OpenAI"
   },
   {
     title: "TempleToss",
@@ -53,7 +58,8 @@ const projects = [
     description: "A deliberately simple mobile game built for focused engagement and satisfying feedback loops. Minimalist aesthetic meets subtle backend mechanics for pure flow.",
     demoUrl: "https://temple-toss.vercel.app/",
     githubUrl: "https://github.com/rodneyg/TempleToss", // Updated URL
-    icon: '🎯'
+    icon: '🎯',
+    tech: "React Native • Expo • TypeScript • Firebase • Vercel"
   }
 ];
 
@@ -118,9 +124,14 @@ const ProjectsNarrative = () => {
                         {project.title}
                     </h3>
                  </div>
-                <p className="text-lg text-gray-800 mb-5 leading-relaxed">
+                <p className="text-lg text-gray-800 mb-3 leading-relaxed">
                   {project.description}
                 </p>
+                {project.tech && (
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Tech: {project.tech}
+                  </p>
+                )}
                 <div className="flex items-center flex-wrap gap-x-5 gap-y-2 text-sm">
                   {project.demoUrl && (
                     <a
