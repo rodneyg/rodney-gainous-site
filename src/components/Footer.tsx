@@ -16,7 +16,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
         <div>
           <div>&copy; {currentYear} Rodney Gainous Jr. All rights reserved.</div>
-          <div className="text-sm mt-1">Built with Next.js, React Native, Tailwind, and MDX. Deployed via Vercel CI.</div>
+          <div className="text-sm mt-1">Built with Next.js, React Native (mobile), Tailwind, and MDX. Deployed with Vercel preview builds on every pull request.</div>
         </div>
         <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
           <a href="#projects" className="hover:text-primary transition-colors">Projects</a>
