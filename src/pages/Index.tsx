@@ -8,6 +8,7 @@ import ProjectsSection from '@/components/ProjectsSection';
 import WritingSection from '@/components/WritingSection';
 import AboutSection from '@/components/AboutSection';
 import ContactSection from '@/components/ContactSection';
+import TechStackBlock from '@/components/TechStackBlock';
 import Footer from '@/components/Footer';
 import { motion } from 'framer-motion';
 
@@ -28,6 +29,7 @@ const Index = () => {
       <Header />
       <main className="flex-grow pt-16">
         <Hero />
+        <TechStackBlock />
         <SafeLabSection />
         <AIResearchSection />
         <ProjectsSection />
