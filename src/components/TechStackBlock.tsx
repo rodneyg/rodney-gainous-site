@@ -19,7 +19,7 @@ const TechStackBlock = () => {
               <strong>Impact:</strong> Personally shipped products that crossed <strong>250 K+ installs</strong> and contributed professionally to early mobile apps that now serve <strong>millions of users</strong> on iOS and Android.
             </p>
             <p className="text-lg text-muted-foreground flex-1 mt-4 md:mt-0 max-w-[80ch]">
-              <strong>Stack:</strong> TypeScript everywhere — React, Next.js, <strong>React Native (mobile)</strong> — Node/Express APIs, Postgres &amp; Firebase realtime, OpenAI-powered CV pipelines. CI/CD via GitHub Actions → Vercel / Netlify / Render. Mobile builds through Expo &amp; TestFlight.
+              <strong>Stack:</strong> TypeScript everywhere — React, Next.js, <strong>React Native (mobile)</strong> — Node/Express APIs, Postgres &amp; Firebase realtime, OpenAI-powered CV pipelines. Native mobile with <strong>Java/Kotlin (Android)</strong> &amp; <strong>Objective-C/Swift (iOS)</strong>. CI/CD via GitHub Actions → Vercel / Netlify / Render. Mobile builds through Expo &amp; TestFlight.
             </p>
           </div>
         </Card>
