@@ -6,6 +6,15 @@ import { motion } from 'framer-motion';
 // --- Filtered and Enhanced Project Data ---
 const projects = [
   {
+    title: "Dosis",
+    inspiration: "Bridging the gap in research by providing a quick and accessible tool for animal-to-human dose conversion, based on established FDA guidelines.",
+    description: "Animal-to-Human Dose Converter. Based on FDA guidance. ⚠️ For research and educational purposes only. This calculator does not constitute medical advice. Always consult a qualified healthcare provider for clinical decisions.",
+    demoUrl: "https://dosis-quick-convert.vercel.app/",
+    githubUrl: "https://github.com/rodneyg/dosis-quick-convert",
+    icon: "⚕️", // Using a medical symbol emoji
+    tech: "React • NextJS • TailwindCSS • Vercel"
+  },
+  {
     title: "SeenClearly",
     inspiration: "Complex truths often hide in plain sight. What if we could crystallize profound lessons into single, undeniable visual insights—instantly understood and impossible to forget?",
     description: "A platform that generates clear, impactful visuals paired with concise truths about life, relationships, and human behavior. Each image distills complexity into immediate visual clarity, designed for rapid insight and sharing.",
