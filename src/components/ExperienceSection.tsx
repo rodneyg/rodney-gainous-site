@@ -126,40 +126,48 @@ const ExperienceSection = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
               >
-                {/* Timeline Node */}
+                {/* Timeline Node (simplified, no icon) */}
                 <div className="relative md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2">
                   <motion.div
-                    className={`w-16 h-16 ${experience.color} rounded-full shadow-lg flex items-center justify-center text-white text-2xl mb-4 md:mb-0 mx-auto relative z-10`}
-                    whileHover={{ scale: 1.1 }}
+                    className={`w-4 h-4 ${experience.color} rounded-full shadow-lg mb-4 md:mb-0 mx-auto relative z-10`}
+                    whileHover={{ scale: 1.2 }}
                     transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                  >
-                    {experience.icon}
-                  </motion.div>
-                  
-                  {/* Pulse Animation */}
-                  <motion.div
-                    className={`absolute inset-0 w-16 h-16 ${experience.color} rounded-full opacity-30`}
-                    animate={{
-                      scale: [1, 1.5, 1],
-                      opacity: [0.3, 0, 0.3]
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      delay: index * 0.2
-                    }}
                   />
                 </div>
 
                 {/* Experience Card */}
                 <motion.div
-                  className={`bg-white rounded-xl shadow-lg p-6 border border-slate-200 ${
+                  className={`bg-white rounded-xl shadow-lg p-6 border border-slate-200 relative ${
                     index % 2 === 0 ? 'md:mt-24' : 'md:mb-24'
                   }`}
                   whileHover={{ y: -5, boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1)" }}
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 >
-                  <div className="text-sm text-primary font-semibold mb-2">
+                  {/* Icon with Pulse Animation in Top Left */}
+                  <div className="absolute -top-3 -left-3">
+                    <motion.div
+                      className={`w-12 h-12 ${experience.color} rounded-full shadow-lg flex items-center justify-center text-white text-xl relative z-10`}
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                    >
+                      {experience.icon}
+                    </motion.div>
+                    
+                    {/* Pulse Animation */}
+                    <motion.div
+                      className={`absolute inset-0 w-12 h-12 ${experience.color} rounded-full opacity-30`}
+                      animate={{
+                        scale: [1, 1.5, 1],
+                        opacity: [0.3, 0, 0.3]
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        delay: index * 0.2
+                      }}
+                    />
+                  </div>
+                  <div className="text-sm text-primary font-semibold mb-2 ml-4">
                     {experience.startDate} - {experience.endDate}
                   </div>
                   <h3 className="font-bold text-lg mb-2 leading-tight">
