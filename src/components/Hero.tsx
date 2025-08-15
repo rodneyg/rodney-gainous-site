@@ -63,7 +63,7 @@ const Hero = () => {
           >
             <Avatar className="w-32 h-32 md:w-40 md:h-40 border-4 border-background shadow-2xl shadow-primary/10">
               <AvatarImage 
-                src="/temp-avatar.svg" 
+                src="/temp-avatar.jpg" 
                 alt="Rodney Gainous - Smiling professional headshot"
                 className="object-cover"
               />
