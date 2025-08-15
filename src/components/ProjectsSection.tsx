@@ -66,13 +66,13 @@ const projects = [
 // --- Refactored Projects Section Component ---
 const ProjectsNarrative = () => {
   return (
-    <section id="projects" className="py-24 md:py-32 px-6 bg-gradient-to-br from-slate-50 to-gray-100 overflow-hidden">
+    <section id="projects" className="py-32 px-6">
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="max-w-5xl mx-auto" // Wider max-width for side-by-side layout
+        className="max-w-4xl mx-auto"
       >
         {/* Section Header */}
         <motion.div
@@ -80,67 +80,63 @@ const ProjectsNarrative = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16 md:mb-24"
+          className="text-center mb-20"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 tracking-tight">
+          <h2 className="text-4xl font-bold mb-6 tracking-tight">
           Projects That Started With Questions
           </h2>
-          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto font-serif italic">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
            Every tool I create begins with a question or observation. Here are some problems I noticed and decided to solve.
           </p>
         </motion.div>
 
         {/* Project Entries */}
-        <div className="space-y-20 md:space-y-28">
+        <div className="space-y-16">
           {projects.map((project, index) => (
             <motion.div
               key={project.title}
-              initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }} // Slide in from alternating sides
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className={`md:grid md:grid-cols-12 md:gap-12 items-center ${index % 2 !== 0 ? 'md:grid-flow-row-dense' : ''}`} // Alternating layout using grid-flow
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className="border border-border rounded-xl p-8"
             >
-              {/* --- The Spark (Inspiration) --- */}
-              <div className={`md:col-span-5 ${index % 2 !== 0 ? 'md:col-start-8' : ''} mb-6 md:mb-0`}>
-                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 relative">
-                   {/* Decorative element */}
-                   <span className="absolute -top-3 -left-3 text-4xl opacity-10" aria-hidden="true">
-                    {/* <FiEye /> */} {/* Placeholder for an 'observation' icon */}
-                    
-                   </span>
-                   <p className="text-gray-600 italic leading-relaxed">
-                     {project.inspiration}
-                   </p>
-                </div>
-              </div>
-
-              {/* --- The Response (Project Details) --- */}
-              <div className={`md:col-span-7 ${index % 2 !== 0 ? 'md:col-start-1 md:row-start-1' : ''}`}>
+              {/* Project Details */}
+              <div className="space-y-6">
                  {/* Icon + Title */}
-                 <div className="flex items-center gap-3 mb-3">
-                    <span className="text-3xl" aria-hidden="true">{project.icon || '💡'}</span>
-                    <h3 className="text-2xl md:text-3xl font-semibold text-primary">
+                 <div className="flex items-center gap-4 mb-4">
+                    <span className="text-2xl" aria-hidden="true">{project.icon || '💡'}</span>
+                    <h3 className="text-2xl font-semibold">
                         {project.title}
                     </h3>
                  </div>
-                <p className="text-lg text-gray-800 mb-3 leading-relaxed">
+                
+                {/* Inspiration */}
+                <p className="text-muted-foreground italic leading-relaxed">
+                  {project.inspiration}
+                </p>
+                
+                {/* Description */}
+                <p className="text-lg leading-relaxed">
                   {project.description}
                 </p>
+                
+                {/* Tech Stack */}
                 {project.tech && (
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Tech: {project.tech}
+                  <p className="text-sm text-muted-foreground">
+                    {project.tech}
                   </p>
                 )}
-                <div className="flex items-center flex-wrap gap-x-5 gap-y-2 text-sm">
+                
+                {/* Links */}
+                <div className="flex items-center flex-wrap gap-6 text-sm">
                   {project.demoUrl && (
                     <a
                       href={project.demoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 font-medium text-indigo-600 hover:text-indigo-800 transition-colors group"
+                      className="inline-flex items-center gap-2 font-medium hover:text-muted-foreground transition-colors"
                     >
-                      {/* <FiExternalLink className="w-4 h-4 group-hover:scale-110 transition-transform" /> */}
                       <span className="inline-block w-4 h-4">🔗</span>
                       Explore Live
                     </a>
@@ -150,11 +146,10 @@ const ProjectsNarrative = () => {
                       href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 font-medium text-gray-600 hover:text-gray-900 transition-colors group"
+                      className="inline-flex items-center gap-2 font-medium hover:text-muted-foreground transition-colors"
                     >
-                      {/* <FiGithub className="w-4 h-4 group-hover:scale-110 transition-transform" /> */}
                       <span className="inline-block w-4 h-4">💻</span>
-                      {project.demoLabel || 'View Source'} {/* Use specific label if provided */}
+                      {project.demoLabel || 'View Source'}
                     </a>
                   )}
                 </div>
