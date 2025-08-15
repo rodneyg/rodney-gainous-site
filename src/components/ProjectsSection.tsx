@@ -76,16 +76,16 @@ const ProjectsNarrative = () => {
       >
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-20"
+          transition={{ duration: 0.8 }}
+          className="text-center mb-24"
         >
-          <h2 className="text-4xl font-bold mb-6 tracking-tight">
+          <h2 className="text-5xl md:text-6xl font-bold mb-8 tracking-tight bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
           Projects That Started With Questions
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-light">
            Every tool I create begins with a question or observation. Here are some problems I noticed and decided to solve.
           </p>
         </motion.div>
@@ -95,62 +95,78 @@ const ProjectsNarrative = () => {
           {projects.map((project, index) => (
             <motion.div
               key={project.title}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="border border-border rounded-xl p-8"
+              transition={{ duration: 0.8, delay: index * 0.1 }}
+              className="enhanced-card border border-border/50 rounded-2xl p-10 relative overflow-hidden group"
             >
+              {/* Subtle gradient overlay on hover */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/2 via-transparent to-muted/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              
               {/* Project Details */}
-              <div className="space-y-6">
+              <div className="space-y-6 relative z-10">
                  {/* Icon + Title */}
-                 <div className="flex items-center gap-4 mb-4">
-                    <span className="text-2xl" aria-hidden="true">{project.icon || '💡'}</span>
-                    <h3 className="text-2xl font-semibold">
+                 <div className="flex items-center gap-4 mb-6">
+                    <motion.span 
+                      className="text-4xl float-animation" 
+                      aria-hidden="true"
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {project.icon || '💡'}
+                    </motion.span>
+                    <h3 className="text-3xl font-bold tracking-tight">
                         {project.title}
                     </h3>
                  </div>
                 
                 {/* Inspiration */}
-                <p className="text-muted-foreground italic leading-relaxed">
+                <blockquote className="text-muted-foreground italic leading-relaxed text-lg border-l-4 border-primary/20 pl-6 py-2">
                   {project.inspiration}
-                </p>
+                </blockquote>
                 
                 {/* Description */}
-                <p className="text-lg leading-relaxed">
+                <p className="text-lg leading-relaxed text-foreground/90">
                   {project.description}
                 </p>
                 
                 {/* Tech Stack */}
                 {project.tech && (
-                  <p className="text-sm text-muted-foreground">
-                    {project.tech}
-                  </p>
+                  <div className="bg-muted/30 rounded-lg px-4 py-3">
+                    <p className="text-sm font-medium text-muted-foreground">
+                      {project.tech}
+                    </p>
+                  </div>
                 )}
                 
                 {/* Links */}
-                <div className="flex items-center flex-wrap gap-6 text-sm">
+                <div className="flex items-center flex-wrap gap-6 pt-4">
                   {project.demoUrl && (
-                    <a
+                    <motion.a
                       href={project.demoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 font-medium hover:text-muted-foreground transition-colors"
+                      className="inline-flex items-center gap-3 px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-all duration-300 shadow-md hover:shadow-lg"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                     >
-                      <span className="inline-block w-4 h-4">🔗</span>
+                      <span className="text-lg">🔗</span>
                       Explore Live
-                    </a>
+                    </motion.a>
                   )}
                   {project.githubUrl && (
-                    <a
+                    <motion.a
                       href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 font-medium hover:text-muted-foreground transition-colors"
+                      className="inline-flex items-center gap-3 px-4 py-2 border border-border rounded-lg font-medium hover:bg-muted/50 transition-all duration-300"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                     >
-                      <span className="inline-block w-4 h-4">💻</span>
+                      <span className="text-lg">💻</span>
                       {project.demoLabel || 'View Source'}
-                    </a>
+                    </motion.a>
                   )}
                 </div>
               </div>
