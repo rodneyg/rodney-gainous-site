@@ -37,6 +37,7 @@ const Header = () => {
         <a href="#projects" className="nav-link font-medium">Projects</a>
         <a href="#writing" className="nav-link font-medium">Writing</a>
         <a href="#about" className="nav-link font-medium">About</a>
+        <a href="#experience" className="nav-link font-medium">Experience</a>
         <a href="#contact" className="nav-link font-medium">Contact</a>
       </motion.nav>
       <div className="md:hidden">
