@@ -6,7 +6,7 @@ import { Beaker, Shield } from "lucide-react";
 
 const SafeLabSection = () => {
   return (
-    <section className="py-24 px-6 bg-gradient-to-b from-slate-50 to-slate-50/70">
+    <section className="py-32 px-6">
       <motion.div
         className="max-w-4xl mx-auto"
         initial={{ opacity: 0 }}
@@ -14,24 +14,18 @@ const SafeLabSection = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <div className="flex items-center justify-center gap-3 mb-6">
-          <Beaker className="h-6 w-6 text-primary" />
-          <motion.h2 
-            className="text-3xl md:text-4xl font-bold text-center"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            SafeLab
-          </motion.h2>
-          <Shield className="h-6 w-6 text-primary" />
-        </div>
-        
-        <Separator className="my-6 max-w-[120px] mx-auto bg-primary/30" />
+        <motion.h2 
+          className="text-4xl font-bold text-center mb-12 tracking-tight"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          SafeLab
+        </motion.h2>
         
         <motion.div 
-          className="space-y-6 text-center"
+          className="space-y-8 text-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

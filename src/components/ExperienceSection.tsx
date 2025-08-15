@@ -13,7 +13,7 @@ const experiences = [
     duration: "1 yr 7 mos",
     type: "Full time",
     icon: "📱",
-    color: "bg-blue-500"
+    color: "bg-muted"
   },
   {
     id: 2,
@@ -25,7 +25,7 @@ const experiences = [
     duration: "2 yrs",
     type: "Full time",
     icon: "🚗",
-    color: "bg-indigo-500"
+    color: "bg-muted"
   },
   {
     id: 3,
@@ -37,7 +37,7 @@ const experiences = [
     duration: "1 yr",
     type: "Full time",
     icon: "🧪",
-    color: "bg-purple-500"
+    color: "bg-muted"
   },
   {
     id: 4,
@@ -49,7 +49,7 @@ const experiences = [
     duration: "2 yrs 3 mos", 
     type: "Full time",
     icon: "🛴",
-    color: "bg-green-500"
+    color: "bg-muted"
   },
   {
     id: 5,
@@ -61,7 +61,7 @@ const experiences = [
     duration: "5 yrs 4 mos",
     type: "Founder",
     icon: "🔐",
-    color: "bg-orange-500"
+    color: "bg-foreground"
   },
   {
     id: 6,
@@ -73,34 +73,34 @@ const experiences = [
     duration: "6 mos",
     type: "Contract",
     icon: "💼",
-    color: "bg-teal-500",
+    color: "bg-muted",
     isParallel: true // This overlaps with Safe role
   }
 ];
 
 const ExperienceSection = () => {
   return (
-    <section id="experience" className="py-24 px-6 bg-white relative overflow-hidden">
-      <div className="max-w-7xl mx-auto relative z-10">
+    <section id="experience" className="py-32 px-6">
+      <div className="max-w-6xl mx-auto">
         {/* Section Header */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-20"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
           <motion.h2 
-            className="text-4xl font-bold mb-4"
+            className="text-4xl font-bold mb-6 tracking-tight"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            Professional <span className="text-primary">Journey</span>
+            Professional <span className="text-muted-foreground">Journey</span>
           </motion.h2>
           <motion.p
-            className="text-lg text-muted-foreground max-w-2xl mx-auto"
+            className="text-xl text-muted-foreground max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -113,7 +113,7 @@ const ExperienceSection = () => {
         {/* Timeline Container */}
         <div className="relative">
           {/* Horizontal Timeline Line */}
-          <div className="absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-slate-200 via-primary/30 to-slate-200 transform -translate-y-1/2 hidden md:block" />
+          <div className="absolute top-1/2 left-0 right-0 h-px bg-border transform -translate-y-1/2 hidden md:block" />
           
           {/* Timeline Items */}
           <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-4">
@@ -137,52 +137,35 @@ const ExperienceSection = () => {
 
                 {/* Experience Card */}
                 <motion.div
-                  className={`bg-white rounded-xl shadow-lg p-6 border border-slate-200 relative ${
-                    index % 2 === 0 ? 'md:mt-24' : 'md:mb-24'
-                  }`}
-                  whileHover={{ y: -5, boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1)" }}
+                  className="border border-border rounded-xl p-8 relative"
+                  whileHover={{ y: -2 }}
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 >
-                  {/* Icon with Pulse Animation in Top Left */}
-                  <div className="absolute -top-3 -left-3">
+                  {/* Icon */}
+                  <div className="mb-6">
                     <motion.div
-                      className={`w-12 h-12 ${experience.color} rounded-full shadow-lg flex items-center justify-center text-white text-xl relative z-10`}
-                      whileHover={{ scale: 1.1 }}
+                      className={`w-12 h-12 ${experience.color} rounded-full flex items-center justify-center text-xl ${experience.color === 'bg-foreground' ? 'text-background' : 'text-foreground'}`}
+                      whileHover={{ scale: 1.05 }}
                       transition={{ type: "spring", stiffness: 400, damping: 10 }}
                     >
                       {experience.icon}
                     </motion.div>
-                    
-                    {/* Pulse Animation */}
-                    <motion.div
-                      className={`absolute inset-0 w-12 h-12 ${experience.color} rounded-full opacity-30`}
-                      animate={{
-                        scale: [1, 1.5, 1],
-                        opacity: [0.3, 0, 0.3]
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        delay: index * 0.2
-                      }}
-                    />
                   </div>
-                  <div className="text-sm text-primary font-semibold mb-2 ml-4">
+                  <div className="text-sm text-muted-foreground mb-3">
                     {experience.startDate} - {experience.endDate}
                   </div>
-                  <h3 className="font-bold text-lg mb-2 leading-tight">
+                  <h3 className="font-semibold text-lg mb-3 leading-tight">
                     {experience.title}
                   </h3>
-                  <div className="text-slate-600 mb-2">
-                    <div className="font-semibold">{experience.company}</div>
+                  <div className="text-muted-foreground mb-4">
+                    <div className="font-medium text-foreground">{experience.company}</div>
                     <div className="text-sm">{experience.location}</div>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-slate-500">{experience.duration}</span>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      experience.type === 'Founder' ? 'bg-orange-100 text-orange-700' :
-                      experience.type === 'Contract' ? 'bg-teal-100 text-teal-700' :
-                      'bg-blue-100 text-blue-700'
+                    <span className="text-muted-foreground">{experience.duration}</span>
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                      experience.type === 'Founder' ? 'bg-foreground text-background' :
+                      'bg-muted text-muted-foreground'
                     }`}>
                       {experience.type}
                     </span>

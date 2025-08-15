@@ -44,7 +44,7 @@ const WritingSection = () => {
   const currentYear = new Date().getFullYear(); // 2025
 
   return (
-    <section id="writing" className="py-24 px-6">
+    <section id="writing" className="py-32 px-6">
       <motion.div
         className="max-w-4xl mx-auto"
         initial={{ opacity: 0 }}
@@ -53,18 +53,17 @@ const WritingSection = () => {
         transition={{ duration: 0.6 }}
       >
         <motion.h3
-          className="text-4xl font-bold mb-4 text-center"
+          className="text-4xl font-bold mb-12 text-center tracking-tight"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="text-primary">Writing</span> & Thoughts
+          <span className="text-muted-foreground">Writing</span> & Thoughts
         </motion.h3>
 
-        {/* Updated paragraph linking clearly to both platforms */}
         <motion.p
-          className="text-center mb-8 text-xl text-muted-foreground"
+          className="text-center mb-16 text-xl text-muted-foreground"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -72,27 +71,26 @@ const WritingSection = () => {
         >
           Check out my thoughts on{' '}
           <a
-            href="https://rg2official.substack.com" // Link to Substack
+            href="https://rg2official.substack.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-primary font-semibold hover:underline inline-flex items-center"
+            className="font-medium hover:text-foreground transition-colors"
           >
-            Substack <ExternalLink className="ml-1 h-4 w-4" />
+            Substack
           </a>
           {' '}or browse more articles on{' '}
           <a
-            href="https://medium.com/@rg2official" // Link to Medium Profile
+            href="https://medium.com/@rg2official"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-primary font-semibold hover:underline inline-flex items-center"
+            className="font-medium hover:text-foreground transition-colors"
           >
-            Medium <ExternalLink className="ml-1 h-4 w-4" />
+            Medium
           </a>.
         </motion.p>
 
-        {/* The cards list remains, including the Substack entry at the top */}
         <motion.div
-          className="space-y-6 mt-12"
+          className="space-y-4"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -101,27 +99,25 @@ const WritingSection = () => {
           {articles.map((article, index) => (
             <motion.div
               key={index}
-              whileHover={{ x: 8 }}
+              whileHover={{ x: 4 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <Card className="overflow-hidden">
-                <CardContent className="p-0">
-                  <a
-                    href={article.link}
-                    className="flex justify-between items-center p-6 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <div className="flex-1 mr-4">
-                      <h4 className="font-bold text-xl mb-1">{article.title}</h4>
-                      <p className="text-muted-foreground">{article.description}</p>
-                    </div>
-                    <div className="bg-primary/10 rounded-full p-2 text-primary flex-shrink-0">
-                      <ExternalLink className="h-5 w-5" />
-                    </div>
-                  </a>
-                </CardContent>
-              </Card>
+              <a
+                href={article.link}
+                className="block border border-border rounded-xl p-6 hover:bg-muted/30 transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div className="flex justify-between items-start">
+                  <div className="flex-1 mr-4">
+                    <h4 className="font-semibold text-lg mb-2">{article.title}</h4>
+                    <p className="text-muted-foreground leading-relaxed">{article.description}</p>
+                  </div>
+                  <div className="text-muted-foreground flex-shrink-0 mt-1">
+                    <ExternalLink className="h-4 w-4" />
+                  </div>
+                </div>
+              </a>
             </motion.div>
           ))}
         </motion.div>
