@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
+import ProjectFilter from '@/components/ProjectFilter';
 // Assuming you have an icon library like react-icons
 // import { FiGithub, FiExternalLink, FiEye, FiCpu } from 'react-icons/fi'; // Example icons
 
@@ -65,6 +66,40 @@ const projects = [
 
 // --- Refactored Projects Section Component ---
 const ProjectsNarrative = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedTechs, setSelectedTechs] = useState<string[]>([]);
+
+  // Extract all technologies from projects
+  const availableTechs = useMemo(() => {
+    const techs = new Set<string>();
+    projects.forEach(project => {
+      if (project.tech) {
+        project.tech.split('•').forEach(tech => {
+          techs.add(tech.trim());
+        });
+      }
+    });
+    return Array.from(techs).sort();
+  }, []);
+
+  // Filter projects based on search term and selected technologies
+  const filteredProjects = useMemo(() => {
+    return projects.filter(project => {
+      // Search filter
+      const matchesSearch = !searchTerm || 
+        project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        project.inspiration.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (project.tech && project.tech.toLowerCase().includes(searchTerm.toLowerCase()));
+
+      // Technology filter
+      const matchesTech = selectedTechs.length === 0 ||
+        selectedTechs.some(tech => project.tech && project.tech.includes(tech));
+
+      return matchesSearch && matchesTech;
+    });
+  }, [searchTerm, selectedTechs]);
+
   return (
     <section id="projects" className="py-32 px-6">
       <motion.div
@@ -80,7 +115,7 @@ const ProjectsNarrative = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-24"
+          className="text-center mb-16"
         >
           <h2 className="text-5xl md:text-6xl font-bold mb-8 tracking-tight bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
           Projects That Started With Questions
@@ -90,88 +125,122 @@ const ProjectsNarrative = () => {
           </p>
         </motion.div>
 
+        {/* Project Filter */}
+        <ProjectFilter
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          selectedTechs={selectedTechs}
+          setSelectedTechs={setSelectedTechs}
+          availableTechs={availableTechs}
+          totalProjects={projects.length}
+          filteredCount={filteredProjects.length}
+        />
+
         {/* Project Entries */}
         <div className="space-y-16">
-          {projects.map((project, index) => (
+          {filteredProjects.length === 0 ? (
             <motion.div
-              key={project.title}
               initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, delay: index * 0.1 }}
-              className="enhanced-card border border-border/50 rounded-2xl p-10 relative overflow-hidden group"
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center py-20"
             >
-              {/* Subtle gradient overlay on hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/2 via-transparent to-muted/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-              
-              {/* Project Details */}
-              <div className="space-y-6 relative z-10">
-                 {/* Icon + Title */}
-                 <div className="flex items-center gap-4 mb-6">
-                    <motion.span 
-                      className="text-4xl float-animation" 
-                      aria-hidden="true"
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      {project.icon || '💡'}
-                    </motion.span>
-                    <h3 className="text-3xl font-bold tracking-tight">
-                        {project.title}
-                    </h3>
-                 </div>
-                
-                {/* Inspiration */}
-                <blockquote className="text-muted-foreground italic leading-relaxed text-lg border-l-4 border-primary/20 pl-6 py-2">
-                  {project.inspiration}
-                </blockquote>
-                
-                {/* Description */}
-                <p className="text-lg leading-relaxed text-foreground/90">
-                  {project.description}
-                </p>
-                
-                {/* Tech Stack */}
-                {project.tech && (
-                  <div className="bg-muted/30 rounded-lg px-4 py-3">
-                    <p className="text-sm font-medium text-muted-foreground">
-                      {project.tech}
-                    </p>
-                  </div>
-                )}
-                
-                {/* Links */}
-                <div className="flex items-center flex-wrap gap-6 pt-4">
-                  {project.demoUrl && (
-                    <motion.a
-                      href={project.demoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-3 px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-all duration-300 shadow-md hover:shadow-lg"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <span className="text-lg">🔗</span>
-                      Explore Live
-                    </motion.a>
-                  )}
-                  {project.githubUrl && (
-                    <motion.a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-3 px-4 py-2 border border-border rounded-lg font-medium hover:bg-muted/50 transition-all duration-300"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <span className="text-lg">💻</span>
-                      {project.demoLabel || 'View Source'}
-                    </motion.a>
-                  )}
-                </div>
-              </div>
+              <div className="text-6xl mb-4 opacity-50">🔍</div>
+              <h3 className="text-2xl font-bold mb-2">No projects found</h3>
+              <p className="text-muted-foreground mb-6">
+                Try adjusting your search terms or filters to find what you're looking for.
+              </p>
+              <button
+                onClick={() => {
+                  setSearchTerm('');
+                  setSelectedTechs([]);
+                }}
+                className="text-primary hover:underline"
+              >
+                Clear all filters
+              </button>
             </motion.div>
-          ))}
+          ) : (
+            filteredProjects.map((project, index) => (
+              <motion.div
+                key={project.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.8, delay: index * 0.1 }}
+                className="enhanced-card border border-border/50 rounded-2xl p-10 relative overflow-hidden group"
+              >
+                {/* Subtle gradient overlay on hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/2 via-transparent to-muted/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                
+                {/* Project Details */}
+                <div className="space-y-6 relative z-10">
+                   {/* Icon + Title */}
+                   <div className="flex items-center gap-4 mb-6">
+                      <motion.span 
+                        className="text-4xl float-animation" 
+                        aria-hidden="true"
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        {project.icon || '💡'}
+                      </motion.span>
+                      <h3 className="text-3xl font-bold tracking-tight">
+                          {project.title}
+                      </h3>
+                   </div>
+                  
+                  {/* Inspiration */}
+                  <blockquote className="text-muted-foreground italic leading-relaxed text-lg border-l-4 border-primary/20 pl-6 py-2">
+                    {project.inspiration}
+                  </blockquote>
+                  
+                  {/* Description */}
+                  <p className="text-lg leading-relaxed text-foreground/90">
+                    {project.description}
+                  </p>
+                  
+                  {/* Tech Stack */}
+                  {project.tech && (
+                    <div className="bg-muted/30 rounded-lg px-4 py-3">
+                      <p className="text-sm font-medium text-muted-foreground">
+                        {project.tech}
+                      </p>
+                    </div>
+                  )}
+                  
+                  {/* Links */}
+                  <div className="flex items-center flex-wrap gap-6 pt-4">
+                    {project.demoUrl && (
+                      <motion.a
+                        href={project.demoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-3 px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-all duration-300 shadow-md hover:shadow-lg"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <span className="text-lg">🔗</span>
+                        Explore Live
+                      </motion.a>
+                    )}
+                    {project.githubUrl && (
+                      <motion.a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-3 px-4 py-2 border border-border rounded-lg font-medium hover:bg-muted/50 transition-all duration-300"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <span className="text-lg">💻</span>
+                        {project.demoLabel || 'View Source'}
+                      </motion.a>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            ))
+          )}
         </div>
       </motion.div>
     </section>
