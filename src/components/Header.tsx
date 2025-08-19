@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import { motion } from 'framer-motion';
+import { ThemeToggle } from '@/components/theme-toggle';
+import MobileNav from '@/components/MobileNav';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -40,9 +42,17 @@ const Header = () => {
         <a href="#experience" className="nav-link font-medium">Experience</a>
         <a href="#contact" className="nav-link font-medium">Contact</a>
       </motion.nav>
-      <div className="md:hidden">
-        {/* Mobile menu button could be added here in future */}
-      </div>
+      <motion.div 
+        className="flex items-center gap-2"
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+      >
+        <div className="hidden md:block">
+          <ThemeToggle />
+        </div>
+        <MobileNav isScrolled={isScrolled} />
+      </motion.div>
     </header>
   );
 };
