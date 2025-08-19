@@ -1,9 +1,9 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { ArrowDown } from "lucide-react";
+import EnhancedButton from '@/components/EnhancedButton';
 
 const Hero = () => {
   const scrollToProjects = () => {
@@ -107,14 +107,13 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
         >
-          <Button 
-            onClick={scrollToProjects} 
-            className="px-10 py-7 text-xl group bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 border-0"
+          <EnhancedButton
+            onClick={scrollToProjects}
             size="lg"
+            rightIcon={<ArrowDown className="h-6 w-6" />}
           >
-            <span className="relative z-10">See my work</span>
-            <ArrowDown className="ml-3 h-6 w-6 group-hover:translate-y-1 transition-transform duration-300" />
-          </Button>
+            See my work
+          </EnhancedButton>
         </motion.div>
       </motion.div>
     </section>
