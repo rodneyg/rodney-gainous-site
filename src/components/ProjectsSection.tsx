@@ -61,6 +61,15 @@ const projects = [
     githubUrl: "https://github.com/rodneyg/TempleToss", // Updated URL
     icon: '🎯',
     tech: "React Native • Expo • TypeScript • Firebase • Vercel"
+  },
+  {
+    title: "LiftAI",
+    inspiration: "The inspiration for LiftAI came from my own fitness journey. Online workouts and sports training plans often assumed access to a fully stocked gym. But when I relied on small apartment gyms or limited equipment, I had to improvise. I noticed the mental block it created — putting off training until I could 'get back' to a proper gym.",
+    description: "LiftAI solves that by flipping the problem: it scans the equipment you actually have, whether at home, an apartment complex, or a full gym, and generates structured, goal-specific workout plans around those exact resources. By combining computer vision with expert-informed training logic, LiftAI removes the guesswork and makes every gym usable, no matter the setup.",
+    demoUrl: null,
+    githubUrl: "https://github.com/rodneyg/LiftAI-iOS",
+    icon: '🏋️',
+    tech: "SwiftUI • iOS • OpenAI Vision • MVVM • Local Persistence"
   }
 ];
 
