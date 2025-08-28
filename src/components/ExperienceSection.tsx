@@ -53,7 +53,7 @@ const experiences = [
   },
   {
     id: 5,
-    title: "Founding Principal Engineer",
+    title: "Founder & Principal Engineer",
     company: "Safe",
     location: "Los Angeles, CA, USA",
     startDate: "May 2020",
