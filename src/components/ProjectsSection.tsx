@@ -70,6 +70,15 @@ const projects = [
     githubUrl: "https://github.com/rodneyg/LiftAI-iOS",
     icon: '🏋️',
     tech: "SwiftUI • iOS • OpenAI Vision • MVVM • Local Persistence"
+  },
+  {
+    title: "JustTalk",
+    inspiration: "I kept trying to record long voice notes on ChatGPT, but the output would be gibberish or inaccurate. I'd lose valuable thoughts and couldn't trust it with my narrations. I needed a reliable way to capture uninterrupted brain dumps, especially when multitasking or away from a computer.",
+    description: "A multi-clip voice transcription tool that turns audio recordings into text. Record or upload multiple clips, combine them into sessions, and get accurate transcripts. Transform your transcripts into summaries, bullet points, formal documents, or action items—all processed securely with OpenAI's Whisper.",
+    demoUrl: "https://just-talk-rodneygainous.replit.app/",
+    githubUrl: "https://github.com/rodneyg/JustTalkReact",
+    icon: '🎙️',
+    tech: "React • TypeScript • Vite • OpenAI Whisper • Replit"
   }
 ];
 
