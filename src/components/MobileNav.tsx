@@ -4,6 +4,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from 'framer-motion';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { Link, useLocation } from 'react-router-dom';
 
 interface MobileNavProps {
   isScrolled: boolean;
@@ -11,13 +12,16 @@ interface MobileNavProps {
 
 const MobileNav: React.FC<MobileNavProps> = ({ isScrolled }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
 
   const navItems = [
-    { href: "#projects", label: "Projects" },
-    { href: "#writing", label: "Writing" },
-    { href: "#about", label: "About" },
-    { href: "#experience", label: "Experience" },
-    { href: "#contact", label: "Contact" },
+    { href: "#projects", label: "Projects", isHash: true },
+    { href: "#writing", label: "Writing", isHash: true },
+    { href: "#about", label: "About", isHash: true },
+    { href: "#experience", label: "Experience", isHash: true },
+    { href: "#contact", label: "Contact", isHash: true },
+    { href: "/blog", label: "Blog", isHash: false },
   ];
 
   const handleLinkClick = () => {
@@ -74,13 +78,31 @@ const MobileNav: React.FC<MobileNavProps> = ({ isScrolled }) => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3, delay: 0.1 + index * 0.05 }}
                 >
-                  <a
-                    href={item.href}
-                    onClick={handleLinkClick}
-                    className="block text-2xl font-medium py-3 text-foreground hover:text-primary transition-colors border-b border-border/50 hover:border-primary/50"
-                  >
-                    {item.label}
-                  </a>
+                  {item.isHash && !isHomePage ? (
+                    <Link
+                      to={`/${item.href}`}
+                      onClick={handleLinkClick}
+                      className="block text-2xl font-medium py-3 text-foreground hover:text-primary transition-colors border-b border-border/50 hover:border-primary/50"
+                    >
+                      {item.label}
+                    </Link>
+                  ) : item.isHash ? (
+                    <a
+                      href={item.href}
+                      onClick={handleLinkClick}
+                      className="block text-2xl font-medium py-3 text-foreground hover:text-primary transition-colors border-b border-border/50 hover:border-primary/50"
+                    >
+                      {item.label}
+                    </a>
+                  ) : (
+                    <Link
+                      to={item.href}
+                      onClick={handleLinkClick}
+                      className="block text-2xl font-medium py-3 text-foreground hover:text-primary transition-colors border-b border-border/50 hover:border-primary/50"
+                    >
+                      {item.label}
+                    </Link>
+                  )}
                 </motion.div>
               ))}
             </motion.div>
