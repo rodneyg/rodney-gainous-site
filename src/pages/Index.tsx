@@ -31,10 +31,10 @@ const Index = () => {
       <main className="flex-grow pt-16">
         <Hero />
         <TechStackBlock />
+        <ProjectsSection />
         <ExperienceSection />
         <SafeLabSection />
         <AIResearchSection />
-        <ProjectsSection />
         <WritingSection />
         <AboutSection />
         <ContactSection />
