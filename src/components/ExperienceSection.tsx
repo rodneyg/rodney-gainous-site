@@ -57,11 +57,11 @@ const experiences = [
     company: "Safe",
     location: "Los Angeles, CA, USA",
     startDate: "May 2020",
-    endDate: "Present",
-    duration: "5 yrs 4 mos",
+    endDate: "November 2025",
+    duration: "5 yrs 7 mos",
     type: "Founder",
     icon: "🔐",
-    color: "bg-foreground"
+    color: "bg-muted"
   },
   {
     id: 6,
@@ -74,7 +74,20 @@ const experiences = [
     type: "Contract",
     icon: "💼",
     color: "bg-muted",
-    isParallel: true // This overlaps with Safe role
+    isParallel: true, // This overlaps with Safe role
+    description: "Short-term role that contributed to launching and shaping the early direction of Safe."
+  },
+  {
+    id: 7,
+    title: "Staff Software Engineer",
+    company: "Blueprint Bryan Johnson",
+    location: "Remote",
+    startDate: "November 2025",
+    endDate: "Present",
+    duration: "2 mos",
+    type: "Full time",
+    icon: "🧬",
+    color: "bg-foreground"
   }
 ];
 
@@ -175,41 +188,68 @@ const ExperienceSection = () => {
             ))}
           </div>
 
-          {/* Parallel Role - Upfront Ventures */}
-          {experiences.find(exp => exp.isParallel) && (
-            <motion.div
-              className="mt-12 max-w-md mx-auto"
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-            >
-              <div className="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl p-6 border border-teal-200">
-                <div className="flex items-center mb-3">
-                  <div className="w-10 h-10 bg-teal-500 rounded-full flex items-center justify-center text-white mr-3">
-                    💼
+          {/* Parallel Roles */}
+          {experiences.filter(exp => exp.isParallel).length > 0 && (
+            <div className="mt-12 space-y-6">
+              {experiences.filter(exp => exp.isParallel).map((parallelExp, index) => (
+                <motion.div
+                  key={parallelExp.id}
+                  className="max-w-md mx-auto"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.8 + (index * 0.1) }}
+                >
+                  <div className={`bg-gradient-to-r ${
+                    parallelExp.color === 'bg-foreground' 
+                      ? 'from-purple-50 to-indigo-50 border-purple-200' 
+                      : 'from-teal-50 to-cyan-50 border-teal-200'
+                  } rounded-xl p-6 border`}>
+                    <div className="flex items-center mb-3">
+                      <div className={`w-10 h-10 ${
+                        parallelExp.color === 'bg-foreground' 
+                          ? 'bg-purple-500' 
+                          : 'bg-teal-500'
+                      } rounded-full flex items-center justify-center text-white mr-3`}>
+                        {parallelExp.icon}
+                      </div>
+                      <div>
+                        <div className={`text-sm ${
+                          parallelExp.color === 'bg-foreground' 
+                            ? 'text-purple-600' 
+                            : 'text-teal-600'
+                        } font-semibold`}>Parallel Role</div>
+                        <div className={`text-xs ${
+                          parallelExp.color === 'bg-foreground' 
+                            ? 'text-purple-500' 
+                            : 'text-teal-500'
+                        }`}>{parallelExp.startDate} - {parallelExp.endDate}</div>
+                      </div>
+                    </div>
+                    <h4 className="font-bold mb-1">{parallelExp.title}</h4>
+                    <div className="text-slate-600 mb-2">
+                      <div className="font-semibold">{parallelExp.company}</div>
+                      <div className="text-sm">{parallelExp.location}</div>
+                    </div>
+                    {parallelExp.description && (
+                      <p className="text-sm text-slate-600 mb-2">
+                        {parallelExp.description}
+                      </p>
+                    )}
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-slate-500">{parallelExp.duration}</span>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        parallelExp.color === 'bg-foreground' 
+                          ? 'bg-purple-100 text-purple-700' 
+                          : 'bg-teal-100 text-teal-700'
+                      }`}>
+                        {parallelExp.type}
+                      </span>
+                    </div>
                   </div>
-                  <div>
-                    <div className="text-sm text-teal-600 font-semibold">Parallel Role</div>
-                    <div className="text-xs text-teal-500">November 2020 - April 2021</div>
-                  </div>
-                </div>
-                <h4 className="font-bold mb-1">Entrepreneur in Residence</h4>
-                <div className="text-slate-600 mb-2">
-                  <div className="font-semibold">Upfront Ventures</div>
-                  <div className="text-sm">Los Angeles, CA, USA</div>
-                </div>
-                <p className="text-sm text-slate-600 mb-2">
-                  Short-term role that contributed to launching and shaping the early direction of Safe.
-                </p>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-slate-500">6 mos</span>
-                  <span className="px-2 py-1 rounded-full text-xs font-medium bg-teal-100 text-teal-700">
-                    Contract
-                  </span>
-                </div>
-              </div>
-            </motion.div>
+                </motion.div>
+              ))}
+            </div>
           )}
         </div>
       </div>
