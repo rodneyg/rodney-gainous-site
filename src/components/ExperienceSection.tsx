@@ -57,11 +57,11 @@ const experiences = [
     company: "Safe",
     location: "Los Angeles, CA, USA",
     startDate: "May 2020",
-    endDate: "Present",
-    duration: "5 yrs 4 mos",
+    endDate: "November 2025",
+    duration: "5 yrs 7 mos",
     type: "Founder",
     icon: "🔐",
-    color: "bg-foreground"
+    color: "bg-muted"
   },
   {
     id: 6,
@@ -82,13 +82,12 @@ const experiences = [
     title: "Staff Software Engineer",
     company: "Blueprint Bryan Johnson",
     location: "Remote",
-    startDate: "November 2024",
+    startDate: "November 2025",
     endDate: "Present",
-    duration: "1 yr 1 mo",
+    duration: "2 mos",
     type: "Full time",
     icon: "🧬",
-    color: "bg-foreground",
-    isParallel: true // This overlaps with Safe role
+    color: "bg-foreground"
   }
 ];
 
