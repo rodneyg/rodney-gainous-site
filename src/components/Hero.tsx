@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import EnhancedButton from '@/components/EnhancedButton';
 
 interface HeroProps {
@@ -92,14 +92,12 @@ const Hero = ({ onNext }: HeroProps) => {
         </motion.h2>
         
         <motion.p 
-          className="text-xl md:text-2xl lg:text-3xl text-muted-foreground mx-auto mb-16 max-w-4xl leading-relaxed font-light"
+          className="text-xl md:text-2xl lg:text-3xl text-muted-foreground mx-auto mb-10 max-w-4xl leading-relaxed font-light"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
         >
-          I've been building software since I was 13, starting with Java bots and eventually founding my own{' '}
-          <span className="text-foreground font-medium">venture-backed security startup</span>. 
-          For over a decade, I've tackled challenges across cybersecurity, AI, health technology, and digital infrastructure.
+          I build practical products across <span className="text-foreground font-medium">AI, security, health, and infrastructure</span>.
         </motion.p>
         
         <motion.div
@@ -115,6 +113,21 @@ const Hero = ({ onNext }: HeroProps) => {
             See my work
           </EnhancedButton>
         </motion.div>
+
+        <motion.p
+          className="mt-6 inline-flex flex-wrap items-center justify-center gap-3 text-sm md:text-base text-muted-foreground"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.7, ease: "easeOut" }}
+        >
+          <span className="inline-flex items-center gap-1">
+            <ArrowLeft className="h-4 w-4" />
+            <ArrowRight className="h-4 w-4" />
+            move between slides
+          </span>
+          <span className="hidden md:inline text-muted-foreground/60">•</span>
+          <span>↑ ↓ scroll longer pages</span>
+        </motion.p>
       </motion.div>
     </section>
   );

@@ -27,18 +27,22 @@ const SECTION_TO_SLIDE: Record<string, number> = {
 
 const TOTAL_SLIDES = Object.keys(SECTION_TO_SLIDE).length;
 const SLIDE_TRANSITION_SETTLE_MS = 450;
+const DEFAULT_SCROLL_EXIT_THRESHOLD = 72;
+const KEYBOARD_VERTICAL_SCROLL_RATIO = 0.75;
 
 const Index = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const activeSlideRef = useRef(0);
   const isAnimatingRef = useRef(false);
   const settleTimerRef = useRef<ReturnType<typeof window.setTimeout>>();
+  const wheelExitIntentRef = useRef({ key: '', amount: 0 });
 
   const scrollToSlide = useCallback((index: number) => {
     const container = containerRef.current;
     if (container) {
       const nextIndex = Math.max(0, Math.min(index, TOTAL_SLIDES - 1));
       isAnimatingRef.current = true;
+      wheelExitIntentRef.current = { key: '', amount: 0 };
       container.scrollTo({ left: nextIndex * window.innerWidth, behavior: 'smooth' });
     }
   }, []);
@@ -46,6 +50,13 @@ const Index = () => {
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+
+    const getActiveScrollableElement = () =>
+      container.children[activeSlideRef.current]?.querySelector('[data-scrollable="true"]') as HTMLElement | null;
+
+    const resetWheelExitIntent = () => {
+      wheelExitIntentRef.current = { key: '', amount: 0 };
+    };
 
     // Handle initial hash navigation
     if (window.location.hash) {
@@ -99,9 +110,30 @@ const Index = () => {
       const scrollableEl = target.closest('[data-scrollable="true"]') as HTMLElement | null;
       if (scrollableEl) {
         const { scrollTop, scrollHeight, clientHeight } = scrollableEl;
-        const atTop = scrollTop <= 0 && e.deltaY < 0;
-        const atBottom = scrollTop + clientHeight >= scrollHeight - 1 && e.deltaY > 0;
-        if (!atTop && !atBottom) return;
+        const remainingTop = scrollTop;
+        const remainingBottom = scrollHeight - clientHeight - scrollTop;
+        const direction = e.deltaY > 0 ? 1 : -1;
+        const atBoundary = direction > 0 ? remainingBottom <= 1 : remainingTop <= 1;
+        if (!atBoundary) {
+          resetWheelExitIntent();
+          return;
+        }
+
+        const exitThreshold = Number.parseFloat(scrollableEl.dataset.scrollExitThreshold ?? '');
+        const requiredIntent = Number.isFinite(exitThreshold)
+          ? exitThreshold
+          : DEFAULT_SCROLL_EXIT_THRESHOLD;
+        const wheelIntentKey = `${activeSlideRef.current}:${direction}`;
+        const nextAmount =
+          wheelExitIntentRef.current.key === wheelIntentKey
+            ? wheelExitIntentRef.current.amount + Math.abs(e.deltaY)
+            : Math.abs(e.deltaY);
+
+        wheelExitIntentRef.current = { key: wheelIntentKey, amount: nextAmount };
+        if (nextAmount < requiredIntent) {
+          e.preventDefault();
+          return;
+        }
       }
 
       e.preventDefault();
@@ -112,8 +144,32 @@ const Index = () => {
       scrollToSlide(nextIndex);
     };
 
-    // Keyboard: Left/Right arrow keys navigate between slides
+    // Keyboard: Left/Right navigate slides; Up/Down scroll within vertical slides
     const handleKeyDown = (e: KeyboardEvent) => {
+      const scrollableEl = getActiveScrollableElement();
+
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        if (!scrollableEl) return;
+
+        const direction = e.key === 'ArrowDown' ? 1 : -1;
+        const maxScrollTop = scrollableEl.scrollHeight - scrollableEl.clientHeight;
+        const canScroll = maxScrollTop > 1;
+        if (!canScroll) return;
+
+        const remainingDistance =
+          direction > 0 ? maxScrollTop - scrollableEl.scrollTop : scrollableEl.scrollTop;
+        if (remainingDistance <= 1) return;
+
+        e.preventDefault();
+        resetWheelExitIntent();
+        const delta = Math.min(
+          Math.round(scrollableEl.clientHeight * KEYBOARD_VERTICAL_SCROLL_RATIO),
+          remainingDistance
+        );
+        scrollableEl.scrollBy({ top: delta * direction, behavior: 'smooth' });
+        return;
+      }
+
       if (isAnimatingRef.current) return;
 
       if (e.key === 'ArrowRight') {
@@ -179,7 +235,11 @@ const Index = () => {
 
         {/* Slide 5 — AI Research (scrollable) */}
         <div className="slide" id="slide-ai-research">
-          <div data-scrollable="true" className="slide-content">
+          <div
+            data-scrollable="true"
+            data-scroll-exit-threshold="180"
+            className="slide-content"
+          >
             <AIResearchSection />
           </div>
         </div>
