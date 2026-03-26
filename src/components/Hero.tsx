@@ -11,7 +11,7 @@ interface HeroProps {
 
 const Hero = ({ onNext }: HeroProps) => {
   return (
-    <section className="w-full h-full flex items-center justify-center px-6 relative overflow-hidden">
+    <section className="w-full h-full flex items-start justify-center px-6 pt-8 md:pt-10 pb-10 relative overflow-hidden">
       {/* Subtle background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted/20 -z-10" />
       

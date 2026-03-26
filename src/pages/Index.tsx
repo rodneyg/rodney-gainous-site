@@ -25,13 +25,21 @@ const SECTION_TO_SLIDE: Record<string, number> = {
   contact: 8,
 };
 
+const TOTAL_SLIDES = Object.keys(SECTION_TO_SLIDE).length;
+const SLIDE_TRANSITION_SETTLE_MS = 450;
+
 const Index = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const activeSlideRef = useRef(0);
+  const isAnimatingRef = useRef(false);
+  const settleTimerRef = useRef<ReturnType<typeof window.setTimeout>>();
 
   const scrollToSlide = useCallback((index: number) => {
     const container = containerRef.current;
     if (container) {
-      container.scrollTo({ left: index * window.innerWidth, behavior: 'smooth' });
+      const nextIndex = Math.max(0, Math.min(index, TOTAL_SLIDES - 1));
+      isAnimatingRef.current = true;
+      container.scrollTo({ left: nextIndex * window.innerWidth, behavior: 'smooth' });
     }
   }, []);
 
@@ -66,6 +74,13 @@ const Index = () => {
 
     // Notify Header about horizontal scroll position
     const handleContainerScroll = () => {
+      activeSlideRef.current = Math.round(container.scrollLeft / window.innerWidth);
+
+      window.clearTimeout(settleTimerRef.current);
+      settleTimerRef.current = window.setTimeout(() => {
+        isAnimatingRef.current = false;
+      }, SLIDE_TRANSITION_SETTLE_MS);
+
       window.dispatchEvent(
         new CustomEvent('slideScroll', { detail: { scrollLeft: container.scrollLeft } })
       );
@@ -90,20 +105,23 @@ const Index = () => {
       }
 
       e.preventDefault();
+      if (isAnimatingRef.current) return;
+
       // Use current innerWidth so the value is accurate after any viewport resize
-      const slideWidth = window.innerWidth;
-      container.scrollBy({ left: e.deltaY > 0 ? slideWidth : -slideWidth, behavior: 'smooth' });
+      const nextIndex = activeSlideRef.current + (e.deltaY > 0 ? 1 : -1);
+      scrollToSlide(nextIndex);
     };
 
     // Keyboard: Left/Right arrow keys navigate between slides
     const handleKeyDown = (e: KeyboardEvent) => {
-      const slideWidth = window.innerWidth;
+      if (isAnimatingRef.current) return;
+
       if (e.key === 'ArrowRight') {
         e.preventDefault();
-        container.scrollBy({ left: slideWidth, behavior: 'smooth' });
+        scrollToSlide(activeSlideRef.current + 1);
       } else if (e.key === 'ArrowLeft') {
         e.preventDefault();
-        container.scrollBy({ left: -slideWidth, behavior: 'smooth' });
+        scrollToSlide(activeSlideRef.current - 1);
       }
     };
 
@@ -116,6 +134,7 @@ const Index = () => {
       container.removeEventListener('scroll', handleContainerScroll);
       container.removeEventListener('wheel', handleWheel);
       window.removeEventListener('keydown', handleKeyDown);
+      window.clearTimeout(settleTimerRef.current);
     };
   }, [scrollToSlide]);
 
@@ -125,7 +144,9 @@ const Index = () => {
       <div ref={containerRef} className="slides-container">
         {/* Slide 0 — Hero (full-screen, centered, no inner scroll) */}
         <div className="slide" id="slide-hero">
-          <Hero onNext={() => scrollToSlide(1)} />
+          <div data-scrollable="true" className="slide-content">
+            <Hero onNext={() => scrollToSlide(1)} />
+          </div>
         </div>
 
         {/* Slide 1 — Tech Stack */}
