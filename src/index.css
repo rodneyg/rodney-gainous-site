@@ -3,6 +3,54 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Horizontal Pitch Deck Layout ─────────────────────────────────────── */
+
+html, body, #root {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.slides-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.slides-container::-webkit-scrollbar {
+  display: none;
+}
+
+.slide {
+  flex: none;
+  width: 100vw;
+  height: 100vh;
+  scroll-snap-align: start;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scrollable inner wrapper for content-heavy slides */
+.slide-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-top: 4rem; /* clear the fixed header */
+  scrollbar-width: thin;
+}
+
+/* ─────────────────────────────────────────────────────────────────────── */
+
 @layer base {
   :root {
     --background: 0 0% 99%;

@@ -2,16 +2,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { ArrowDown } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import EnhancedButton from '@/components/EnhancedButton';
 
-const Hero = () => {
-  const scrollToProjects = () => {
-    document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
-  };
+interface HeroProps {
+  onNext?: () => void;
+}
 
+const Hero = ({ onNext }: HeroProps) => {
   return (
-    <section className="min-h-screen flex items-center justify-center px-6 relative overflow-hidden">
+    <section className="w-full h-full flex items-center justify-center px-6 relative overflow-hidden">
       {/* Subtle background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted/20 -z-10" />
       
@@ -108,9 +108,9 @@ const Hero = () => {
           transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
         >
           <EnhancedButton
-            onClick={scrollToProjects}
+            onClick={onNext}
             size="lg"
-            rightIcon={<ArrowDown className="h-6 w-6" />}
+            rightIcon={<ArrowRight className="h-6 w-6" />}
           >
             See my work
           </EnhancedButton>
