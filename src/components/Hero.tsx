@@ -2,16 +2,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { ArrowDown } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import EnhancedButton from '@/components/EnhancedButton';
 
-const Hero = () => {
-  const scrollToProjects = () => {
-    document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
-  };
+interface HeroProps {
+  onNext?: () => void;
+}
 
+const Hero = ({ onNext }: HeroProps) => {
   return (
-    <section className="min-h-screen flex items-center justify-center px-6 relative overflow-hidden">
+    <section className="w-full h-full flex items-start justify-center px-6 pt-8 md:pt-10 pb-10 relative overflow-hidden">
       {/* Subtle background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted/20 -z-10" />
       
@@ -92,14 +92,12 @@ const Hero = () => {
         </motion.h2>
         
         <motion.p 
-          className="text-xl md:text-2xl lg:text-3xl text-muted-foreground mx-auto mb-16 max-w-4xl leading-relaxed font-light"
+          className="text-xl md:text-2xl lg:text-3xl text-muted-foreground mx-auto mb-10 max-w-4xl leading-relaxed font-light"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
         >
-          I've been building software since I was 13, starting with Java bots and eventually founding my own{' '}
-          <span className="text-foreground font-medium">venture-backed security startup</span>. 
-          For over a decade, I've tackled challenges across cybersecurity, AI, health technology, and digital infrastructure.
+          I build practical products across <span className="text-foreground font-medium">AI, security, health, and infrastructure</span>.
         </motion.p>
         
         <motion.div
@@ -108,13 +106,28 @@ const Hero = () => {
           transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
         >
           <EnhancedButton
-            onClick={scrollToProjects}
+            onClick={onNext}
             size="lg"
-            rightIcon={<ArrowDown className="h-6 w-6" />}
+            rightIcon={<ArrowRight className="h-6 w-6" />}
           >
             See my work
           </EnhancedButton>
         </motion.div>
+
+        <motion.p
+          className="mt-6 inline-flex flex-wrap items-center justify-center gap-3 text-sm md:text-base text-muted-foreground"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.7, ease: "easeOut" }}
+        >
+          <span className="inline-flex items-center gap-1">
+            <ArrowLeft className="h-4 w-4" />
+            <ArrowRight className="h-4 w-4" />
+            move between slides
+          </span>
+          <span className="hidden md:inline text-muted-foreground/60">•</span>
+          <span>↑ ↓ scroll longer pages</span>
+        </motion.p>
       </motion.div>
     </section>
   );

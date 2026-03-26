@@ -12,13 +12,23 @@ const Header = () => {
   const isHomePage = location.pathname === '/';
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    if (isHomePage) {
+      // On the home page the layout is horizontal slides; track slide scroll position
+      const handleSlideScroll = (e: Event) => {
+        const { scrollLeft } = (e as CustomEvent<{ scrollLeft: number }>).detail;
+        setIsScrolled(scrollLeft > 10);
+      };
+      window.addEventListener('slideScroll', handleSlideScroll);
+      return () => window.removeEventListener('slideScroll', handleSlideScroll);
+    } else {
+      // On other pages use normal vertical scroll
+      const handleScroll = () => {
+        setIsScrolled(window.scrollY > 10);
+      };
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }
+  }, [isHomePage]);
 
   return (
     <header className={cn(

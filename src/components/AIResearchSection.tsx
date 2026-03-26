@@ -4,16 +4,16 @@ import { motion } from 'framer-motion';
 const aiResearchProjects = [
   {
     title: "Bias Detection & Security",
-    insight: "AI systems are only as safe as their guardrails. What if the AI could detect bias and protect user data before damage is done?",
-    description: "A live simulation of an AI assistant designed with transparency-first principles. Detects biased prompts across four axes (leading questions, emotional language, false dichotomies, framing manipulation) and blocks unauthorized personal data access. Features real-time bias tagging, secure memory handling, and interaction verification mechanisms.",
+    insight: "Detect bias and protect personal data before harm.",
+    description: "Interactive assistant demo that flags manipulation patterns and blocks unauthorized data access.",
     demoUrl: "https://v0-bias-detection-system.vercel.app/",
     githubUrl: "https://github.com/rodneyg/AI-Safety-1",
     icon: '🛡️'
   },
   {
     title: "Boundary Erosion",
-    insight: "Failure often isn’t a sudden collapse—it’s erosion by inches. What if AI could visualize how repeated, subtle prompts gradually fracture its defenses?",
-    description: "An interactive demo modeling how conversational AI can be manipulated via incremental prompt shifts. Highlights the vulnerability of compliance-by-accumulation, where no single prompt breaks the rules but the aggregate drift leads to misalignment. Features a Boundary Meter, drift visualization, and reset simulation.",
+    insight: "See how small prompt shifts erode guardrails over time.",
+    description: "Interactive demo showing conversational drift, boundary changes, and reset behavior.",
     demoUrl: "https://v0-interactive-ai-demo.vercel.app/",
     githubUrl: "https://github.com/rodneyg/AI-Safety-2",
     icon: '🧠'
@@ -39,10 +39,10 @@ const AIResearchSection = () => {
           className="text-center mb-24"
         >
           <h2 className="text-5xl md:text-6xl font-bold mb-8 tracking-tight bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
-            AI Research & Safety Simulations
+            AI Safety Simulations
           </h2>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-light">
-            Modeling how intelligent systems fracture under pressure—and prototyping the safeguards to hold the line.
+            Interactive demos on bias, drift, and guardrails.
           </p>
         </motion.div>
 
@@ -98,7 +98,7 @@ const AIResearchSection = () => {
                       whileTap={{ scale: 0.95 }}
                     >
                       <span className="text-lg">🔗</span>
-                      Explore Simulation
+                       Open Demo
                     </motion.a>
                   )}
                   {project.githubUrl && (
@@ -111,7 +111,7 @@ const AIResearchSection = () => {
                       whileTap={{ scale: 0.95 }}
                     >
                       <span className="text-lg">💻</span>
-                      View Research Code
+                       Source
                     </motion.a>
                   )}
                 </div>
