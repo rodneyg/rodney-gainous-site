@@ -107,7 +107,7 @@ const AIEngineerShowcase = () => {
   const [inputValue, setInputValue] = useState('');
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const chatEndRef = useRef<HTMLDivElement | null>(null);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const msgIdRef = useRef(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const hasGreetedRef = useRef(false);
@@ -158,9 +158,15 @@ const AIEngineerShowcase = () => {
     return clearTimers;
   }, []);
 
-  // Auto-scroll to bottom
+  // Scroll the chat container to bottom (never scrolls the page viewport)
+  const scrollToBottom = () => {
+    const el = scrollContainerRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  };
+
+  // Auto-scroll within the chat box whenever content changes
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    scrollToBottom();
   }, [messages, streamedText, followUps, showCategories]);
 
   const sendQuestion = (text: string) => {
@@ -245,7 +251,7 @@ const AIEngineerShowcase = () => {
           </div>
 
           {/* Chat messages */}
-          <div className="h-72 overflow-y-auto px-5 py-4 space-y-4">
+          <div ref={scrollContainerRef} className="h-72 overflow-y-auto px-5 py-4 space-y-4">
             {messages.map(msg => (
               <motion.div
                 key={msg.id}
@@ -353,8 +359,6 @@ const AIEngineerShowcase = () => {
                 </motion.div>
               )}
             </AnimatePresence>
-
-            <div ref={chatEndRef} />
           </div>
 
           {/* Input */}
