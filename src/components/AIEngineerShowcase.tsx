@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { Send } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
@@ -108,9 +108,13 @@ const AIEngineerShowcase = () => {
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
   const msgIdRef = useRef(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const hasGreetedRef = useRef(false);
+
+  // Only fire once the section is actually on screen — never on mount
+  const isInView = useInView(sectionRef, { once: true, amount: 0.4 });
 
   const clearTimers = () => {
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -145,18 +149,18 @@ const AIEngineerShowcase = () => {
     setStreamedText('');
   };
 
-  // Auto-greet on mount
+  // Auto-greet only once the section scrolls into view
   useEffect(() => {
-    if (hasGreetedRef.current) return;
+    if (!isInView || hasGreetedRef.current) return;
     hasGreetedRef.current = true;
     timerRef.current = setTimeout(() => {
       streamText(GREETING, text => {
         commitMessage(text);
         timerRef.current = setTimeout(() => setShowCategories(true), 300);
       });
-    }, 600);
+    }, 400);
     return clearTimers;
-  }, []);
+  }, [isInView]);
 
   // Scroll the chat container to bottom (never scrolls the page viewport)
   const scrollToBottom = () => {
@@ -195,9 +199,9 @@ const AIEngineerShowcase = () => {
   };
 
   return (
-    <section id="ai-engineer" className="py-32 px-6 relative overflow-hidden">
-      {/* Ambient glow — matches Hero */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
+    <section ref={sectionRef} id="ai-engineer" className="py-32 px-6 relative">
+      {/* Ambient glow — overflow-hidden scoped to this wrapper so sticky works */}
+      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <motion.div
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-3xl"
           animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.15, 0.4] }}
@@ -205,13 +209,12 @@ const AIEngineerShowcase = () => {
         />
       </div>
 
-      <div className="max-w-2xl mx-auto">
-        {/* Section header */}
+      <div className="max-w-2xl mx-auto sticky top-8">
+        {/* Section header — fade only, no y-movement */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/60 bg-muted/30 text-xs text-muted-foreground mb-6 font-mono tracking-wider">
@@ -226,12 +229,11 @@ const AIEngineerShowcase = () => {
           </p>
         </motion.div>
 
-        {/* Chat card */}
+        {/* Chat card — fade only, no y-movement */}
         <motion.div
-          initial={{ opacity: 0, y: 32 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.1 }}
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.7, delay: 0.15 }}
           className="border border-border/60 rounded-3xl overflow-hidden shadow-2xl shadow-primary/5 bg-background/80 backdrop-blur-sm"
         >
           {/* Card header */}
@@ -250,8 +252,12 @@ const AIEngineerShowcase = () => {
             </div>
           </div>
 
-          {/* Chat messages */}
-          <div ref={scrollContainerRef} className="h-72 overflow-y-auto px-5 py-4 space-y-4">
+          {/* Chat messages — overflow-anchor:none prevents browser scroll anchoring from moving the page */}
+          <div
+            ref={scrollContainerRef}
+            className="h-72 overflow-y-auto px-5 py-4 space-y-4"
+            style={{ overflowAnchor: 'none', scrollBehavior: 'auto' }}
+          >
             {messages.map(msg => (
               <motion.div
                 key={msg.id}
@@ -389,8 +395,7 @@ const AIEngineerShowcase = () => {
         {/* Subtle footer note */}
         <motion.p
           initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
+          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center text-xs text-muted-foreground/30 mt-6"
         >
