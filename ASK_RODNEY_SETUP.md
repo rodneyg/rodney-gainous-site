@@ -1,6 +1,6 @@
 # Ask Rodney — Setup Guide
 
-The **Ask Rodney** section currently runs fully client-side using pre-canned answers and keyword matching — no API key required for the demo. To wire it up to a real language model so it answers any question intelligently, follow the steps below.
+The **Ask Rodney** section currently runs fully client-side using pre-canned answers and keyword matching — no API key required for the demo. To wire it up to a real language model, follow the steps below. All deployment instructions assume **Vercel**.
 
 ---
 
@@ -17,115 +17,140 @@ The chat header and AI bubbles currently use `/public/temp-avatar.jpg`.
 
 ---
 
-## 2. Choose a language model provider
+## 2. Get an OpenAI API key
 
-Pick one of the following. The swap is the same in either case — only the API call changes.
-
-| Provider | Model recommendation | Docs |
-|---|---|---|
-| Anthropic | `claude-3-5-haiku-20241022` (fast, cheap) | [docs.anthropic.com](https://docs.anthropic.com) |
-| OpenAI | `gpt-4o-mini` | [platform.openai.com](https://platform.openai.com) |
-
----
-
-## 3. Get an API key
-
-### Anthropic
-1. Go to [console.anthropic.com](https://console.anthropic.com) → **API Keys** → **Create Key**.
-2. Copy the key (starts with `sk-ant-...`).
-
-### OpenAI
 1. Go to [platform.openai.com/api-keys](https://platform.openai.com/api-keys) → **Create new secret key**.
-2. Copy the key (starts with `sk-...`).
+2. Copy the key — it starts with `sk-`.
+
+**Model:** `gpt-4.5` — accurate, fast, and more than capable at portfolio traffic levels.
 
 ---
 
-## 4. Add the key to your environment
+## 3. Add the key to your environment
 
 ### Local development
 
-Create a `.env.local` file at the project root (it is already in `.gitignore` — never commit this):
+Create `.env.local` at the project root (already in `.gitignore` — never commit this):
 
 ```env
-# Anthropic
-VITE_ANTHROPIC_API_KEY=sk-ant-...
-
-# — OR — OpenAI
-VITE_OPENAI_API_KEY=sk-...
+OPENAI_API_KEY=sk-...
 ```
 
-### Production (Netlify / Vercel)
+### Production (Vercel)
 
-Set the same variable in your hosting dashboard:
+1. Open your project in the [Vercel dashboard](https://vercel.com/dashboard).
+2. Go to **Settings → Environment Variables**.
+3. Add a variable: name `OPENAI_API_KEY`, value `sk-...`, environment **Production** (and **Preview** if you want it in preview deploys).
+4. Redeploy for the variable to take effect.
 
-- **Netlify:** Site settings → Environment variables → Add variable.
-- **Vercel:** Project settings → Environment Variables → Add.
-
-> **Important:** Calling AI APIs directly from the browser exposes your key to anyone who inspects network traffic. For production, route requests through a serverless function or edge function that reads the key server-side.
+> **Important:** Never use `VITE_` prefix for secrets. Variables prefixed with `VITE_` are embedded in the browser bundle and visible to anyone. The `OPENAI_API_KEY` variable is read only by the Vercel serverless function below — it never reaches the client.
 
 ---
 
-## 5. Create a serverless API route (recommended for production)
+## 4. Create the Vercel API route
 
-### Netlify Functions example (`netlify/functions/ask-rodney.ts`)
+Create the file `api/ask-rodney.ts` at the project root. Vercel automatically deploys any file in `api/` as a serverless function.
 
 ```typescript
-import Anthropic from '@anthropic-ai/sdk';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+import OpenAI from 'openai';
 
-export const handler = async (event: { body: string | null }) => {
-  // Validate request body
-  if (!event.body) {
-    return { statusCode: 400, body: JSON.stringify({ error: 'Request body is required' }) };
+// ─── System prompt ─────────────────────────────────────────────────────────
+// Strict, grounded in real facts about Rodney. The model must stay within
+// this context and never fabricate details not listed here.
+const SYSTEM_PROMPT = `You are a concise AI assistant that answers questions about Rodney Gainous Jr.
+Respond in 2–3 sentences maximum. Be direct, specific, and use a confident first-person voice on his behalf.
+Never fabricate details. If you genuinely don't know the answer, say: "That's best answered by Rodney directly — reach out in the contact section."
+
+## Who is Rodney Gainous Jr.?
+Rodney is a Detroit-born software engineer and entrepreneur who has been building software since age 13.
+He is currently a Staff Software Engineer at Blueprint (Bryan Johnson's longevity company), focused on health technology.
+Before that, he was Founder & Principal Engineer of Safe (2020–2025), a venture-backed startup redefining digital trust and identity security.
+He also co-founded SafeLab, an open-source health infrastructure project.
+Earlier in his career he was a Senior Software Engineer at Bird (the scooter company, 2018–2020), a mobile engineer at Nima Labs (food allergy sensor startup, 2017–2018), and a software engineer at Ford Motor Company (2015–2016) and Nexient (2013–2014).
+He was Entrepreneur in Residence at Upfront Ventures (2020–2021) during the early formation of Safe.
+
+## What has he built?
+- Safe: a venture-backed digital identity and security startup. Raised funding, built the product, ran the company for over 5 years.
+- SafeLab: open-source health infrastructure aimed at democratizing access to health data and tooling.
+- AI safety simulations and bias detection systems that make abstract risk concepts tangible for non-technical stakeholders (including executive audiences).
+- Production apps wired to Claude and GPT across multiple domains.
+- At Bird, he worked on the core mobile platform powering a global network of shared electric scooters.
+- At Ford, he built iOS software for one of the world's largest automotive manufacturers.
+
+## What is his technical stack and approach?
+He is primarily a product engineer — his focus is always the product layer, turning AI models into experiences real people actually use.
+Daily tools: Claude Code for agentic sessions, Cursor for in-editor flow, Next.js + Supabase for fast shipping.
+He is model-agnostic and stack-agnostic — he picks whatever fits the outcome.
+Philosophy: if he does something twice, he builds a system for it. He uses AI to eliminate tasks entirely, not just go faster.
+He believes models are a new primitive — like databases or APIs — and the craft is knowing when and how to wire them into the right product moment.
+Speed of iteration beats choice of model, every time.
+
+## Why work with Rodney?
+He bridges the gap between cutting-edge AI capabilities and the UX that non-technical users actually experience.
+He is not a researcher training foundational models — he ships.
+He has operated as both a solo founder and a senior engineer inside teams, so he understands product, code, and stakeholder communication equally well.
+
+## Contact
+Visitors who want to talk directly should use the contact section on this site.`;
+
+// ─── Handler ────────────────────────────────────────────────────────────────
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  let question: string;
-  let history: Array<{ role: string; content: string }>;
+  const { question, history } = req.body ?? {};
 
-  try {
-    const parsed = JSON.parse(event.body);
-    question = parsed.question;
-    history = parsed.history ?? [];
-    if (!question || typeof question !== 'string') {
-      return { statusCode: 400, body: JSON.stringify({ error: 'question field is required' }) };
-    }
-  } catch {
-    return { statusCode: 400, body: JSON.stringify({ error: 'Invalid JSON body' }) };
+  if (!question || typeof question !== 'string' || question.trim().length === 0) {
+    return res.status(400).json({ error: 'question field is required' });
   }
 
-  try {
-    const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  if (!process.env.OPENAI_API_KEY) {
+    return res.status(500).json({ error: 'API key not configured' });
+  }
 
-    const message = await client.messages.create({
-      model: 'claude-3-5-haiku-20241022',
+  const conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }> =
+    Array.isArray(history) ? history : [];
+
+  try {
+    const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+    const completion = await client.chat.completions.create({
+      model: 'gpt-4.5',
       max_tokens: 256,
-      system: `You are an AI assistant for Rodney Gainous Jr., an AI engineer and product builder.
-Answer questions about his work, skills, and philosophy concisely (2-3 sentences max).
-If you don't know something specific, suggest they reach out via the contact section.`,
+      temperature: 0.4,   // lower = more factual, less hallucination
       messages: [
-        ...history,
-        { role: 'user', content: question },
+        { role: 'system', content: SYSTEM_PROMPT },
+        ...conversationHistory,
+        { role: 'user', content: question.trim() },
       ],
     });
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ answer: (message.content[0] as { text: string }).text }),
-    };
+    const answer = completion.choices[0]?.message?.content ?? 'No response generated.';
+    return res.status(200).json({ answer });
   } catch (err) {
-    console.error('Anthropic API error:', err);
-    return { statusCode: 500, body: JSON.stringify({ error: 'Failed to get a response. Please try again.' }) };
+    console.error('OpenAI API error:', err);
+    return res.status(500).json({ error: 'Failed to get a response. Please try again.' });
   }
-};
+}
+```
+
+Install the required packages:
+
+```sh
+npm install openai @vercel/node
 ```
 
 ---
 
-## 6. Wire the API call into the component
+## 5. Wire the API call into the component
 
-In `src/components/AIEngineerShowcase.tsx`, replace the `sendQuestion` handler's answer resolution:
+In `src/components/AIEngineerShowcase.tsx`, find the `sendQuestion` function and replace the answer resolution block:
 
 ```typescript
-// Replace this block:
+// Remove this:
 const match = matchQA(text);
 const answer = match ? match.a : FALLBACK_ANSWER;
 const next = match ? match.followUps : [0, 4];
@@ -134,36 +159,50 @@ timerRef.current = setTimeout(() => {
   streamText(answer, committed => { ... });
 }, 400);
 
-// With this:
-const res = await fetch('/.netlify/functions/ask-rodney', {
-  method: 'POST',
-  body: JSON.stringify({ question: text, history: conversationHistory }),
-});
-const { answer } = await res.json();
-streamText(answer, committed => {
-  commitMessage(committed);
-  timerRef.current = setTimeout(() => setFollowUps([0, 4]), 200);
-});
+// Add this (make sendQuestion async and add a history state):
+setIsStreaming(true);
+try {
+  const res = await fetch('/api/ask-rodney', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      question: text,
+      history: messages.map(m => ({
+        role: m.role === 'ai' ? 'assistant' : 'user',
+        content: m.text,
+      })),
+    }),
+  });
+  const data = await res.json();
+  const answer = data.answer ?? FALLBACK_ANSWER;
+  streamText(answer, committed => {
+    commitMessage(committed);
+    timerRef.current = setTimeout(() => setFollowUps([0, 4]), 200);
+  });
+} catch {
+  streamText(FALLBACK_ANSWER, commitMessage);
+}
 ```
 
-You'll also want to maintain a `conversationHistory` array in state to pass context for multi-turn replies.
+The existing `messages` state already holds the full conversation history, so you can map it directly into the `history` array sent to the API.
 
 ---
 
-## 7. Deploy
+## 6. Deploy
 
 ```sh
 npm run build
-# then deploy /dist to Netlify, Vercel, or your host of choice
+vercel --prod
 ```
+
+Vercel will automatically detect the `api/` directory and deploy the function alongside the static site.
 
 ---
 
 ## Cost estimate
 
-| Provider | Model | ~Cost per conversation |
+| Model | ~Cost per message | ~Monthly cost at portfolio traffic |
 |---|---|---|
-| Anthropic | claude-3-5-haiku | < $0.001 |
-| OpenAI | gpt-4o-mini | < $0.001 |
+| `gpt-4.5` | ~$0.002 | < $1 |
 
-At portfolio traffic levels, monthly cost is effectively $0.
+At a few hundred conversations per month, total cost is effectively $0.
