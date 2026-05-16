@@ -319,7 +319,7 @@ const PIPELINE_STEPS = [
     label: 'Generate',
     emoji: '🤖',
     detail:
-      'Cursor or Claude Code writes the first pass. Usually 80 % there in minutes, not days.',
+      'Cursor or Claude Code writes the first pass. Usually 80% there in minutes, not days.',
   },
   {
     label: 'Refine',
@@ -499,7 +499,7 @@ const IDEAS: IdeaConfig[] = [
     title: 'AI Project Estimator',
     tagline: 'Drop an idea. Get a blueprint.',
     description:
-      "Describe any project in plain English and the AI returns a complexity score, timeline, tech stack, and risk flags — instantly. A tool I built to shortcut the scoping calls that waste everyone's time.",
+      "Describe any project in plain English and the AI returns a complexity score, timeline, tech stack, and risk flags — instantly. A tool I built to streamline the scoping calls that waste everyone's time.",
     DemoComponent: ProjectEstimatorDemo,
   },
   {
