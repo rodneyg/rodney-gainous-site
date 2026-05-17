@@ -10,6 +10,7 @@ import AboutSection from '@/components/AboutSection';
 import ExperienceSection from '@/components/ExperienceSection';
 import ContactSection from '@/components/ContactSection';
 import TechStackBlock from '@/components/TechStackBlock';
+import AIEngineerShowcase from '@/components/AIEngineerShowcase';
 import Footer from '@/components/Footer';
 import { motion } from 'framer-motion';
 
@@ -31,6 +32,7 @@ const Index = () => {
       <main className="flex-grow pt-16">
         <Hero />
         <TechStackBlock />
+        <AIEngineerShowcase />
         <ProjectsSection />
         <ExperienceSection />
         <SafeLabSection />
