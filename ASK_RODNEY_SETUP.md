@@ -206,3 +206,194 @@ Vercel will automatically detect the `api/` directory and deploy the function al
 | `gpt-4.5` | ~$0.002 | < $1 |
 
 At a few hundred conversations per month, total cost is effectively $0.
+
+---
+
+## Optional: Load external data so context isn't resent every time
+
+The current guide sends a full system prompt on every request. That's fine for a portfolio (it's short and cheap), but there are two ways to take it further — letting the model draw on richer, more dynamic data without pasting a wall of text into every call.
+
+### Option A — Fine-tuning (bake knowledge into the model weights)
+
+Fine-tuning trains a new model variant from your data. The result "knows" the facts without needing them in the system prompt at all.
+
+**When to use it:** The data is stable (doesn't change often), and you want minimal per-request latency and token cost.
+
+**Steps (OpenAI fine-tuning):**
+
+1. **Collect training examples.** Create a `.jsonl` file where each line is a question-answer pair in OpenAI's chat format:
+   ```jsonl
+   {"messages": [{"role": "system", "content": "You are Rodney's AI assistant."}, {"role": "user", "content": "What companies have you worked at?"}, {"role": "assistant", "content": "Nexient, Ford, Nima Labs, Bird, then I founded Safe, and I'm now a Staff Engineer at Blueprint (Bryan Johnson's longevity company)."}]}
+   {"messages": [{"role": "system", "content": "You are Rodney's AI assistant."}, {"role": "user", "content": "What is Safe?"}, {"role": "assistant", "content": "Safe is the venture-backed startup I founded in 2020 to redefine digital identity and trust. I was Founder and Principal Engineer there for over five years."}]}
+   ```
+   Aim for at least 50–100 diverse examples covering your QA pairs, bio, projects, and philosophy.
+
+2. **Upload and start a fine-tuning job:**
+   ```sh
+   # Upload the training file
+   openai api files.create -f training.jsonl -p fine-tune
+
+   # Start the job (replace FILE_ID with the id returned above)
+   openai api fine_tuning.jobs.create \
+     --training-file FILE_ID \
+     --model gpt-4o-mini-2024-07-18
+   ```
+   OpenAI's dashboard ([platform.openai.com/finetune](https://platform.openai.com/finetune)) shows job status. Fine-tuning typically takes 15–60 minutes and costs a few dollars for a small dataset.
+
+3. **Use the fine-tuned model.** Once the job completes, you'll get a model ID like `ft:gpt-4o-mini-2024-07-18:personal::XYZ`. Swap it into the API route:
+   ```typescript
+   model: 'ft:gpt-4o-mini-2024-07-18:personal::XYZ',
+   ```
+   You can now shorten or remove the long `## Who is Rodney` block from the system prompt — the model already knows it.
+
+**Limitations:** Fine-tuning teaches style and facts, but the knowledge is frozen at training time. If your bio changes, you re-run the job.
+
+---
+
+### Option B — RAG: embeddings + vector store (recommended for dynamic data)
+
+RAG (Retrieval-Augmented Generation) is the more scalable approach. You turn your source documents into vector embeddings, store them in a database, and at query time retrieve only the relevant chunks to inject into the prompt. The full dataset never ships in every request — only the ~3 most relevant paragraphs do.
+
+**When to use it:** You want to pull from many sources (LinkedIn, blog posts, GitHub README files, podcast transcripts, etc.) and keep them up to date without retraining.
+
+**High-level architecture:**
+
+```
+Sources (LinkedIn, blog, GitHub, etc.)
+       ↓  scrape / copy text
+  documents.ts  (array of text chunks)
+       ↓  embed with text-embedding-3-small
+  Supabase pgvector table  (id, content, embedding)
+       ↓  at query time: embed the user's question,
+          cosine-search top 3 matching chunks
+       ↓  inject those chunks into the system prompt
+  GPT-4.5  →  answer
+```
+
+**Steps:**
+
+1. **Create a Supabase project** ([supabase.com](https://supabase.com)) and enable the `pgvector` extension:
+   ```sql
+   create extension if not exists vector;
+
+   create table documents (
+     id bigserial primary key,
+     content text,
+     embedding vector(1536)
+   );
+
+   create index on documents using ivfflat (embedding vector_cosine_ops);
+   ```
+
+2. **Create a one-time ingestion script** (`scripts/ingest.ts`). Run it locally whenever source data changes:
+   ```typescript
+   import OpenAI from 'openai';
+   import { createClient } from '@supabase/supabase-js';
+
+   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+   const supabase = createClient(
+     process.env.SUPABASE_URL!,
+     process.env.SUPABASE_SERVICE_ROLE_KEY!
+   );
+
+   // Add all your source text here — paste from LinkedIn, blog posts,
+   // GitHub bios, podcast transcripts, etc.
+   const DOCUMENTS = [
+     "Rodney Gainous Jr. is a Detroit-born software engineer and entrepreneur...",
+     "He founded Safe in 2020, a venture-backed startup redefining digital identity...",
+     "At Bird (2018–2020) he was a Senior Software Engineer on the core mobile platform...",
+     // ... add as many chunks as you like
+   ];
+
+   async function ingest() {
+     for (const content of DOCUMENTS) {
+       const res = await openai.embeddings.create({
+         model: 'text-embedding-3-small',
+         input: content,
+       });
+       await supabase.from('documents').insert({
+         content,
+         embedding: res.data[0].embedding,
+       });
+     }
+     console.log('Ingested', DOCUMENTS.length, 'documents');
+   }
+
+   ingest();
+   ```
+
+   ```sh
+   npx ts-node scripts/ingest.ts
+   ```
+
+3. **Update the API route** to retrieve relevant chunks at query time instead of using a static system prompt:
+   ```typescript
+   // In api/ask-rodney.ts, replace the static SYSTEM_PROMPT lookup with:
+   const queryEmbedding = await openai.embeddings.create({
+     model: 'text-embedding-3-small',
+     input: question,
+   });
+
+   const { data: chunks } = await supabase.rpc('match_documents', {
+     query_embedding: queryEmbedding.data[0].embedding,
+     match_threshold: 0.75,
+     match_count: 3,
+   });
+
+   const context = chunks.map((c: { content: string }) => c.content).join('\n\n');
+
+   const systemPrompt = `You are Rodney's AI assistant. Answer using only the context below.
+   Never fabricate. If the answer isn't in the context, say: "That's best answered by Rodney directly."
+
+   Context:
+   ${context}`;
+   ```
+
+   Add the Supabase match function to your database:
+   ```sql
+   create or replace function match_documents(
+     query_embedding vector(1536),
+     match_threshold float,
+     match_count int
+   )
+   returns table (content text, similarity float)
+   language sql stable
+   as $$
+     select content, 1 - (embedding <=> query_embedding) as similarity
+     from documents
+     where 1 - (embedding <=> query_embedding) > match_threshold
+     order by similarity desc
+     limit match_count;
+   $$;
+   ```
+
+4. **Add env vars to Vercel:**
+   ```
+   SUPABASE_URL=https://your-project.supabase.co
+   SUPABASE_SERVICE_ROLE_KEY=...
+   ```
+   Install the client: `npm install @supabase/supabase-js`
+
+**What to ingest:** The more diverse the sources, the better. Good candidates:
+- Your LinkedIn About section and job descriptions (copy/paste)
+- Blog posts or newsletter issues
+- GitHub repository READMEs
+- Podcast transcript excerpts
+- Talks or presentation summaries
+- Any long-form writing that captures how you think
+
+**Re-ingesting:** Run the script again whenever content changes. Delete old rows first (`delete from documents`) to avoid duplicates.
+
+---
+
+### Which approach to use
+
+| | Current (static prompt) | Fine-tuning | RAG |
+|---|---|---|---|
+| Setup effort | Done ✅ | Medium | Medium–High |
+| Keeps up to date | Manually edit the prompt | Re-run training job | Re-run ingest script |
+| Works with many sources | ❌ (prompt gets too long) | ✅ | ✅ |
+| Token cost per query | Higher (full prompt every time) | Lowest | Low (only relevant chunks) |
+| Best for | Current portfolio size | Stable, curated Q&A | Growing, dynamic content |
+
+For a portfolio right now, the static system prompt in this guide is plenty. RAG becomes the right choice once you want to pull from more than a few paragraphs of source material — e.g. ingesting several blog posts, a full LinkedIn profile, and GitHub README files all at once.
