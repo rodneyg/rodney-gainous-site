@@ -61,11 +61,11 @@ const PodcastSection = () => {
           transition={{ duration: 0.5 }}
           className="mx-auto w-full max-w-xs"
         >
-          <div className="overflow-hidden rounded-xl border bg-card shadow-sm">
+          <div className="surface-card overflow-hidden rounded-xl">
             <img
               src="https://i.scdn.co/image/ab67656300005f1fc9ffb944d9a776a186571929"
               alt="Beat The Odds with Dre, Rodney, and Brylan cover art"
-              className="aspect-square w-full object-cover"
+              className="media-outline aspect-square w-full object-cover"
             />
           </div>
         </motion.div>
@@ -110,7 +110,7 @@ const PodcastSection = () => {
                       ? 'inline-flex min-h-16 items-center justify-between gap-4 rounded-lg bg-primary px-4 py-3 text-primary-foreground shadow-sm transition-[background-color,box-shadow,transform] duration-200 hover:bg-primary/90 hover:shadow-md'
                       : 'inline-flex min-h-16 items-center justify-between gap-4 rounded-lg border border-border bg-background/70 px-4 py-3 shadow-sm transition-[background-color,border-color,transform] duration-200 hover:border-primary/30 hover:bg-background'
                   }
-                  whileTap={{ scale: 0.97 }}
+                  whileTap={{ scale: 0.96 }}
                 >
                   <span className="flex min-w-0 items-center gap-3">
                     <Icon className="size-5 shrink-0" aria-hidden="true" />
@@ -135,13 +135,13 @@ const PodcastSection = () => {
                   href={clip.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative overflow-hidden rounded-lg border bg-card shadow-sm transition-[box-shadow,transform,border-color] duration-200 hover:-translate-y-1 hover:border-primary/20 hover:shadow-md"
-                  whileTap={{ scale: 0.97 }}
+                  className="surface-card group relative overflow-hidden rounded-lg"
+                  whileTap={{ scale: 0.96 }}
                 >
                   <img
                     src={clip.thumbnail}
                     alt={`${clip.title} Beat The Odds clip thumbnail`}
-                    className="aspect-[9/16] w-full object-cover"
+                    className="media-outline aspect-[9/16] w-full object-cover"
                     loading="lazy"
                   />
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent p-2 text-white">

@@ -48,7 +48,7 @@ const WritingSection = () => {
             >
               <a
                 href={article.href}
-                className="group block h-full overflow-hidden rounded-xl border bg-card shadow-sm transition-[background-color,box-shadow,transform,border-color] duration-200 hover:border-primary/20 hover:bg-muted/20 hover:shadow-lg"
+                className="surface-card group block h-full overflow-hidden rounded-xl hover:bg-muted/20"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -57,7 +57,7 @@ const WritingSection = () => {
                     <img
                       src={article.image}
                       alt=""
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                      className="media-outline h-full w-full object-cover transition-transform duration-200 ease-out group-hover:scale-[1.03]"
                       loading="lazy"
                     />
                   ) : (

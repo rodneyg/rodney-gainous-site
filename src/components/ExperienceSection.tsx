@@ -148,7 +148,7 @@ const ExperienceSection = () => {
 
                 {/* Experience Card */}
                 <motion.div
-                  className="relative rounded-2xl bg-card p-5 shadow-sm ring-1 ring-black/10 dark:ring-white/10 md:mt-8"
+                  className="surface-card relative rounded-2xl p-5 md:mt-8"
                   whileHover={{ y: -2 }}
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 >
@@ -158,7 +158,7 @@ const ExperienceSection = () => {
                         <img
                           src={experience.logo}
                           alt={experience.logoAlt}
-                          className="max-h-7 w-auto max-w-24"
+                          className="media-outline max-h-7 w-auto max-w-24"
                           loading="lazy"
                         />
                       </div>

@@ -25,7 +25,7 @@ const UnsplashSection = () => {
               Photos
             </motion.p>
             <motion.h2
-              className="text-4xl font-bold tracking-tight md:text-6xl"
+              className="text-balance text-4xl font-bold md:text-6xl"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -34,7 +34,7 @@ const UnsplashSection = () => {
               Unsplash
             </motion.h2>
             <motion.p
-              className="mt-4 max-w-2xl text-lg leading-8 text-muted-foreground"
+              className="mt-4 max-w-2xl text-pretty text-lg leading-8 text-muted-foreground"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -75,7 +75,7 @@ const UnsplashSection = () => {
               href={photo.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group block overflow-hidden rounded-xl border bg-card shadow-sm transition-[border-color,box-shadow,transform] duration-200 hover:border-primary/20 hover:shadow-lg"
+              className="surface-card group block overflow-hidden rounded-xl"
               whileHover={{ y: -4 }}
               transition={{ type: 'spring', stiffness: 300 }}
             >
@@ -83,7 +83,7 @@ const UnsplashSection = () => {
                 <img
                   src={photo.image}
                   alt={photo.title}
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                  className="media-outline h-full w-full object-cover transition-transform duration-200 ease-out group-hover:scale-[1.03]"
                   loading="lazy"
                 />
               </div>

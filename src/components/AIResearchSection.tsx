@@ -75,7 +75,7 @@ const AIResearchSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.5, delay: index * 0.06 }}
-              className="enhanced-card group relative flex aspect-square overflow-hidden rounded-2xl border border-border/60 p-5 shadow-sm"
+              className="enhanced-card group relative flex aspect-square overflow-hidden rounded-2xl p-5"
             >
               <div className="relative z-10 flex min-h-0 flex-1 flex-col">
                 {/* Icon + Title */}

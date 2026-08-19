@@ -27,7 +27,7 @@ const YouTubeSection = () => {
             <img
               src="https://yt3.googleusercontent.com/oWPw94EWBqfe1pCibUMmuO9PsgsF5H6HJMagOpm0tJ7wv3nuDbPTuJn8ZjS7WZosLENQKFjDCQ=s160-c-k-c0x00ffffff-no-rj"
               alt="Rodney Gainous Jr YouTube channel"
-              className="size-16 rounded-full border bg-card object-cover shadow-sm"
+              className="media-outline size-16 rounded-full bg-card object-cover shadow-sm"
               loading="lazy"
             />
             <div>
@@ -72,13 +72,13 @@ const YouTubeSection = () => {
               href={video.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative overflow-hidden rounded-xl border bg-card shadow-sm transition-[box-shadow,transform,border-color] duration-200 hover:-translate-y-1 hover:border-primary/20 hover:shadow-lg"
-              whileTap={{ scale: 0.97 }}
+              className="surface-card group relative overflow-hidden rounded-xl"
+              whileTap={{ scale: 0.96 }}
             >
               <img
                 src={video.thumbnail}
                 alt={`${video.title} YouTube Short thumbnail`}
-                className="aspect-[9/16] w-full object-cover"
+                className="media-outline aspect-[9/16] w-full object-cover"
                 loading="lazy"
               />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent p-2 text-white">
