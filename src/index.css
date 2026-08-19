@@ -74,13 +74,25 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: 'rlig' 1, 'calt' 1;
-    letter-spacing: -0.01em;
     line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p,
+  li,
+  blockquote {
+    text-wrap: pretty;
   }
 }
 
 .nav-link {
-  @apply relative hover:text-primary transition-colors;
+  @apply relative inline-flex min-h-10 items-center hover:text-primary transition-colors;
 }
 
 .nav-link::after {
@@ -95,49 +107,18 @@
 }
 
 .project-card {
-  @apply rounded-xl overflow-hidden border bg-card backdrop-blur-sm transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-1 hover:border-primary/20;
-  background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--muted)) 100%);
+  @apply rounded-xl overflow-hidden border bg-card transition-[box-shadow,transform,border-color] duration-200 hover:shadow-lg hover:-translate-y-1 hover:border-primary/20;
 }
 
 .project-image {
-  @apply w-full h-48 object-cover transition-all duration-500;
+  @apply w-full h-48 object-cover transition-transform duration-200;
 }
 
 .project-card:hover .project-image {
   @apply scale-105 opacity-90;
 }
 
-/* Enhanced button styles */
-.btn-primary {
-  @apply relative overflow-hidden;
-}
-
-.btn-primary::before {
-  content: '';
-  @apply absolute inset-0 bg-gradient-to-r from-primary/0 via-white/10 to-primary/0 translate-x-[-100%] transition-transform duration-700;
-}
-
-.btn-primary:hover::before {
-  @apply translate-x-[100%];
-}
-
-/* Enhanced text gradients */
-.gradient-text {
-  @apply bg-gradient-to-r from-foreground via-foreground to-muted-foreground bg-clip-text text-transparent;
-}
-
-/* Subtle animations */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
-
-.float-animation {
-  animation: float 6s ease-in-out infinite;
-}
-
 /* Enhanced card hover effects */
 .enhanced-card {
-  @apply transition-all duration-500 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-2;
-  background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--muted)/0.5) 100%);
+  @apply bg-card transition-[box-shadow,transform,border-color] duration-200 hover:shadow-lg hover:-translate-y-1 hover:border-primary/20;
 }

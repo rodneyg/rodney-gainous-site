@@ -4,6 +4,9 @@ import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import AIResearchSection from '@/components/AIResearchSection';
 import SafeLabSection from '@/components/SafeLabSection';
+import PodcastSection from '@/components/PodcastSection';
+import YouTubeSection from '@/components/YouTubeSection';
+import UnsplashSection from '@/components/UnsplashSection';
 import ProjectsSection from '@/components/ProjectsSection';
 import WritingSection from '@/components/WritingSection';
 import AboutSection from '@/components/AboutSection';
@@ -26,16 +29,19 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-dvh flex-col">
       <Header />
       <main className="flex-grow pt-16">
         <Hero />
         <TechStackBlock />
-        <ExperienceSection />
-        <SafeLabSection />
-        <AIResearchSection />
         <ProjectsSection />
+        <AIResearchSection />
+        <SafeLabSection />
+        <ExperienceSection />
         <WritingSection />
+        <PodcastSection />
+        <YouTubeSection />
+        <UnsplashSection />
         <AboutSection />
         <ContactSection />
       </main>

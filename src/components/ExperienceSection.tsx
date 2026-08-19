@@ -184,27 +184,27 @@ const ExperienceSection = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.8 }}
             >
-              <div className="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-xl p-6 border border-teal-200">
+              <div className="rounded-xl border bg-card p-6 shadow-sm">
                 <div className="flex items-center mb-3">
-                  <div className="w-10 h-10 bg-teal-500 rounded-full flex items-center justify-center text-white mr-3">
+                  <div className="mr-3 flex size-10 items-center justify-center rounded-full bg-muted ring-1 ring-black/10 dark:ring-white/10">
                     💼
                   </div>
                   <div>
-                    <div className="text-sm text-teal-600 font-semibold">Parallel Role</div>
-                    <div className="text-xs text-teal-500">November 2020 - April 2021</div>
+                    <div className="text-sm font-semibold text-foreground">Parallel Role</div>
+                    <div className="text-xs text-muted-foreground">November 2020 - April 2021</div>
                   </div>
                 </div>
                 <h4 className="font-bold mb-1">Entrepreneur in Residence</h4>
-                <div className="text-slate-600 mb-2">
+                <div className="mb-2 text-muted-foreground">
                   <div className="font-semibold">Upfront Ventures</div>
                   <div className="text-sm">Los Angeles, CA, USA</div>
                 </div>
-                <p className="text-sm text-slate-600 mb-2">
+                <p className="mb-2 text-sm text-muted-foreground">
                   Short-term role that contributed to launching and shaping the early direction of Safe.
                 </p>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-slate-500">6 mos</span>
-                  <span className="px-2 py-1 rounded-full text-xs font-medium bg-teal-100 text-teal-700">
+                  <span className="text-muted-foreground">6 mos</span>
+                  <span className="rounded-full bg-muted px-2 py-1 text-xs font-medium text-muted-foreground">
                     Contract
                   </span>
                 </div>
@@ -214,11 +214,6 @@ const ExperienceSection = () => {
         </div>
       </div>
 
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5 pointer-events-none">
-        <div className="absolute top-1/4 left-1/6 w-32 h-32 rounded-full bg-primary blur-2xl" />
-        <div className="absolute bottom-1/4 right-1/6 w-48 h-48 rounded-full bg-secondary blur-3xl" />
-      </div>
     </section>
   );
 };

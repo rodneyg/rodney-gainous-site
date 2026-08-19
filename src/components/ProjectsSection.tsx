@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import ProjectFilter from '@/components/ProjectFilter';
-// Assuming you have an icon library like react-icons
-// import { FiGithub, FiExternalLink, FiEye, FiCpu } from 'react-icons/fi'; // Example icons
+import { ExternalLink, Github, SearchX } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 // --- Filtered and Enhanced Project Data ---
 const projects = [
@@ -101,27 +101,27 @@ const ProjectsNarrative = () => {
   }, [searchTerm, selectedTechs]);
 
   return (
-    <section id="projects" className="py-32 px-6">
+    <section id="projects" className="px-6 py-24 md:py-32">
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="max-w-4xl mx-auto"
+        transition={{ duration: 0.5 }}
+        className="mx-auto max-w-4xl"
       >
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.5 }}
+          className="mb-14 text-center md:mb-16"
         >
-          <h2 className="text-5xl md:text-6xl font-bold mb-8 tracking-tight bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
-          Projects That Started With Questions
+          <h2 className="mb-6 text-4xl font-bold md:text-6xl">
+            Projects That Started With Questions
           </h2>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-light">
-           Every tool I create begins with a question or observation. Here are some problems I noticed and decided to solve.
+          <p className="mx-auto max-w-3xl text-lg leading-8 text-muted-foreground md:text-xl md:leading-9">
+            Every tool I create begins with a question or observation. Here are some problems I noticed and decided to solve.
           </p>
         </motion.div>
 
@@ -137,27 +137,27 @@ const ProjectsNarrative = () => {
         />
 
         {/* Project Entries */}
-        <div className="space-y-16">
+        <div className="space-y-8 md:space-y-10">
           {filteredProjects.length === 0 ? (
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-center py-20"
+              className="rounded-2xl border bg-card px-6 py-16 text-center shadow-sm"
             >
-              <div className="text-6xl mb-4 opacity-50">🔍</div>
-              <h3 className="text-2xl font-bold mb-2">No projects found</h3>
-              <p className="text-muted-foreground mb-6">
+              <SearchX className="mx-auto mb-4 size-10 text-muted-foreground" aria-hidden="true" />
+              <h3 className="mb-2 text-2xl font-bold">No projects found</h3>
+              <p className="mx-auto mb-6 max-w-md text-muted-foreground">
                 Try adjusting your search terms or filters to find what you're looking for.
               </p>
-              <button
+              <Button
                 onClick={() => {
                   setSearchTerm('');
                   setSelectedTechs([]);
                 }}
-                className="text-primary hover:underline"
+                variant="outline"
               >
                 Clear all filters
-              </button>
+              </Button>
             </motion.div>
           ) : (
             filteredProjects.map((project, index) => (
@@ -166,60 +166,54 @@ const ProjectsNarrative = () => {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
-                className="enhanced-card border border-border/50 rounded-2xl p-10 relative overflow-hidden group"
+                transition={{ duration: 0.5, delay: index * 0.06 }}
+                className="enhanced-card group relative overflow-hidden rounded-2xl border border-border/60 p-6 shadow-sm md:p-10"
               >
-                {/* Subtle gradient overlay on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/2 via-transparent to-muted/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                
                 {/* Project Details */}
-                <div className="space-y-6 relative z-10">
+                <div className="relative z-10 space-y-6">
                    {/* Icon + Title */}
-                   <div className="flex items-center gap-4 mb-6">
-                      <motion.span 
-                        className="text-4xl float-animation" 
+                   <div className="mb-6 flex items-start gap-4">
+                      <span 
+                        className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-muted text-2xl ring-1 ring-black/10 dark:ring-white/10" 
                         aria-hidden="true"
-                        whileHover={{ scale: 1.1, rotate: 5 }}
-                        transition={{ duration: 0.3 }}
                       >
                         {project.icon || '💡'}
-                      </motion.span>
-                      <h3 className="text-3xl font-bold tracking-tight">
+                      </span>
+                      <h3 className="pt-1 text-2xl font-bold md:text-3xl">
                           {project.title}
                       </h3>
                    </div>
                   
                   {/* Inspiration */}
-                  <blockquote className="text-muted-foreground italic leading-relaxed text-lg border-l-4 border-primary/20 pl-6 py-2">
+                  <blockquote className="border-l-2 border-primary/30 py-2 pl-5 text-base italic leading-8 text-muted-foreground md:text-lg">
                     {project.inspiration}
                   </blockquote>
                   
                   {/* Description */}
-                  <p className="text-lg leading-relaxed text-foreground/90">
+                  <p className="text-base leading-8 text-foreground/90 md:text-lg">
                     {project.description}
                   </p>
                   
                   {/* Tech Stack */}
                   {project.tech && (
-                    <div className="bg-muted/30 rounded-lg px-4 py-3">
-                      <p className="text-sm font-medium text-muted-foreground">
+                    <div className="rounded-xl bg-muted/60 px-4 py-3 ring-1 ring-black/5 dark:ring-white/10">
+                      <p className="text-sm font-medium leading-6 text-muted-foreground">
                         {project.tech}
                       </p>
                     </div>
                   )}
                   
                   {/* Links */}
-                  <div className="flex items-center flex-wrap gap-6 pt-4">
+                  <div className="flex flex-wrap items-center gap-3 pt-2">
                     {project.demoUrl && (
                       <motion.a
                         href={project.demoUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-3 px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-all duration-300 shadow-md hover:shadow-lg"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                        className="inline-flex min-h-10 items-center gap-2 rounded-lg bg-primary px-4 py-2 font-medium text-primary-foreground shadow-sm transition-[background-color,box-shadow,transform] duration-200 hover:bg-primary/90 hover:shadow-md"
+                        whileTap={{ scale: 0.96 }}
                       >
-                        <span className="text-lg">🔗</span>
+                        <ExternalLink className="size-4" aria-hidden="true" />
                         Explore Live
                       </motion.a>
                     )}
@@ -228,11 +222,10 @@ const ProjectsNarrative = () => {
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-3 px-4 py-2 border border-border rounded-lg font-medium hover:bg-muted/50 transition-all duration-300"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                        className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-border px-4 py-2 font-medium transition-[background-color,transform] duration-200 hover:bg-muted/50"
+                        whileTap={{ scale: 0.96 }}
                       >
-                        <span className="text-lg">💻</span>
+                        <Github className="size-4" aria-hidden="true" />
                         {project.demoLabel || 'View Source'}
                       </motion.a>
                     )}
