@@ -7,6 +7,16 @@ import { Button } from '@/components/ui/button';
 // --- Filtered and Enhanced Project Data ---
 const projects = [
   {
+    title: "AutoFighterPro",
+    inspiration: "I built my first software business at 13 by turning repetitive RuneScape gameplay into a reliable automation product.",
+    description: "Built at 13, AutoFighterPro automated RuneScape combat, looting, healing, and banking. It grew into a software business that generated roughly $500K in revenue.",
+    demoUrl: null,
+    githubUrl: "https://github.com/rodneyg/AutoFighterPro",
+    demoLabel: "Source",
+    icon: '⚔️',
+    tech: "Java • Swing • Automation • State Machines"
+  },
+  {
     title: "SeenClearly",
     inspiration: "Complex truths often hide in plain sight. What if we could crystallize profound lessons into single, undeniable visual insights—instantly understood and impossible to forget?",
     description: "A platform that generates clear, impactful visuals paired with concise truths about life, relationships, and human behavior. Each image distills complexity into immediate visual clarity, designed for rapid insight and sharing.",
