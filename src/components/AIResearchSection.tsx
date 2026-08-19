@@ -42,13 +42,13 @@ const aiResearchProjects = [
 
 const AIResearchSection = () => {
   return (
-    <section id="ai-research" className="px-6 py-24 md:py-32">
+    <section id="ai-research" className="px-6 py-20 md:py-24">
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="mx-auto max-w-4xl"
+        className="mx-auto max-w-6xl"
       >
         {/* Section Header */}
         <motion.div
@@ -56,63 +56,58 @@ const AIResearchSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="mb-14 text-center md:mb-20"
+          className="mb-10 text-center md:mb-12"
         >
-          <h2 className="mb-6 text-4xl font-bold md:text-6xl">
+          <h2 className="mb-4 text-balance text-4xl font-bold md:text-5xl">
             AI Research & Safety Simulations
           </h2>
-          <p className="mx-auto max-w-3xl text-lg leading-8 text-muted-foreground md:text-xl md:leading-9">
+          <p className="mx-auto max-w-2xl text-pretty text-lg leading-8 text-muted-foreground">
             Modeling how intelligent systems fracture under pressure—and prototyping the safeguards to hold the line.
           </p>
         </motion.div>
 
         {/* Research Project Entries */}
-        <div className="space-y-8 md:space-y-10">
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {aiResearchProjects.map((project, index) => (
             <motion.div
               key={project.title}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.5, delay: index * 0.06 }}
-              className="enhanced-card group relative overflow-hidden rounded-2xl border border-border/60 p-6 shadow-sm md:p-10"
+              className="enhanced-card group relative flex aspect-square overflow-hidden rounded-2xl border border-border/60 p-5 shadow-sm"
             >
-              <div className="relative z-10 space-y-6">
+              <div className="relative z-10 flex min-h-0 flex-1 flex-col">
                 {/* Icon + Title */}
-                <div className="mb-6 flex items-start gap-4">
-                  <span 
-                    className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-muted text-2xl ring-1 ring-black/10 dark:ring-white/10" 
+                <div className="mb-4 flex items-start gap-3">
+                  <span
+                    className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted text-lg font-bold ring-1 ring-black/10 dark:ring-white/10"
                     aria-hidden="true"
                   >
                     {project.icon || '🧠'}
                   </span>
-                  <h3 className="pt-1 text-2xl font-bold md:text-3xl">
+                  <h3 className="pt-1 text-balance text-xl font-bold md:text-2xl">
                     {project.title}
                   </h3>
                 </div>
                 
-                {/* Insight */}
-                <blockquote className="rounded-r-lg border-l-2 border-primary/30 bg-muted/50 py-2 pl-5 text-base italic leading-8 text-muted-foreground md:text-lg">
-                  {project.insight}
-                </blockquote>
-                
                 {/* Description */}
-                <p className="text-base leading-8 text-foreground/90 md:text-lg">
+                <p className="line-clamp-6 text-pretty text-sm leading-6 text-foreground/80 md:text-base">
                   {project.description}
                 </p>
                 
                 {/* Links */}
-                <div className="flex flex-wrap items-center gap-3 pt-2">
+                <div className="mt-auto flex flex-wrap items-center gap-2 pt-4">
                   {project.demoUrl && (
                     <motion.a
                       href={project.demoUrl}
                       target={project.demoUrl.startsWith('http') ? '_blank' : undefined}
                       rel={project.demoUrl.startsWith('http') ? 'noopener noreferrer' : undefined}
-                      className="inline-flex min-h-10 items-center gap-2 rounded-lg bg-primary px-4 py-2 font-medium text-primary-foreground shadow-sm transition-[background-color,box-shadow,transform] duration-200 hover:bg-primary/90 hover:shadow-md"
+                      className="inline-flex min-h-9 items-center gap-2 rounded-lg bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-[background-color,box-shadow,transform] duration-200 hover:bg-primary/90 hover:shadow-md"
                       whileTap={{ scale: 0.96 }}
                     >
                       <ExternalLink className="size-4" aria-hidden="true" />
-                      {project.demoLabel || 'Explore Simulation'}
+                      Visit
                     </motion.a>
                   )}
                   {project.githubUrl && (
@@ -120,11 +115,11 @@ const AIResearchSection = () => {
                       href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-border px-4 py-2 font-medium transition-[background-color,transform] duration-200 hover:bg-muted/50"
+                      className="inline-flex min-h-9 items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm font-medium transition-[background-color,transform] duration-200 hover:bg-muted/50"
                       whileTap={{ scale: 0.96 }}
                     >
                       <Github className="size-4" aria-hidden="true" />
-                      View Research Code
+                      Source
                     </motion.a>
                   )}
                 </div>
