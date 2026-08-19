@@ -80,18 +80,18 @@ const experiences = [
 
 const ExperienceSection = () => {
   return (
-    <section id="experience" className="py-32 px-6">
-      <div className="max-w-6xl mx-auto">
+    <section id="experience" className="px-6 py-20 md:py-24">
+      <div className="mx-auto max-w-6xl">
         {/* Section Header */}
         <motion.div
-          className="text-center mb-20"
+          className="mb-12 text-center"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
           <motion.h2 
-            className="text-4xl font-bold mb-6 tracking-tight"
+            className="mb-4 text-balance text-4xl font-bold md:text-5xl"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -100,7 +100,7 @@ const ExperienceSection = () => {
             Professional <span className="text-muted-foreground">Journey</span>
           </motion.h2>
           <motion.p
-            className="text-xl text-muted-foreground max-w-2xl mx-auto"
+            className="mx-auto max-w-2xl text-pretty text-lg leading-8 text-muted-foreground"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -111,64 +111,54 @@ const ExperienceSection = () => {
         </motion.div>
 
         {/* Timeline Container */}
-        <div className="relative">
+        <div className="relative pl-8 md:pl-0">
           {/* Horizontal Timeline Line */}
-          <div className="absolute top-1/2 left-0 right-0 h-px bg-border transform -translate-y-1/2 hidden md:block" />
+          <div className="absolute bottom-0 left-2 top-0 w-px bg-border md:bottom-auto md:left-0 md:right-0 md:top-3 md:h-px md:w-auto" />
           
           {/* Timeline Items */}
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-4">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-5 md:gap-3">
             {experiences.filter(exp => !exp.isParallel).map((experience, index) => (
               <motion.div
                 key={experience.id}
                 className="relative"
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
               >
-                {/* Timeline Node (simplified, no icon) */}
-                <div className="relative md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2">
-                  <motion.div
-                    className={`w-4 h-4 ${experience.color} rounded-full shadow-lg mb-4 md:mb-0 mx-auto relative z-10`}
-                    whileHover={{ scale: 1.2 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                  />
+                {/* Timeline Node */}
+                <div className="absolute -left-[1.9rem] top-4 z-10 md:left-1/2 md:top-1 md:-translate-x-1/2">
+                  <div className={`size-4 rounded-full ${experience.color} ring-4 ring-background shadow-sm`} />
                 </div>
 
                 {/* Experience Card */}
                 <motion.div
-                  className="border border-border rounded-xl p-8 relative"
+                  className="relative rounded-2xl bg-card p-5 shadow-sm ring-1 ring-black/10 dark:ring-white/10 md:mt-8"
                   whileHover={{ y: -2 }}
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 >
-                  {/* Icon */}
-                  <div className="mb-6">
-                    <motion.div
-                      className={`w-12 h-12 ${experience.color} rounded-full flex items-center justify-center text-xl ${experience.color === 'bg-foreground' ? 'text-background' : 'text-foreground'}`}
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                    >
+                  <div className="mb-5 flex items-center justify-between gap-3">
+                    <div className={`flex size-10 items-center justify-center rounded-lg text-lg ${experience.color} ${experience.color === 'bg-foreground' ? 'text-background' : 'text-foreground'}`}>
                       {experience.icon}
-                    </motion.div>
-                  </div>
-                  <div className="text-sm text-muted-foreground mb-3">
-                    {experience.startDate} - {experience.endDate}
-                  </div>
-                  <h3 className="font-semibold text-lg mb-3 leading-tight">
-                    {experience.title}
-                  </h3>
-                  <div className="text-muted-foreground mb-4">
-                    <div className="font-medium text-foreground">{experience.company}</div>
-                    <div className="text-sm">{experience.location}</div>
-                  </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">{experience.duration}</span>
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      experience.type === 'Founder' ? 'bg-foreground text-background' :
-                      'bg-muted text-muted-foreground'
+                    </div>
+                    <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+                      experience.type === 'Founder' ? 'bg-foreground text-background' : 'bg-muted text-muted-foreground'
                     }`}>
                       {experience.type}
                     </span>
+                  </div>
+                  <div className="mb-3 text-xs leading-5 text-muted-foreground tabular-nums">
+                    {experience.startDate} - {experience.endDate}
+                  </div>
+                  <h3 className="mb-2 text-balance text-lg font-semibold leading-6">
+                    {experience.title}
+                  </h3>
+                  <div className="text-pretty text-sm leading-6 text-muted-foreground">
+                    <div className="font-medium text-foreground">{experience.company}</div>
+                    <div>{experience.location}</div>
+                  </div>
+                  <div className="mt-5 border-t border-border/60 pt-3 text-xs font-medium text-muted-foreground tabular-nums">
+                    {experience.duration}
                   </div>
                 </motion.div>
               </motion.div>
@@ -178,36 +168,30 @@ const ExperienceSection = () => {
           {/* Parallel Role - Upfront Ventures */}
           {experiences.find(exp => exp.isParallel) && (
             <motion.div
-              className="mt-12 max-w-md mx-auto"
+              className="mx-auto mt-5 max-w-xl md:mt-8"
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.8 }}
             >
-              <div className="rounded-xl border bg-card p-6 shadow-sm">
-                <div className="flex items-center mb-3">
-                  <div className="mr-3 flex size-10 items-center justify-center rounded-full bg-muted ring-1 ring-black/10 dark:ring-white/10">
+              <div className="rounded-2xl bg-muted/40 p-5 shadow-sm ring-1 ring-black/10 dark:ring-white/10">
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="flex size-10 items-center justify-center rounded-lg bg-background ring-1 ring-black/10 dark:ring-white/10">
                     💼
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-foreground">Parallel Role</div>
-                    <div className="text-xs text-muted-foreground">November 2020 - April 2021</div>
+                    <div className="text-xs font-semibold uppercase text-muted-foreground">Parallel role</div>
+                    <div className="text-xs text-muted-foreground tabular-nums">November 2020 - April 2021</div>
                   </div>
                 </div>
-                <h4 className="font-bold mb-1">Entrepreneur in Residence</h4>
-                <div className="mb-2 text-muted-foreground">
-                  <div className="font-semibold">Upfront Ventures</div>
-                  <div className="text-sm">Los Angeles, CA, USA</div>
+                <h4 className="mb-1 text-balance font-bold">Entrepreneur in Residence</h4>
+                <div className="mb-2 text-sm text-muted-foreground">
+                  <span className="font-semibold text-foreground">Upfront Ventures</span>
+                  <span> · Los Angeles, CA, USA</span>
                 </div>
-                <p className="mb-2 text-sm text-muted-foreground">
+                <p className="text-pretty text-sm leading-6 text-muted-foreground">
                   Short-term role that contributed to launching and shaping the early direction of Safe.
                 </p>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">6 mos</span>
-                  <span className="rounded-full bg-muted px-2 py-1 text-xs font-medium text-muted-foreground">
-                    Contract
-                  </span>
-                </div>
               </div>
             </motion.div>
           )}
