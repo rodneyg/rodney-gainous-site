@@ -5,16 +5,16 @@ import mediumArticles from '@/data/medium-content.json';
 
 const WritingSection = () => {
   return (
-    <section id="writing" className="px-6 py-24 md:py-32">
+    <section id="writing" className="px-6 py-20 md:py-24">
       <motion.div
-        className="mx-auto max-w-5xl"
+        className="mx-auto max-w-6xl"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
         <motion.h3
-          className="mb-6 text-center text-4xl font-bold tracking-tight md:text-6xl"
+          className="mb-4 text-center text-balance text-4xl font-bold md:text-5xl"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -24,7 +24,7 @@ const WritingSection = () => {
         </motion.h3>
 
         <motion.p
-          className="mx-auto mb-14 max-w-2xl text-center text-lg leading-8 text-muted-foreground md:text-xl md:leading-9"
+          className="mx-auto mb-10 max-w-2xl text-center text-pretty text-lg leading-8 text-muted-foreground md:mb-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -34,7 +34,7 @@ const WritingSection = () => {
         </motion.p>
 
         <motion.div
-          className="grid gap-4 md:grid-cols-2"
+          className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -52,7 +52,7 @@ const WritingSection = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <div className="aspect-[16/9] w-full overflow-hidden bg-muted">
+                <div className="aspect-[3/2] w-full overflow-hidden bg-muted">
                   {article.image ? (
                     <img
                       src={article.image}
@@ -66,14 +66,14 @@ const WritingSection = () => {
                     </div>
                   )}
                 </div>
-                <div className="p-5">
+                <div className="p-4">
                   <div className="mb-2 flex items-start justify-between gap-3">
-                    <h4 className="text-lg font-semibold leading-6">{article.title}</h4>
+                    <h4 className="line-clamp-2 text-balance text-base font-semibold leading-6">{article.title}</h4>
                     <ExternalLink className="mt-1 size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
                   </div>
-                  <p className="text-sm leading-6 text-muted-foreground">{article.description}</p>
+                  <p className="line-clamp-2 text-pretty text-sm leading-5 text-muted-foreground">{article.description}</p>
                   {(article.viewsLabel || article.readsLabel || article.clapLabel || article.commentLabel) && (
-                    <div className="mt-4 flex flex-wrap gap-3 text-xs font-medium text-muted-foreground">
+                    <div className="mt-3 flex flex-wrap gap-2 text-xs font-medium text-muted-foreground">
                       {article.viewsLabel && (
                         <span className="inline-flex items-center gap-1.5">
                           <Eye className="size-3.5" aria-hidden="true" />
@@ -106,12 +106,12 @@ const WritingSection = () => {
           ))}
         </motion.div>
 
-        <div className="mt-6 flex flex-wrap justify-center gap-3">
+        <div className="mt-5 flex flex-wrap justify-center gap-2">
           <a
             href="https://medium.com/@rg2official"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-border px-4 py-2 font-medium transition-[background-color,border-color] hover:border-primary/30 hover:bg-muted/50"
+            className="inline-flex min-h-9 items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm font-medium transition-[background-color,border-color] hover:border-primary/30 hover:bg-muted/50"
           >
             Medium
             <ExternalLink className="size-4" aria-hidden="true" />
@@ -120,7 +120,7 @@ const WritingSection = () => {
             href="https://rg2official.substack.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-border px-4 py-2 font-medium transition-[background-color,border-color] hover:border-primary/30 hover:bg-muted/50"
+            className="inline-flex min-h-9 items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm font-medium transition-[background-color,border-color] hover:border-primary/30 hover:bg-muted/50"
           >
             Substack
             <ExternalLink className="size-4" aria-hidden="true" />
