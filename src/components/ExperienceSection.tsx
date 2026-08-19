@@ -75,6 +75,21 @@ const experiences = [
     icon: "💼",
     color: "bg-muted",
     isParallel: true // This overlaps with Safe role
+  },
+  {
+    id: 7,
+    title: "Staff Software Engineer",
+    company: "Blueprint (now Immortals)",
+    location: "Los Angeles, California, United States · Remote",
+    startDate: "November 2025",
+    endDate: "Present",
+    duration: "10 mos",
+    type: "Full time",
+    icon: "",
+    logo: "https://blueprint.bryanjohnson.com/cdn/shop/files/Logo_Blueprint_Bryan_Johnson_Stacked.svg",
+    logoAlt: "Blueprint",
+    skills: "Mobile Application Development · Mobile Product Development",
+    color: "bg-muted"
   }
 ];
 
@@ -116,7 +131,7 @@ const ExperienceSection = () => {
           <div className="absolute bottom-0 left-2 top-0 w-px bg-border md:bottom-auto md:left-0 md:right-0 md:top-3 md:h-px md:w-auto" />
           
           {/* Timeline Items */}
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-5 md:gap-3">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-3 xl:grid-cols-6">
             {experiences.filter(exp => !exp.isParallel).map((experience, index) => (
               <motion.div
                 key={experience.id}
@@ -138,9 +153,20 @@ const ExperienceSection = () => {
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 >
                   <div className="mb-5 flex items-center justify-between gap-3">
-                    <div className={`flex size-10 items-center justify-center rounded-lg text-lg ${experience.color} ${experience.color === 'bg-foreground' ? 'text-background' : 'text-foreground'}`}>
-                      {experience.icon}
-                    </div>
+                    {'logo' in experience ? (
+                      <div className="flex h-10 min-w-0 items-center rounded-lg bg-white px-2 ring-1 ring-black/10">
+                        <img
+                          src={experience.logo}
+                          alt={experience.logoAlt}
+                          className="max-h-7 w-auto max-w-24"
+                          loading="lazy"
+                        />
+                      </div>
+                    ) : (
+                      <div className={`flex size-10 items-center justify-center rounded-lg text-lg ${experience.color} ${experience.color === 'bg-foreground' ? 'text-background' : 'text-foreground'}`}>
+                        {experience.icon}
+                      </div>
+                    )}
                     <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${
                       experience.type === 'Founder' ? 'bg-foreground text-background' : 'bg-muted text-muted-foreground'
                     }`}>
@@ -157,6 +183,11 @@ const ExperienceSection = () => {
                     <div className="font-medium text-foreground">{experience.company}</div>
                     <div>{experience.location}</div>
                   </div>
+                  {'skills' in experience && (
+                    <div className="mt-4 rounded-lg bg-muted/60 px-3 py-2 text-xs font-medium leading-5 text-muted-foreground">
+                      {experience.skills}
+                    </div>
+                  )}
                   <div className="mt-5 border-t border-border/60 pt-3 text-xs font-medium text-muted-foreground tabular-nums">
                     {experience.duration}
                   </div>
