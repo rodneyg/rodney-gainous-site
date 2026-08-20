@@ -61,20 +61,13 @@ const experiences = [
     duration: "5 yrs 4 mos",
     type: "Founder",
     icon: "🔐",
+    milestone: {
+      title: "Entrepreneur in Residence",
+      company: "Upfront Ventures",
+      dates: "November 2020 - April 2021",
+      outcome: "The residency led to an investment in Safe."
+    },
     color: "bg-foreground"
-  },
-  {
-    id: 6,
-    title: "Entrepreneur in Residence",
-    company: "Upfront Ventures", 
-    location: "Los Angeles, CA, USA",
-    startDate: "November 2020",
-    endDate: "April 2021",
-    duration: "6 mos",
-    type: "Contract",
-    icon: "💼",
-    color: "bg-muted",
-    isParallel: true // This overlaps with Safe role
   },
   {
     id: 7,
@@ -132,7 +125,7 @@ const ExperienceSection = () => {
           
           {/* Timeline Items */}
           <div className="grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-3 xl:grid-cols-6">
-            {experiences.filter(exp => !exp.isParallel).map((experience, index) => (
+            {experiences.map((experience, index) => (
               <motion.div
                 key={experience.id}
                 className="relative"
@@ -188,6 +181,21 @@ const ExperienceSection = () => {
                       {experience.skills}
                     </div>
                   )}
+                  {'milestone' in experience && (
+                    <div className="mt-4 rounded-lg bg-muted/60 p-3">
+                      <div className="mb-2 flex items-center gap-2">
+                        <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-background text-sm shadow-[var(--surface-shadow)]" aria-hidden="true">
+                          💼
+                        </span>
+                        <div className="min-w-0">
+                          <div className="text-xs font-semibold text-foreground">{experience.milestone.company}</div>
+                          <div className="text-[11px] leading-4 text-muted-foreground tabular-nums">{experience.milestone.dates}</div>
+                        </div>
+                      </div>
+                      <div className="text-xs font-medium leading-5 text-foreground">{experience.milestone.title}</div>
+                      <p className="mt-1 text-pretty text-xs leading-5 text-muted-foreground">{experience.milestone.outcome}</p>
+                    </div>
+                  )}
                   <div className="mt-5 border-t border-border/60 pt-3 text-xs font-medium text-muted-foreground tabular-nums">
                     {experience.duration}
                   </div>
@@ -196,36 +204,6 @@ const ExperienceSection = () => {
             ))}
           </div>
 
-          {/* Parallel Role - Upfront Ventures */}
-          {experiences.find(exp => exp.isParallel) && (
-            <motion.div
-              className="mx-auto mt-5 max-w-xl md:mt-8"
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-            >
-              <div className="rounded-2xl bg-muted/40 p-5 shadow-sm ring-1 ring-black/10 dark:ring-white/10">
-                <div className="mb-4 flex items-center gap-3">
-                  <div className="flex size-10 items-center justify-center rounded-lg bg-background ring-1 ring-black/10 dark:ring-white/10">
-                    💼
-                  </div>
-                  <div>
-                    <div className="text-xs font-semibold uppercase text-muted-foreground">Parallel role</div>
-                    <div className="text-xs text-muted-foreground tabular-nums">November 2020 - April 2021</div>
-                  </div>
-                </div>
-                <h4 className="mb-1 text-balance font-bold">Entrepreneur in Residence</h4>
-                <div className="mb-2 text-sm text-muted-foreground">
-                  <span className="font-semibold text-foreground">Upfront Ventures</span>
-                  <span> · Los Angeles, CA, USA</span>
-                </div>
-                <p className="text-pretty text-sm leading-6 text-muted-foreground">
-                  Short-term role that contributed to launching and shaping the early direction of Safe.
-                </p>
-              </div>
-            </motion.div>
-          )}
         </div>
       </div>
 
