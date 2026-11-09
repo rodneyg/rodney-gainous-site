@@ -7,6 +7,16 @@ import { Button } from '@/components/ui/button';
 // --- Filtered and Enhanced Project Data ---
 const projects = [
   {
+    title: "Vouch",
+    inspiration: "How can useful conversations carry a little more accountability?",
+    description: "A lightweight Chrome extension for PGP identities, signed contributions, and explicit vouches. Anyone can check a shared verification link without signing up. Early access starts with Hacker News.",
+    demoUrl: "https://vouch.rodneygainous.com",
+    githubUrl: null,
+    demoLabel: "Try Vouch",
+    icon: '✓',
+    tech: "TypeScript • Chrome Extension • OpenPGP • Privacy"
+  },
+  {
     title: "AutoFighterPro",
     inspiration: "I built my first software business at 13 by turning repetitive RuneScape gameplay into a reliable automation product.",
     description: "Built at 13, AutoFighterPro automated RuneScape combat, looting, healing, and banking. It grew into a software business that generated roughly $500K in revenue.",
