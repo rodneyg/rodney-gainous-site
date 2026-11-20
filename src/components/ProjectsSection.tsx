@@ -17,6 +17,25 @@ const projects = [
     tech: "TypeScript • Chrome Extension • OpenPGP • Privacy"
   },
   {
+    title: "Nearby Awareness",
+    inspiration: "How can people understand which nearby devices might have a camera or microphone?",
+    description: "A phone app concept for explaining possible device matches from wireless signals and visual clues. It is in the planning stage; no scanner or app has been built yet.",
+    demoUrl: null,
+    githubUrl: null,
+    icon: '📡',
+    tech: "Product Concept • Mobile • Privacy"
+  },
+  {
+    title: "Phantom Audio Lab",
+    inspiration: "How can developers test audio delivery before connecting a microphone?",
+    description: "An open-source audio transport lab with a Python sender and receiver. It streams a generated tone over a local WebSocket and reports missing or duplicate frames without recording anyone.",
+    demoUrl: null,
+    githubUrl: "https://github.com/rodneyg/phantom-audio-lab",
+    demoLabel: "View on GitHub",
+    icon: '🎙️',
+    tech: "Python • WebSockets • PCM Audio • Testing"
+  },
+  {
     title: "AutoFighterPro",
     inspiration: "I built my first software business at 13 by turning repetitive RuneScape gameplay into a reliable automation product.",
     description: "Built at 13, AutoFighterPro automated RuneScape combat, looting, healing, and banking. It grew into a software business that generated roughly $500K in revenue.",
@@ -49,7 +68,7 @@ const projects = [
     title: "SafeDose",
     inspiration: "The potential for tiny errors in medication dosing leading to significant harm felt unacceptable. I envisioned a visual guide, an AI safety layer directly on the syringe itself, to prevent overdose.",
     description: "An AI-powered visual assistant for syringe dosing. It guides users to draw the correct amount, aiming to drastically reduce errors. Open-source and designed with clinical readiness in mind.",
-    demoUrl: "https://safedoseai.com/", // Updated URL
+    demoUrl: "https://safedose.rodneygainous.com/",
     githubUrl: "https://github.com/rodneyg/SafeDose", // Updated URL
     icon: '💉',
     tech: "React Native • Expo • TypeScript • OpenAI Vision • Firebase"
