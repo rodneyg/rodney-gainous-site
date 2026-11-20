@@ -84,13 +84,13 @@ const projects = [
   },
   {
     title: "ScreenHawk",
-    inspiration: "How many times do we screenshot complex charts, UIs, or data visualizations and wish we could just *ask* the image questions? I wanted a way to directly query the visual content of my screen.",
-    description: "A Chrome extension leveraging GPT-4 Vision to analyze screenshots. Capture any part of a webpage and instantly ask questions about its content for rapid visual reasoning.",
-    demoUrl: null, // No live demo link provided
-    githubUrl: "https://github.com/rodneyg/ScreenHawk", // Updated URL
-    demoLabel: "View on GitHub", // Specific label since no demo
-    icon: '🦅',
-    tech: "Chrome Extension • JavaScript • GPT-4 Vision • OpenAI"
+    inspiration: "What if you could ask a question about a chart or image without leaving the tab?",
+    description: "Ask AI about any part of your screen. Chrome extension, bring your own OpenAI key.",
+    demoUrl: "https://screenhawk.rodneygainous.com",
+    githubUrl: "https://github.com/rodneyg/ScreenHawk",
+    demoLabel: "View on GitHub",
+    iconImage: '/screenhawk-icon.png',
+    tech: "Chrome Extension • TypeScript • OpenAI Vision"
   },
   {
     title: "TempleToss",
@@ -216,7 +216,11 @@ const ProjectsNarrative = () => {
                         className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted text-xl ring-1 ring-black/10 dark:ring-white/10"
                         aria-hidden="true"
                       >
-                        {project.icon || '💡'}
+                        {project.iconImage ? (
+                          <img src={project.iconImage} alt="" width={24} height={24} />
+                        ) : (
+                          project.icon || '💡'
+                        )}
                       </span>
                       <h3 className="pt-1 text-balance text-xl font-bold md:text-2xl">
                           {project.title}
