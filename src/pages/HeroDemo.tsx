@@ -7,7 +7,7 @@ const selectedWork = [
   {
     title: 'SafeDose',
     description: 'Visual guidance for safer syringe dosing.',
-    href: 'https://safedoseai.com/',
+    href: 'https://safedose.rodneygainous.com/',
   },
   {
     title: 'AI Safety Research',
