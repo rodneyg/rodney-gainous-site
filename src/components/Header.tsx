@@ -1,27 +1,11 @@
 
-import React, { useState, useEffect } from 'react';
-import { cn } from "@/lib/utils";
 import { motion } from 'framer-motion';
 import { ThemeToggle } from '@/components/theme-toggle';
 import MobileNav from '@/components/MobileNav';
 
 const Header = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
-    <header className={cn(
-      "fixed top-0 z-50 flex w-full items-center justify-between px-6 py-4 pt-[calc(1rem+env(safe-area-inset-top))] transition-[background-color,box-shadow,border-color] duration-200",
-      isScrolled ? "border-b bg-background/95 shadow-sm" : "bg-transparent"
-    )}>
+    <header className="relative z-10 flex min-w-0 items-center justify-between border-b bg-background px-6 py-2 pt-[calc(0.5rem+env(safe-area-inset-top))]">
       <motion.h1 
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
@@ -31,7 +15,7 @@ const Header = () => {
         Rodney Gainous Jr.
       </motion.h1>
       <motion.nav 
-        className="hidden items-center gap-8 md:flex"
+        className="hidden items-center gap-8 lg:flex"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
@@ -49,10 +33,10 @@ const Header = () => {
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5, delay: 0.3 }}
       >
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <ThemeToggle />
         </div>
-        <MobileNav isScrolled={isScrolled} />
+        <MobileNav />
       </motion.div>
     </header>
   );

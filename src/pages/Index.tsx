@@ -1,5 +1,5 @@
-
-import React, { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import AIResearchSection from '@/components/AIResearchSection';
@@ -14,38 +14,124 @@ import ExperienceSection from '@/components/ExperienceSection';
 import ContactSection from '@/components/ContactSection';
 import TechStackBlock from '@/components/TechStackBlock';
 import Footer from '@/components/Footer';
-import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
+
+const slides = [
+  { title: 'Introduction', content: <Hero /> },
+  { title: 'Tech Stack', content: <TechStackBlock /> },
+  { title: 'Projects', content: <ProjectsSection /> },
+  { title: 'AI Research', content: <AIResearchSection /> },
+  { title: 'Safe Lab', content: <SafeLabSection /> },
+  { title: 'Experience', content: <ExperienceSection /> },
+  { title: 'Writing', content: <WritingSection /> },
+  { title: 'Podcast', content: <PodcastSection /> },
+  { title: 'YouTube', content: <YouTubeSection /> },
+  { title: 'Photography', content: <UnsplashSection /> },
+  { title: 'About', content: <AboutSection /> },
+  { title: 'Contact', content: <><ContactSection /><Footer /></> },
+];
+
+function slideIndex(deck: HTMLElement) {
+  return Math.max(0, Math.min(slides.length - 1, Math.round(deck.scrollLeft / deck.clientWidth)));
+}
+
+function moveSlide(deck: HTMLElement, direction: number) {
+  const index = slideIndex(deck);
+  const next = Math.max(0, Math.min(slides.length - 1, index + direction));
+  if (next !== index) deck.scrollTo({ left: next * deck.clientWidth });
+}
 
 const Index = () => {
-  // Smooth scroll to section when URL has hash
+  const deckRef = useRef<HTMLElement>(null);
+  const [activeSlide, setActiveSlide] = useState(0);
+
   useEffect(() => {
+    const deck = deckRef.current;
+    if (!deck) return;
+
     if (window.location.hash) {
-      const id = window.location.hash.substring(1);
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
+      document.getElementById(window.location.hash.slice(1))?.scrollIntoView({ behavior: 'instant' });
     }
+
+    let lastWheelTime = -Infinity;
+    let wheelDistance = 0;
+    let wheelMoved = false;
+
+    const handleWheel = (event: WheelEvent) => {
+      if (
+        event.defaultPrevented || !event.cancelable || event.ctrlKey || event.shiftKey ||
+        Math.abs(event.deltaY) <= Math.abs(event.deltaX)
+      ) return;
+
+      const slide = (event.target as Element).closest<HTMLElement>('.portfolio-slide');
+      if (slide && slide.scrollHeight - slide.clientHeight > 1) return;
+
+      event.preventDefault();
+      // Move once per wheel gesture so the trackpad's tail cannot skip slides.
+      if (event.timeStamp - lastWheelTime > 180) {
+        wheelDistance = 0;
+        wheelMoved = false;
+      }
+      lastWheelTime = event.timeStamp;
+      if (wheelMoved) return;
+
+      const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? deck.clientHeight : 1;
+      wheelDistance += event.deltaY * unit;
+      if (Math.abs(wheelDistance) >= 24) {
+        moveSlide(deck, Math.sign(wheelDistance));
+        wheelMoved = true;
+      }
+    };
+
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+
+      const target = event.target as HTMLElement;
+      if (target.isContentEditable || target.closest('input, textarea, select, [role="dialog"], [role="menu"], [role="slider"]')) return;
+
+      event.preventDefault();
+      if (!event.repeat) moveSlide(deck, event.key === 'ArrowRight' ? 1 : -1);
+    };
+
+    const updateSlide = () => {
+      const index = slideIndex(deck);
+      if (Math.abs(deck.scrollLeft - index * deck.clientWidth) < 1) setActiveSlide(index);
+    };
+    updateSlide();
+    deck.addEventListener('scroll', updateSlide, { passive: true });
+    deck.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('keydown', handleKey);
+    return () => {
+      deck.removeEventListener('scroll', updateSlide);
+      deck.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('keydown', handleKey);
+    };
   }, []);
 
   return (
-    <div className="flex min-h-dvh flex-col">
+    <div className="portfolio-layout">
       <Header />
-      <main className="flex-grow pt-16">
-        <Hero />
-        <TechStackBlock />
-        <ProjectsSection />
-        <AIResearchSection />
-        <SafeLabSection />
-        <ExperienceSection />
-        <WritingSection />
-        <PodcastSection />
-        <YouTubeSection />
-        <UnsplashSection />
-        <AboutSection />
-        <ContactSection />
+      <main ref={deckRef} className="portfolio-deck" aria-label="Portfolio slides">
+        {slides.map(({ title, content }) => (
+          <div key={title} className="portfolio-slide" role="region" aria-label={title} tabIndex={0}>
+            {content}
+          </div>
+        ))}
       </main>
-      <Footer />
+      <nav aria-label="Slide navigation" className="portfolio-controls flex items-center justify-center gap-3 border-t bg-background px-2 pt-1 text-sm sm:gap-5">
+        <Button type="button" variant="ghost" size="icon" aria-label="Previous slide" aria-disabled={!activeSlide}
+          className="aria-disabled:opacity-40" onClick={() => deckRef.current && moveSlide(deckRef.current, -1)}>
+          <ArrowLeft aria-hidden="true" />
+        </Button>
+        <span aria-live="polite" aria-atomic="true" className="w-44 text-center">
+          {activeSlide + 1} / {slides.length} · {slides[activeSlide].title}
+        </span>
+        <Button type="button" variant="ghost" size="icon" aria-label="Next slide" aria-disabled={activeSlide === slides.length - 1}
+          className="aria-disabled:opacity-40" onClick={() => deckRef.current && moveSlide(deckRef.current, 1)}>
+          <ArrowRight aria-hidden="true" />
+        </Button>
+      </nav>
     </div>
   );
 };

@@ -141,3 +141,45 @@
 .media-outline {
   @apply outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10;
 }
+
+.portfolio-layout {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: clip;
+}
+
+.portfolio-deck {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.portfolio-slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  overflow: hidden auto;
+  overscroll-behavior-y: contain;
+  scroll-snap-align: start;
+  scroll-behavior: auto;
+}
+
+.portfolio-slide:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: -2px;
+}
+
+.portfolio-controls {
+  padding-bottom: max(0.25rem, env(safe-area-inset-bottom));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-deck {
+    scroll-behavior: auto;
+  }
+}

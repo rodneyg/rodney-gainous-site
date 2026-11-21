@@ -1,0 +1,140 @@
+import assert from 'node:assert/strict';
+import { createServer } from 'node:http';
+import { after, before, test } from 'node:test';
+import { chromium, devices } from 'playwright-core';
+import { createServer as createViteServer } from 'vite';
+
+let vite;
+let server;
+let browser;
+let url;
+
+before(async () => {
+  vite = await createViteServer({
+    server: { middlewareMode: true, hmr: false, watch: null },
+  });
+  server = createServer(vite.middlewares);
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  url = `http://127.0.0.1:${server.address().port}`;
+  browser = await chromium.launch();
+});
+
+after(async () => {
+  await browser?.close();
+  await vite?.close();
+  server?.close();
+});
+
+async function onPage(options, check) {
+  const page = await browser.newPage(options);
+  page.setDefaultTimeout(8_000);
+  try {
+    await page.route('**/*', (route) => route.request().url().startsWith(url) ? route.continue() : route.abort());
+    await check(page);
+  } finally {
+    await page.context().close();
+  }
+}
+
+async function expectSlide(page, index) {
+  await page.waitForFunction((index) => {
+    const deck = document.querySelector('.portfolio-deck');
+    const status = document.querySelector('.portfolio-controls [aria-live]');
+    return deck && status?.textContent.startsWith(`${index + 1} /`) &&
+      Math.abs(deck.scrollLeft - index * deck.clientWidth) < 1;
+  }, index);
+}
+
+test('wheel, arrows and native horizontal gestures snap one full-width slide at a time', async () => {
+  await onPage({ viewport: { width: 1280, height: 900 } }, async (page) => {
+    await page.goto(url);
+    await expectSlide(page, 0);
+    const deck = page.getByRole('main', { name: 'Portfolio slides' });
+    const slides = deck.getByRole('region');
+    assert.equal(await slides.count(), 12);
+    const [width, height, snapType] = await deck.evaluate((element) => [
+      element.clientWidth, element.clientHeight, getComputedStyle(element).scrollSnapType,
+    ]);
+    assert.equal(width, 1280);
+    assert.equal(snapType, 'x mandatory');
+    assert.equal(await page.evaluate(() => document.documentElement.scrollHeight), 900);
+    for (const slide of await slides.all()) {
+      assert.deepEqual(await slide.evaluate((element) => [element.offsetWidth, element.offsetHeight]), [width, height]);
+    }
+
+    await page.waitForFunction(() => {
+      const hero = document.querySelector('.portfolio-slide');
+      return hero.scrollHeight - hero.clientHeight <= 1;
+    });
+    await page.mouse.move(100, 250);
+    await page.mouse.wheel(0, 100);
+    await expectSlide(page, 1);
+    await page.keyboard.press('ArrowRight');
+    await expectSlide(page, 2);
+    await page.keyboard.press('ArrowLeft');
+    await expectSlide(page, 1);
+    await page.getByRole('button', { name: 'Previous slide' }).click();
+    await expectSlide(page, 0);
+
+    await page.mouse.move(100, 250);
+    const horizontal = await deck.evaluate((element) => element.dispatchEvent(
+      new WheelEvent('wheel', { deltaX: 120, deltaY: 30, bubbles: true, cancelable: true }),
+    ));
+    assert.equal(horizontal, true);
+    await page.mouse.wheel(width, 0);
+    await expectSlide(page, 1);
+
+    const previous = page.getByRole('button', { name: 'Previous slide' });
+    await previous.click();
+    await expectSlide(page, 0);
+    await page.getByRole('button', { name: 'See my work' }).click();
+    await expectSlide(page, 2);
+  });
+});
+
+test('overflow scrolls vertically without advancing the deck, and section links still work', async () => {
+  await onPage({ viewport: { width: 1280, height: 720 }, reducedMotion: 'reduce' }, async (page) => {
+    await page.goto(`${url}/#projects`);
+    await expectSlide(page, 2);
+    const projects = page.getByRole('region', { name: 'Projects', exact: true });
+    assert.equal(await projects.evaluate((element) => element.scrollTop), 0);
+    await page.mouse.move(100, 300);
+    await page.mouse.wheel(0, 500);
+    await page.waitForFunction(() => document.querySelector('#projects').parentElement.scrollTop > 0);
+    await expectSlide(page, 2);
+
+    await projects.evaluate((element) => { element.scrollTop = element.scrollHeight; });
+    // Even at the bottom, wheel input inside a tall slide stays in that slide.
+    const prevented = await projects.evaluate((element) => !element.dispatchEvent(
+      new WheelEvent('wheel', { deltaY: 500, bubbles: true, cancelable: true }),
+    ));
+    assert.equal(prevented, false);
+    await expectSlide(page, 2);
+
+    await page.locator('header').getByRole('link', { name: 'Contact' }).click();
+    await expectSlide(page, 11);
+    assert.equal(new URL(page.url()).hash, '#contact');
+    assert.equal(await page.getByRole('button', { name: 'Next slide' }).getAttribute('aria-disabled'), 'true');
+  });
+});
+
+test('mobile swipes and menu links navigate the same deck', async () => {
+  await onPage({ ...devices['iPhone 13'], reducedMotion: 'reduce' }, async (page) => {
+    await page.goto(url);
+    await expectSlide(page, 0);
+    const session = await page.context().newCDPSession(page);
+    const touch = (type, x) => session.send('Input.dispatchTouchEvent', {
+      type,
+      touchPoints: x === undefined ? [] : [{ x, y: 280 }],
+    });
+    await touch('touchStart', 350);
+    for (let x = 320; x >= 30; x -= 30) await touch('touchMove', x);
+    await touch('touchEnd');
+    await expectSlide(page, 1);
+
+    await page.getByRole('button', { name: 'Open navigation menu' }).click();
+    await page.getByRole('dialog').getByRole('link', { name: 'Writing' }).click();
+    await expectSlide(page, 6);
+    assert.equal(new URL(page.url()).hash, '#writing');
+  });
+});

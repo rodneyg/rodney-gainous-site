@@ -2,16 +2,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { ArrowDown } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import EnhancedButton from '@/components/EnhancedButton';
 
 const Hero = () => {
   const scrollToProjects = () => {
-    document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('projects')?.scrollIntoView();
   };
 
   return (
-    <section className="relative flex min-h-dvh items-center justify-center overflow-hidden px-6 py-24 md:py-32">
+    <section className="relative flex min-h-full items-center justify-center overflow-hidden px-6 py-6">
       <div className="absolute inset-x-0 top-0 h-px bg-border" />
 
       <motion.div 
@@ -22,7 +22,7 @@ const Hero = () => {
       >
         {/* Personal Avatar */}
         <motion.div
-          className="mb-10 flex justify-center md:mb-12"
+          className="mb-5 flex justify-center"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
@@ -31,7 +31,7 @@ const Hero = () => {
             whileHover={{ scale: 1.02 }}
             transition={{ type: "spring", duration: 0.3, bounce: 0 }}
           >
-            <Avatar className="size-32 border-4 border-background shadow-lg ring-1 ring-black/10 md:size-40 dark:ring-white/10">
+            <Avatar className="size-24 border-4 border-background shadow-lg ring-1 ring-black/10 sm:size-32 dark:ring-white/10">
               <AvatarImage 
                 src="/temp-avatar.jpg" 
                 alt="Rodney Gainous - Smiling professional headshot"
@@ -45,7 +45,7 @@ const Hero = () => {
         </motion.div>
 
         <motion.h2 
-          className="mb-8 text-5xl font-bold leading-none md:text-7xl lg:text-8xl"
+          className="mb-5 text-[clamp(2.25rem,8dvh,5rem)] font-bold leading-none"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
@@ -58,7 +58,7 @@ const Hero = () => {
         </motion.h2>
         
         <motion.p 
-          className="mx-auto mb-12 max-w-3xl text-lg leading-8 text-muted-foreground md:mb-14 md:text-2xl md:leading-10"
+          className="mx-auto mb-6 max-w-3xl text-base leading-relaxed text-muted-foreground md:text-xl"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
@@ -76,7 +76,7 @@ const Hero = () => {
           <EnhancedButton
             onClick={scrollToProjects}
             size="lg"
-            rightIcon={<ArrowDown className="size-5" />}
+            rightIcon={<ArrowRight className="size-5" />}
           >
             See my work
           </EnhancedButton>
