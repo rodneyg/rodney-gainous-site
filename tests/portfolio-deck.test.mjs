@@ -51,7 +51,7 @@ test('wheel, arrows and native horizontal gestures snap one full-width slide at 
     await expectSlide(page, 0);
     const deck = page.getByRole('main', { name: 'Portfolio slides' });
     const slides = deck.locator(':scope > .portfolio-slide');
-    assert.equal(await slides.count(), 12);
+    assert.equal(await slides.count(), 13);
     const [width, height, snapType] = await deck.evaluate((element) => [
       element.clientWidth, element.clientHeight, getComputedStyle(element).scrollSnapType,
     ]);
@@ -112,7 +112,7 @@ test('overflow scrolls vertically without advancing the deck, and section links 
     await expectSlide(page, 2);
 
     await page.locator('header').getByRole('link', { name: 'Contact' }).click();
-    await expectSlide(page, 11);
+    await expectSlide(page, 12);
     assert.equal(new URL(page.url()).hash, '#contact');
     assert.equal(await page.getByRole('button', { name: 'Next slide' }).getAttribute('aria-disabled'), 'true');
   });
@@ -148,7 +148,7 @@ test('mobile swipes and menu links navigate the same deck', async () => {
 
     await trigger.click();
     await dialog.getByRole('link', { name: 'Writing' }).click();
-    await expectSlide(page, 6);
+    await expectSlide(page, 7);
     assert.equal(new URL(page.url()).hash, '#writing');
   });
 });
@@ -209,14 +209,14 @@ test('the YouTube slide stays available when the Shorts response contains an inv
         page.waitForResponse((response) => response.url().endsWith('/api/top-youtube-shorts?channel=personal')),
         navigate(),
       ]);
-      await expectSlide(page, 8).catch((error) => {
+      await expectSlide(page, 9).catch((error) => {
         assert.deepEqual(pageErrors, []);
         throw error;
       });
     };
 
     await openYouTube(() => page.goto(`${url}/#youtube`));
-    await expectSlide(page, 8);
+    await expectSlide(page, 9);
     const youtube = page.getByRole('region', { name: 'YouTube', exact: true });
     const short = youtube.getByRole('link', { name: /Fixture live Short/ });
     await short.waitFor();
@@ -228,5 +228,40 @@ test('the YouTube slide stays available when the Shorts response contains an inv
       await youtube.getByRole('link', { name: /Still pasting code into ChatGPT/ }).waitFor();
     }
     assert.deepEqual(pageErrors, []);
+  });
+});
+
+test('Ask Rodney is reachable in the deck and answers without advancing the slide', async () => {
+  await onPage({ ...devices['iPhone 13'], reducedMotion: 'reduce' }, async (page) => {
+    await page.goto(`${url}/#projects`);
+    await expectSlide(page, 2);
+    await page.getByRole('button', { name: 'Next slide' }).click();
+    await expectSlide(page, 3);
+    await page.getByRole('button', { name: 'Next slide' }).click();
+    await expectSlide(page, 4);
+
+    const showcase = page.getByRole('region', { name: 'Ask Rodney', exact: true });
+    await showcase.getByRole('button', { name: 'What have you built?' }).click();
+    await showcase.getByText(/AI safety simulations, bias detection systems/).waitFor();
+    await showcase.getByRole('button', { name: "What's your best work?" }).waitFor();
+
+    const input = showcase.getByPlaceholder('Ask anything…');
+    const send = showcase.getByRole('button', { name: 'Send' });
+    await input.fill('   ');
+    assert.equal(await send.isDisabled(), true);
+    await input.press('Enter');
+    assert.equal(await input.inputValue(), '   ');
+    const question = 'What is your tech stack?';
+    await input.fill(`  ${question}  `);
+    assert.equal(await send.isEnabled(), true);
+    await input.press('ArrowLeft');
+    await expectSlide(page, 4);
+    assert.equal(await input.evaluate((element) => element.selectionStart), question.length + 3);
+    await input.press('Enter');
+    await showcase.getByText(question, { exact: true }).waitFor();
+    assert.equal(await input.inputValue(), '');
+    await expectSlide(page, 4);
+    await page.getByRole('button', { name: 'Next slide' }).click();
+    await expectSlide(page, 5);
   });
 });
