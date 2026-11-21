@@ -50,7 +50,7 @@ test('wheel, arrows and native horizontal gestures snap one full-width slide at 
     await page.goto(url);
     await expectSlide(page, 0);
     const deck = page.getByRole('main', { name: 'Portfolio slides' });
-    const slides = deck.getByRole('region');
+    const slides = deck.locator(':scope > .portfolio-slide');
     assert.equal(await slides.count(), 12);
     const [width, height, snapType] = await deck.evaluate((element) => [
       element.clientWidth, element.clientHeight, getComputedStyle(element).scrollSnapType,
@@ -151,4 +151,38 @@ test('mobile swipes and menu links navigate the same deck', async () => {
     await expectSlide(page, 6);
     assert.equal(new URL(page.url()).hash, '#writing');
   });
+});
+
+test('all three sample AI prototypes update independently on desktop and mobile', async () => {
+  for (const options of [
+    { viewport: { width: 1280, height: 900 } },
+    devices['iPhone 13'],
+  ]) {
+    await onPage({ ...options, reducedMotion: 'reduce' }, async (page) => {
+      await page.goto(`${url}/#ai-research`);
+      await expectSlide(page, 3);
+      const lab = page.getByRole('region', { name: 'AI Prototype Lab' });
+      assert.equal(await lab.getByRole('article').count(), 3);
+      assert.ok(await lab.getByText('Try three interactive simulations with sample data.').isVisible());
+
+      const cases = [
+        ['Test report', 'Release still on hold', 'Release notes', 'Ready for review'],
+        ['Approve once', 'Approved in simulation', 'Preview plan', 'Waiting for approval'],
+        ['Higher accuracy', 'Careful profile', 'Faster replies', 'Fast profile'],
+      ];
+      for (const [alternate, result] of cases) {
+        const button = lab.getByRole('button', { name: alternate });
+        await button.click();
+        assert.equal(await button.getAttribute('aria-pressed'), 'true');
+        assert.ok(await lab.getByRole('status').filter({ hasText: result }).isVisible());
+        await expectSlide(page, 3);
+      }
+      for (const [alternate, result, initial, initialResult] of cases) {
+        assert.ok(await lab.getByRole('status').filter({ hasText: result }).isVisible());
+        await lab.getByRole('button', { name: initial }).press('Enter');
+        assert.equal(await lab.getByRole('button', { name: alternate }).getAttribute('aria-pressed'), 'false');
+        assert.ok(await lab.getByRole('status').filter({ hasText: initialResult }).isVisible());
+      }
+    });
+  }
 });

@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, Github } from 'lucide-react';
+import AIPrototypeLab from './AIPrototypeLab';
 
 type AIResearchProject = {
   title: string;
@@ -83,6 +84,8 @@ const AIResearchSection = () => {
             Modeling how intelligent systems fracture under pressure—and prototyping the safeguards to hold the line.
           </p>
         </motion.div>
+
+        <AIPrototypeLab />
 
         {/* Research Project Entries */}
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
