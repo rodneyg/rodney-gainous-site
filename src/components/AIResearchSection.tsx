@@ -46,6 +46,15 @@ const aiResearchProjects = [
     demoLabel: "Explore Simulation",
     githubUrl: "https://github.com/rodneyg/AI-Research-3",
     icon: 'AF'
+  },
+  {
+    title: "Slow Burn",
+    insight: "Does an AI break its rules more often when the same requests come days apart?",
+    description: "A small pilot found no clear effect from spacing the same requests days apart. Breach rates were 0.0% with minutes between requests and 0.0% with days.",
+    demoUrl: "https://ai-research-2.vercel.app",
+    demoLabel: "Explore Simulation",
+    githubUrl: "https://github.com/rodneyg/AI-Research-2",
+    icon: 'SB'
   }
 ] satisfies AIResearchProject[];
 
