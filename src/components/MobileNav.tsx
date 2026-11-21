@@ -5,11 +5,7 @@ import { Menu } from "lucide-react";
 import { motion } from 'framer-motion';
 import { ThemeToggle } from '@/components/theme-toggle';
 
-interface MobileNavProps {
-  isScrolled: boolean;
-}
-
-const MobileNav: React.FC<MobileNavProps> = ({ isScrolled }) => {
+const MobileNav = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
@@ -31,7 +27,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ isScrolled }) => {
         <Button
           variant="ghost"
           size="sm"
-          className="size-10 rounded-full md:hidden"
+          className="size-10 rounded-full lg:hidden"
           aria-label="Open navigation menu"
         >
           <motion.div
