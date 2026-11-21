@@ -1,8 +1,24 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import ProjectFilter from '@/components/ProjectFilter';
 import { ExternalLink, Github, SearchX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+
+
+function trackWorkWithMe(event: 'work_with_me_view' | 'work_with_me_click') {
+  const body = JSON.stringify({ event });
+  if (navigator.sendBeacon) {
+    const blob = new Blob([body], { type: 'application/json' });
+    navigator.sendBeacon('/api/cta-event', blob);
+    return;
+  }
+  void fetch('/api/cta-event', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body,
+    keepalive: true,
+  });
+}
 
 // --- Filtered and Enhanced Project Data ---
 const projects = [
@@ -108,6 +124,10 @@ const ProjectsNarrative = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTechs, setSelectedTechs] = useState<string[]>([]);
 
+  useEffect(() => {
+    trackWorkWithMe('work_with_me_view');
+  }, []);
+
   // Extract all technologies from projects
   const availableTechs = useMemo(() => {
     const techs = new Set<string>();
@@ -162,6 +182,18 @@ const ProjectsNarrative = () => {
           <p className="mx-auto max-w-2xl text-pretty text-lg leading-8 text-muted-foreground">
             Every tool I create begins with a question or observation. Here are some problems I noticed and decided to solve.
           </p>
+          <div className="mt-6">
+            <Button asChild>
+              <a
+                href="#contact"
+                onClick={() => {
+                  trackWorkWithMe('work_with_me_click');
+                }}
+              >
+                Work with me
+              </a>
+            </Button>
+          </div>
         </motion.div>
 
         {/* Project Filter */}
