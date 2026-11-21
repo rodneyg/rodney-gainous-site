@@ -1,3 +1,4 @@
+import { Analytics, type BeforeSendEvent } from "@vercel/analytics/react";
 
 import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
@@ -16,6 +17,23 @@ const HeroDemo = lazy(() =>
 const demoHosts = new Set(["localhost", "127.0.0.1"]);
 const isDemoHost = demoHosts.has(window.location.hostname) || window.location.hostname.endsWith(".vercel.app");
 const isHeroDemo = isDemoHost && new URLSearchParams(window.location.search).get("demo") === "hero";
+
+function filterAnalyticsEvent(event: BeforeSendEvent): BeforeSendEvent | null {
+  const url = new URL(event.url, window.location.origin);
+  if (event.type !== "pageview" || url.origin !== window.location.origin || url.pathname !== "/") {
+    return null;
+  }
+
+  // The SDK attaches the referrer separately, so skip visits with a full referrer URL.
+  if (document.referrer) {
+    const referrer = new URL(document.referrer);
+    if (referrer.href !== `${referrer.origin}/`) {
+      return null;
+    }
+  }
+
+  return { type: "pageview", url: `${url.origin}${url.pathname}` };
+}
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -53,6 +71,7 @@ const App = () => (
           </Routes>
         </TooltipProvider>
       </BrowserRouter>
+      {import.meta.env.PROD && <Analytics beforeSend={filterAnalyticsEvent} />}
     </ThemeProvider>
   </QueryClientProvider>
 );
