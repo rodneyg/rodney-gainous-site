@@ -35,7 +35,7 @@ const ContactSection = () => {
   const currentYear = new Date().getFullYear(); // 2025
 
   return (
-    <section id="contact" className="py-32 px-6">
+    <section id="contact" className="px-6 py-20 md:py-24">
       <motion.div
         className="max-w-4xl mx-auto text-center"
         initial={{ opacity: 0 }}
@@ -44,7 +44,7 @@ const ContactSection = () => {
         transition={{ duration: 0.6 }}
       >
         <motion.h3
-          className="text-4xl font-bold mb-16 tracking-tight"
+          className="mb-10 text-balance text-4xl font-bold md:text-5xl"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -64,15 +64,16 @@ const ContactSection = () => {
             <motion.div
               key={index}
               whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.96 }}
               transition={{ duration: 0.2 }}
             >
               <a
                 href={contact.href}
-                className="flex items-center gap-4 p-6 border border-border rounded-xl hover:bg-muted/30 transition-colors"
+                className="surface-card flex min-h-16 items-center gap-4 rounded-xl p-5 hover:bg-muted/30"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <contact.icon className="h-5 w-5 text-muted-foreground" />
+                <contact.icon className="size-5 text-muted-foreground" />
                 <span className="font-medium">
                   {contact.value}
                 </span>

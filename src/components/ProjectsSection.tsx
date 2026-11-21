@@ -1,11 +1,50 @@
 import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import ProjectFilter from '@/components/ProjectFilter';
-// Assuming you have an icon library like react-icons
-// import { FiGithub, FiExternalLink, FiEye, FiCpu } from 'react-icons/fi'; // Example icons
+import { ExternalLink, Github, SearchX } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 // --- Filtered and Enhanced Project Data ---
 const projects = [
+  {
+    title: "Vouch",
+    inspiration: "How can useful conversations carry a little more accountability?",
+    description: "A lightweight Chrome extension for PGP identities, signed contributions, and explicit vouches. Anyone can check a shared verification link without signing up. Early access starts with Hacker News.",
+    demoUrl: "https://vouch.rodneygainous.com",
+    githubUrl: null,
+    demoLabel: "Try Vouch",
+    icon: '✓',
+    tech: "TypeScript • Chrome Extension • OpenPGP • Privacy"
+  },
+  {
+    title: "Nearby Awareness",
+    inspiration: "How can people understand which nearby devices might have a camera or microphone?",
+    description: "A phone app concept for explaining possible device matches from wireless signals and visual clues. It is in the planning stage; no scanner or app has been built yet.",
+    demoUrl: null,
+    githubUrl: null,
+    icon: '📡',
+    tech: "Product Concept • Mobile • Privacy"
+  },
+  {
+    title: "Phantom Audio Lab",
+    inspiration: "How can developers test audio delivery before connecting a microphone?",
+    description: "An open-source audio transport lab with a Python sender and receiver. It streams a generated tone over a local WebSocket and reports missing or duplicate frames without recording anyone.",
+    demoUrl: null,
+    githubUrl: "https://github.com/rodneyg/phantom-audio-lab",
+    demoLabel: "View on GitHub",
+    icon: '🎙️',
+    tech: "Python • WebSockets • PCM Audio • Testing"
+  },
+  {
+    title: "AutoFighterPro",
+    inspiration: "I built my first software business at 13 by turning repetitive RuneScape gameplay into a reliable automation product.",
+    description: "Built at 13, AutoFighterPro automated RuneScape combat, looting, healing, and banking. It grew into a software business that generated roughly $500K in revenue.",
+    demoUrl: null,
+    githubUrl: "https://github.com/rodneyg/AutoFighterPro",
+    demoLabel: "Source",
+    icon: '⚔️',
+    tech: "Java • Swing • Automation • State Machines"
+  },
   {
     title: "SeenClearly",
     inspiration: "Complex truths often hide in plain sight. What if we could crystallize profound lessons into single, undeniable visual insights—instantly understood and impossible to forget?",
@@ -29,7 +68,7 @@ const projects = [
     title: "SafeDose",
     inspiration: "The potential for tiny errors in medication dosing leading to significant harm felt unacceptable. I envisioned a visual guide, an AI safety layer directly on the syringe itself, to prevent overdose.",
     description: "An AI-powered visual assistant for syringe dosing. It guides users to draw the correct amount, aiming to drastically reduce errors. Open-source and designed with clinical readiness in mind.",
-    demoUrl: "https://safedoseai.com/", // Updated URL
+    demoUrl: "https://safedose.rodneygainous.com/",
     githubUrl: "https://github.com/rodneyg/SafeDose", // Updated URL
     icon: '💉',
     tech: "React Native • Expo • TypeScript • OpenAI Vision • Firebase"
@@ -61,24 +100,6 @@ const projects = [
     githubUrl: "https://github.com/rodneyg/TempleToss", // Updated URL
     icon: '🎯',
     tech: "React Native • Expo • TypeScript • Firebase • Vercel"
-  },
-  {
-    title: "LiftAI",
-    inspiration: "The inspiration for LiftAI came from my own fitness journey. Online workouts and sports training plans often assumed access to a fully stocked gym. But when I relied on small apartment gyms or limited equipment, I had to improvise. I noticed the mental block it created — putting off training until I could 'get back' to a proper gym.",
-    description: "LiftAI solves that by flipping the problem: it scans the equipment you actually have, whether at home, an apartment complex, or a full gym, and generates structured, goal-specific workout plans around those exact resources. By combining computer vision with expert-informed training logic, LiftAI removes the guesswork and makes every gym usable, no matter the setup.",
-    demoUrl: null,
-    githubUrl: "https://github.com/rodneyg/LiftAI-iOS",
-    icon: '🏋️',
-    tech: "SwiftUI • iOS • OpenAI Vision • MVVM • Local Persistence"
-  },
-  {
-    title: "JustTalk",
-    inspiration: "I kept trying to record long voice notes on ChatGPT, but the output would be gibberish or inaccurate. I'd lose valuable thoughts and couldn't trust it with my narrations. I needed a reliable way to capture uninterrupted brain dumps, especially when multitasking or away from a computer.",
-    description: "A multi-clip voice transcription tool that turns audio recordings into text. Record or upload multiple clips, combine them into sessions, and get accurate transcripts. Transform your transcripts into summaries, bullet points, formal documents, or action items—all processed securely with OpenAI's Whisper.",
-    demoUrl: "https://justtalkgpt.com",
-    githubUrl: "https://github.com/rodneyg/JustTalkReact",
-    icon: '🎙️',
-    tech: "React • TypeScript • Vite • OpenAI Whisper • Replit"
   }
 ];
 
@@ -119,27 +140,27 @@ const ProjectsNarrative = () => {
   }, [searchTerm, selectedTechs]);
 
   return (
-    <section id="projects" className="py-32 px-6">
+    <section id="projects" className="px-6 py-20 md:py-24">
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="max-w-4xl mx-auto"
+        transition={{ duration: 0.5 }}
+        className="mx-auto max-w-6xl"
       >
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.5 }}
+          className="mb-10 text-center md:mb-12"
         >
-          <h2 className="text-5xl md:text-6xl font-bold mb-8 tracking-tight bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
-          Projects That Started With Questions
+          <h2 className="mb-4 text-balance text-4xl font-bold md:text-5xl">
+            Projects That Started With Questions
           </h2>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-light">
-           Every tool I create begins with a question or observation. Here are some problems I noticed and decided to solve.
+          <p className="mx-auto max-w-2xl text-pretty text-lg leading-8 text-muted-foreground">
+            Every tool I create begins with a question or observation. Here are some problems I noticed and decided to solve.
           </p>
         </motion.div>
 
@@ -155,27 +176,27 @@ const ProjectsNarrative = () => {
         />
 
         {/* Project Entries */}
-        <div className="space-y-16">
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {filteredProjects.length === 0 ? (
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-center py-20"
+              className="rounded-2xl border bg-card px-6 py-16 text-center shadow-sm sm:col-span-2 xl:col-span-3"
             >
-              <div className="text-6xl mb-4 opacity-50">🔍</div>
-              <h3 className="text-2xl font-bold mb-2">No projects found</h3>
-              <p className="text-muted-foreground mb-6">
+              <SearchX className="mx-auto mb-4 size-10 text-muted-foreground" aria-hidden="true" />
+              <h3 className="mb-2 text-2xl font-bold">No projects found</h3>
+              <p className="mx-auto mb-6 max-w-md text-muted-foreground">
                 Try adjusting your search terms or filters to find what you're looking for.
               </p>
-              <button
+              <Button
                 onClick={() => {
                   setSearchTerm('');
                   setSelectedTechs([]);
                 }}
-                className="text-primary hover:underline"
+                variant="outline"
               >
                 Clear all filters
-              </button>
+              </Button>
             </motion.div>
           ) : (
             filteredProjects.map((project, index) => (
@@ -183,62 +204,51 @@ const ProjectsNarrative = () => {
                 key={project.title}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
-                className="enhanced-card border border-border/50 rounded-2xl p-10 relative overflow-hidden group"
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: index * 0.06 }}
+                className="enhanced-card group relative flex aspect-square overflow-hidden rounded-2xl p-5"
               >
-                {/* Subtle gradient overlay on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/2 via-transparent to-muted/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                
                 {/* Project Details */}
-                <div className="space-y-6 relative z-10">
+                <div className="relative z-10 flex min-h-0 flex-1 flex-col">
                    {/* Icon + Title */}
-                   <div className="flex items-center gap-4 mb-6">
-                      <motion.span 
-                        className="text-4xl float-animation" 
+                   <div className="mb-4 flex items-start gap-3">
+                      <span
+                        className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted text-xl ring-1 ring-black/10 dark:ring-white/10"
                         aria-hidden="true"
-                        whileHover={{ scale: 1.1, rotate: 5 }}
-                        transition={{ duration: 0.3 }}
                       >
                         {project.icon || '💡'}
-                      </motion.span>
-                      <h3 className="text-3xl font-bold tracking-tight">
+                      </span>
+                      <h3 className="pt-1 text-balance text-xl font-bold md:text-2xl">
                           {project.title}
                       </h3>
                    </div>
                   
-                  {/* Inspiration */}
-                  <blockquote className="text-muted-foreground italic leading-relaxed text-lg border-l-4 border-primary/20 pl-6 py-2">
-                    {project.inspiration}
-                  </blockquote>
-                  
                   {/* Description */}
-                  <p className="text-lg leading-relaxed text-foreground/90">
+                  <p className="line-clamp-4 text-pretty text-sm leading-6 text-foreground/80 md:text-base">
                     {project.description}
                   </p>
                   
                   {/* Tech Stack */}
                   {project.tech && (
-                    <div className="bg-muted/30 rounded-lg px-4 py-3">
-                      <p className="text-sm font-medium text-muted-foreground">
+                    <div className="mt-4 rounded-lg bg-muted/60 px-3 py-2 ring-1 ring-black/5 dark:ring-white/10">
+                      <p className="line-clamp-2 text-xs font-medium leading-5 text-muted-foreground">
                         {project.tech}
                       </p>
                     </div>
                   )}
                   
                   {/* Links */}
-                  <div className="flex items-center flex-wrap gap-6 pt-4">
+                  <div className="mt-auto flex flex-wrap items-center gap-2 pt-4">
                     {project.demoUrl && (
                       <motion.a
                         href={project.demoUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-3 px-4 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-all duration-300 shadow-md hover:shadow-lg"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                        className="inline-flex min-h-9 items-center gap-2 rounded-lg bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-[background-color,box-shadow,transform] duration-200 hover:bg-primary/90 hover:shadow-md"
+                        whileTap={{ scale: 0.96 }}
                       >
-                        <span className="text-lg">🔗</span>
-                        Explore Live
+                        <ExternalLink className="size-4" aria-hidden="true" />
+                        Visit
                       </motion.a>
                     )}
                     {project.githubUrl && (
@@ -246,12 +256,11 @@ const ProjectsNarrative = () => {
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-3 px-4 py-2 border border-border rounded-lg font-medium hover:bg-muted/50 transition-all duration-300"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                        className="inline-flex min-h-9 items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm font-medium transition-[background-color,transform] duration-200 hover:bg-muted/50"
+                        whileTap={{ scale: 0.96 }}
                       >
-                        <span className="text-lg">💻</span>
-                        {project.demoLabel || 'View Source'}
+                        <Github className="size-4" aria-hidden="true" />
+                        {project.demoLabel || 'Source'}
                       </motion.a>
                     )}
                   </div>
