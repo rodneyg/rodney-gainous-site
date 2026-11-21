@@ -23,6 +23,44 @@ function trackWorkWithMe(event: 'work_with_me_view' | 'work_with_me_click') {
 // --- Filtered and Enhanced Project Data ---
 const projects = [
   {
+    title: "ScreenHawk",
+    inspiration: "What if you could ask a question about a chart or image without leaving the tab?",
+    description: "Select an area of your screen and ask a question about what you see. ScreenHawk is a Chrome extension that uses your OpenAI key.",
+    demoUrl: "https://screenhawk.rodneygainous.com",
+    githubUrl: "https://github.com/rodneyg/ScreenHawk",
+    demoLabel: "View on GitHub",
+    iconImage: '/screenhawk-icon.png',
+    tech: "Chrome Extension • TypeScript • OpenAI Vision"
+  },
+  {
+    title: "SafeDose",
+    inspiration: "The potential for tiny errors in medication dosing leading to significant harm felt unacceptable. I envisioned a visual guide, an AI safety layer directly on the syringe itself, to prevent overdose.",
+    description: "An open-source dosing app that uses computer vision to help users read syringe markings and draw the intended amount.",
+    demoUrl: "https://safedose.rodneygainous.com/",
+    githubUrl: "https://github.com/rodneyg/SafeDose", // Updated URL
+    icon: '💉',
+    tech: "React Native • Expo • TypeScript • OpenAI Vision • Firebase"
+  },
+  {
+    title: "SeenClearly",
+    inspiration: "Complex truths often hide in plain sight. What if we could crystallize profound lessons into single, undeniable visual insights—instantly understood and impossible to forget?",
+    description: "A tool that generates visual metaphors for ideas about life, relationships, and human behavior.",
+    demoUrl: "https://v0-human-truths-through-metaphor.vercel.app",
+    githubUrl: null, // Private repository or not yet public
+    demoLabel: "See Clearly",
+    icon: '🔍',
+    tech: "React • NextJS • TailwindCSS • OpenAI • Vercel"
+  },
+  {
+    title: "Reddit Post Time Analyzer",
+    inspiration: "I noticed myself guessing the 'right' time to share something on Reddit, often feeling like it got lost. I wondered: could data reveal the actual peak engagement moments for any community?",
+    description: "A tool that charts recent subreddit activity as a heatmap and uses GPT to suggest when to post.",
+    demoUrl: "https://reddit-analytics-nu.vercel.app/",
+    githubUrl: "https://github.com/rodneyg/reddit-analytics",
+    icon: '📊', // Simple emoji icon placeholder
+    tech: "React • NextJS • TypeScript • Reddit API • GPT-4 • Vercel"
+  },
+  {
     title: "Vouch",
     inspiration: "How can useful conversations carry a little more accountability?",
     description: "A lightweight Chrome extension for PGP identities, signed contributions, and explicit vouches. Anyone can check a shared verification link without signing up. Early access starts with Hacker News.",
@@ -62,34 +100,6 @@ const projects = [
     tech: "Java • Swing • Automation • State Machines"
   },
   {
-    title: "SeenClearly",
-    inspiration: "Complex truths often hide in plain sight. What if we could crystallize profound lessons into single, undeniable visual insights—instantly understood and impossible to forget?",
-    description: "A platform that generates clear, impactful visuals paired with concise truths about life, relationships, and human behavior. Each image distills complexity into immediate visual clarity, designed for rapid insight and sharing.",
-    demoUrl: "https://v0-human-truths-through-metaphor.vercel.app",
-    githubUrl: null, // Private repository or not yet public
-    demoLabel: "See Clearly",
-    icon: '🔍',
-    tech: "React • NextJS • TailwindCSS • OpenAI • Vercel"
-  },
-  {
-    title: "Reddit Post Time Analyzer",
-    inspiration: "I noticed myself guessing the 'right' time to share something on Reddit, often feeling like it got lost. I wondered: could data reveal the actual peak engagement moments for any community?",
-    description: "An analyzer that digs into subreddit activity to find the optimal posting times based on recent engagement data. Visualizes insights with heatmaps and offers GPT-powered suggestions.",
-    demoUrl: "https://reddit-analytics-nu.vercel.app/",
-    githubUrl: "https://github.com/rodneyg/reddit-analytics",
-    icon: '📊', // Simple emoji icon placeholder
-    tech: "React • NextJS • TypeScript • Reddit API • GPT-4 • Vercel"
-  },
-  {
-    title: "SafeDose",
-    inspiration: "The potential for tiny errors in medication dosing leading to significant harm felt unacceptable. I envisioned a visual guide, an AI safety layer directly on the syringe itself, to prevent overdose.",
-    description: "An AI-powered visual assistant for syringe dosing. It guides users to draw the correct amount, aiming to drastically reduce errors. Open-source and designed with clinical readiness in mind.",
-    demoUrl: "https://safedose.rodneygainous.com/",
-    githubUrl: "https://github.com/rodneyg/SafeDose", // Updated URL
-    icon: '💉',
-    tech: "React Native • Expo • TypeScript • OpenAI Vision • Firebase"
-  },
-  {
     title: "Did TikTok Get Banned?",
     inspiration: "Amidst constant speculation and confusing headlines, the simple question 'Is TikTok banned *right now*?' lacked a clear, immediate answer. I wanted to create that definitive, single-source status check.",
     description: "A minimalist, single-purpose site that directly answers whether TikTok is currently banned in the US, cutting through the noise with a clear status.",
@@ -97,16 +107,6 @@ const projects = [
     githubUrl: "https://github.com/rodneyg/tiktok-ban-site",
     icon: '🚫',
     tech: "React • NextJS • TailwindCSS • Vercel"
-  },
-  {
-    title: "ScreenHawk",
-    inspiration: "What if you could ask a question about a chart or image without leaving the tab?",
-    description: "Ask AI about any part of your screen. Chrome extension, bring your own OpenAI key.",
-    demoUrl: "https://screenhawk.rodneygainous.com",
-    githubUrl: "https://github.com/rodneyg/ScreenHawk",
-    demoLabel: "View on GitHub",
-    iconImage: '/screenhawk-icon.png',
-    tech: "Chrome Extension • TypeScript • OpenAI Vision"
   },
   {
     title: "TempleToss",
@@ -177,10 +177,10 @@ const ProjectsNarrative = () => {
           className="mb-10 text-center md:mb-12"
         >
           <h2 className="mb-4 text-balance text-4xl font-bold md:text-5xl">
-            Projects That Started With Questions
+            Selected Projects
           </h2>
           <p className="mx-auto max-w-2xl text-pretty text-lg leading-8 text-muted-foreground">
-            Every tool I create begins with a question or observation. Here are some problems I noticed and decided to solve.
+            AI products, privacy tools, and projects that automate everyday tasks.
           </p>
           <div className="mt-6">
             <Button asChild>

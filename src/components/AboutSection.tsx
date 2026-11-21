@@ -31,10 +31,10 @@ const AboutSection = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
           >
             <p>
-              I'm a Detroit-born software engineer and entrepreneur. From launching a viral Java bot at 13 to shipping global products at Bird and Ford, my career has been built around risk, clarity, and software leverage. I founded <span className="font-medium text-foreground">Safe</span> to redefine digital trust and created <span className="font-medium text-foreground">SafeLab</span> to open-source health infrastructure.
+              I’m a Detroit-born engineer. I started writing Java bots at 13, shipped products at Bird and Ford, and went on to found <span className="font-medium text-foreground">Safe</span>, a venture-backed security startup.
             </p>
-            <p className="font-medium">
-              This is the personal command center for everything I make, fund, or break.
+            <p>
+              Now I build products with AI and test how models behave when they’re part of a real workflow. I use Claude Code and Cursor in my own work. I’ve worked on production AI agents, including classifying failures so the system knows when to stop retrying and when to escalate.
             </p>
           </motion.div>
         </motion.div>
