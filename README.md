@@ -17,7 +17,9 @@ Open the local URL printed by Vite.
 
 ## Production build
 
-Run `npm run build` to create the production bundle in `dist/`. Before bundling, the build scripts refresh the YouTube Shorts, Medium, and Unsplash data and can fall back to the checked-in snapshots when an upstream service is unavailable. Run `npm run preview` to serve the built files locally.
+Run `npm run build` to create the production bundle in `dist/`. Before bundling, the build scripts try to refresh the YouTube Shorts, Medium, and Unsplash snapshots. If a refresh fails, the scripts log a warning and the build uses the existing snapshot files.
+
+Run `npm run preview` to serve the built files locally. Vite's development and preview servers serve the front end only. YouTube and Podcast start with bundled Shorts and keep showing them when the deployed `/api/top-youtube-shorts` endpoint is unavailable or returns an empty list.
 
 ## Stack
 

@@ -2,6 +2,12 @@
 
 This history records visitor-facing changes from merged pull requests. Dates use Eastern time. Earlier entries describe what changed at the time, including features that have since been removed.
 
+## 2026-11-21
+
+- Gave the mobile navigation dialog a screen-reader name and made its close button easier to tap. ([#51](https://github.com/rodneyg/rodney-gainous-site/pull/51))
+- Updated the portfolio's search and social sharing previews and added homepage analytics that omit query strings and fragments from the recorded page URL. ([#49](https://github.com/rodneyg/rodney-gainous-site/pull/49))
+- Turned the homepage into a horizontal slide deck with swipe, arrow-key, and button navigation. Links to individual sections still jump to the matching slide. ([#44](https://github.com/rodneyg/rodney-gainous-site/pull/44))
+
 ## 2026-11-20
 
 - Added Slow Burn and Approver in the Footer to AI Research, with links to their demos and source. ([#47](https://github.com/rodneyg/rodney-gainous-site/pull/47), [#46](https://github.com/rodneyg/rodney-gainous-site/pull/46), [#45](https://github.com/rodneyg/rodney-gainous-site/pull/45), [#43](https://github.com/rodneyg/rodney-gainous-site/pull/43))
