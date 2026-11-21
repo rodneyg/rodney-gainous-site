@@ -1,42 +1,26 @@
 # Personal Portfolio Website
 
-This project is a personal portfolio website designed to showcase my projects, writings, and contact information.
+The source for [rodneygainous.com](https://rodneygainous.com), a portfolio of projects, AI research, work history, writing, and media.
 
-## Getting Started
+## Getting started
 
-To get a local copy up and running, follow these simple steps.
-
-**Prerequisites**
-
-*   Node.js and npm: Make sure you have Node.js and npm installed. You can download them from [nodejs.org](https://nodejs.org/) or use a version manager like [nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-**Installation**
+Install [Node.js](https://nodejs.org/) and npm, then run the following commands.
 
 ```sh
-1. Clone the repo
-   ```sh
-   git clone <YOUR_GIT_URL>
-   ```
-2. Navigate to the project directory
-   ```sh
-   cd <YOUR_PROJECT_NAME>
-   ```
-3. Install NPM packages
-   ```sh
-   npm i
-   ```
-4. Start the development server
-   ```sh
-   npm run dev
-   ```
+git clone https://github.com/rodneyg/rodney-gainous-site.git
+cd rodney-gainous-site
+npm ci
+npm run dev
+```
 
-## What technologies are used for this project?
+Open the local URL printed by Vite.
 
-This project is built with:
+## Production build
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Run `npm run build` to create the production bundle in `dist/`. Before bundling, the build scripts refresh the YouTube Shorts, Medium, and Unsplash data and can fall back to the checked-in snapshots when an upstream service is unavailable. Run `npm run preview` to serve the built files locally.
 
+## Stack
+
+Vite, TypeScript, React, shadcn/ui, and Tailwind CSS.
+
+See the [changelog](CHANGELOG.md) for the history of visitor-facing updates.
