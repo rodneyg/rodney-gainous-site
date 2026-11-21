@@ -49,7 +49,7 @@ const projects = [
     title: "SeenClearly",
     inspiration: "Complex truths often hide in plain sight. What if we could crystallize profound lessons into single, undeniable visual insights—instantly understood and impossible to forget?",
     description: "A platform that generates clear, impactful visuals paired with concise truths about life, relationships, and human behavior. Each image distills complexity into immediate visual clarity, designed for rapid insight and sharing.",
-    demoUrl: "https://seenclearly.com",
+    demoUrl: "https://v0-human-truths-through-metaphor.vercel.app",
     githubUrl: null, // Private repository or not yet public
     demoLabel: "See Clearly",
     icon: '🔍',
