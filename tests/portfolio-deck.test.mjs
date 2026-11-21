@@ -132,8 +132,22 @@ test('mobile swipes and menu links navigate the same deck', async () => {
     await touch('touchEnd');
     await expectSlide(page, 1);
 
-    await page.getByRole('button', { name: 'Open navigation menu' }).click();
-    await page.getByRole('dialog').getByRole('link', { name: 'Writing' }).click();
+    const trigger = page.getByRole('button', { name: 'Open navigation menu' });
+    await trigger.focus();
+    await page.keyboard.press('Enter');
+    const dialog = page.getByRole('dialog', { name: 'Navigation' });
+    const close = dialog.getByRole('button', { name: 'Close', exact: true });
+    const closeTarget = await close.boundingBox();
+    assert.ok(closeTarget && closeTarget.width >= 44 && closeTarget.height >= 44);
+    const themeTarget = await dialog.getByRole('button', { name: 'Toggle theme' }).boundingBox();
+    assert.ok(themeTarget && themeTarget.x + themeTarget.width <= closeTarget.x);
+
+    await page.keyboard.press('Escape');
+    await dialog.waitFor({ state: 'hidden' });
+    await page.waitForFunction(() => document.activeElement?.getAttribute('aria-label') === 'Open navigation menu');
+
+    await trigger.click();
+    await dialog.getByRole('link', { name: 'Writing' }).click();
     await expectSlide(page, 6);
     assert.equal(new URL(page.url()).hash, '#writing');
   });
