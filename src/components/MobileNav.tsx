@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { motion } from 'framer-motion';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -40,18 +40,11 @@ const MobileNav = () => {
           <span className="sr-only">Toggle menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-[300px] sm:w-[400px] p-0">
+      <SheetContent side="right" className="w-[300px] sm:w-[400px] p-0" aria-describedby={undefined}>
         <div className="flex h-full flex-col">
           {/* Header */}
-          <div className="flex items-center justify-between border-b p-6">
-            <motion.h2 
-              className="text-lg font-semibold"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              Navigation
-            </motion.h2>
+          <div className="flex items-center justify-between border-b p-6 pr-16">
+            <SheetTitle>Navigation</SheetTitle>
             <div className="flex items-center gap-2">
               <ThemeToggle />
             </div>
