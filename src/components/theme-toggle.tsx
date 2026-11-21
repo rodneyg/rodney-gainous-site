@@ -22,7 +22,8 @@ export function ThemeToggle() {
       variant="ghost"
       size="sm"
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-      className="h-9 w-9 rounded-full"
+      className="size-10 rounded-full"
+      aria-label="Toggle theme"
     >
       <motion.div
         initial={false}
@@ -33,7 +34,7 @@ export function ThemeToggle() {
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className="absolute"
       >
-        <Moon className="h-4 w-4" />
+        <Moon className="size-4" />
       </motion.div>
       <motion.div
         initial={false}
@@ -44,7 +45,7 @@ export function ThemeToggle() {
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className="absolute"
       >
-        <Sun className="h-4 w-4" />
+        <Sun className="size-4" />
       </motion.div>
       <span className="sr-only">Toggle theme</span>
     </Button>

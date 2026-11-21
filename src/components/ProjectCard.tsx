@@ -2,7 +2,6 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Github } from "lucide-react";
-import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 
 export interface ProjectProps {
@@ -26,8 +25,7 @@ const ProjectCard = ({
 }: ProjectProps) => {
   return (
     <motion.div 
-      className="group overflow-hidden rounded-xl border bg-card shadow-sm hover:shadow-lg transition-all duration-300"
-      whileHover={{ y: -5 }}
+      className="group overflow-hidden rounded-xl border bg-card shadow-sm transition-[box-shadow,transform,border-color] duration-200 hover:-translate-y-1 hover:border-primary/20 hover:shadow-lg"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -37,17 +35,16 @@ const ProjectCard = ({
         <img 
           src={image} 
           alt={title} 
-          className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+          className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
       <div className="p-6">
-        <h4 className="font-bold text-2xl mb-2 group-hover:text-primary transition-colors duration-300">{title}</h4>
+        <h4 className="mb-2 text-2xl font-bold transition-colors duration-200 group-hover:text-primary">{title}</h4>
         <p className="text-muted-foreground mb-2 line-clamp-2">{description}</p>
         {tech && (
           <p className="text-sm text-muted-foreground mb-4">Tech: {tech}</p>
         )}
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3">
           {demoUrl && (
             <Button className="flex-1" asChild>
               <a href={demoUrl} target="_blank" rel="noopener noreferrer">
