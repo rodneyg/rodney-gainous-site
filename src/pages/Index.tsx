@@ -1,9 +1,13 @@
 
-import React, { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import AIResearchSection from '@/components/AIResearchSection';
 import SafeLabSection from '@/components/SafeLabSection';
+import PodcastSection from '@/components/PodcastSection';
+import YouTubeSection from '@/components/YouTubeSection';
+import UnsplashSection from '@/components/UnsplashSection';
 import ProjectsSection from '@/components/ProjectsSection';
 import WritingSection from '@/components/WritingSection';
 import AboutSection from '@/components/AboutSection';
@@ -11,262 +15,127 @@ import ExperienceSection from '@/components/ExperienceSection';
 import ContactSection from '@/components/ContactSection';
 import TechStackBlock from '@/components/TechStackBlock';
 import Footer from '@/components/Footer';
+import { Button } from '@/components/ui/button';
 
-// Maps anchor section IDs (used in nav links) to their slide index
-const SECTION_TO_SLIDE: Record<string, number> = {
-  hero: 0,
-  tech: 1,
-  projects: 2,
-  experience: 3,
-  safelab: 4,
-  'ai-research': 5,
-  writing: 6,
-  about: 7,
-  contact: 8,
+const slides = [
+  { label: 'Home', content: <Hero /> },
+  { label: 'Tech Stack and Methods', content: <TechStackBlock /> },
+  { label: 'Projects', content: <ProjectsSection /> },
+  { label: 'Research', content: <AIResearchSection /> },
+  { label: 'Safe Lab', content: <SafeLabSection /> },
+  { label: 'Experience', content: <ExperienceSection /> },
+  { label: 'Writing', content: <WritingSection /> },
+  { label: 'Podcast', content: <PodcastSection /> },
+  { label: 'YouTube', content: <YouTubeSection /> },
+  { label: 'Photography', content: <UnsplashSection /> },
+  { label: 'About', content: <AboutSection /> },
+  { label: 'Contact', content: <><ContactSection /><Footer /></> },
+];
+
+const getCurrentSlide = (deck: HTMLElement) => Math.round(deck.scrollLeft / deck.clientWidth);
+
+const moveSlide = (deck: HTMLElement | null, direction: number) => {
+  if (!deck) return;
+  const current = getCurrentSlide(deck);
+  const next = Math.max(0, Math.min(current + direction, slides.length - 1));
+  if (next === current) return;
+
+  deck.scrollTo({ left: next * deck.clientWidth, behavior: 'instant' });
+  if (deck.children[current].contains(document.activeElement)) {
+    deck.children[next].querySelector<HTMLElement>('.pitch-deck-content')?.focus({ preventScroll: true });
+  }
 };
 
-const TOTAL_SLIDES = Object.keys(SECTION_TO_SLIDE).length;
-const SLIDE_TRANSITION_SETTLE_MS = 450;
-const DEFAULT_SCROLL_EXIT_THRESHOLD = 72;
-const KEYBOARD_VERTICAL_SCROLL_RATIO = 0.75;
-
 const Index = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const activeSlideRef = useRef(0);
-  const isAnimatingRef = useRef(false);
-  const settleTimerRef = useRef<ReturnType<typeof window.setTimeout>>();
-  const wheelExitIntentRef = useRef({ key: '', amount: 0 });
-
-  const scrollToSlide = useCallback((index: number) => {
-    const container = containerRef.current;
-    if (container) {
-      const nextIndex = Math.max(0, Math.min(index, TOTAL_SLIDES - 1));
-      isAnimatingRef.current = true;
-      wheelExitIntentRef.current = { key: '', amount: 0 };
-      container.scrollTo({ left: nextIndex * window.innerWidth, behavior: 'smooth' });
-    }
-  }, []);
+  const deckRef = useRef<HTMLElement>(null);
+  const [activeSlide, setActiveSlide] = useState(0);
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+    const deck = deckRef.current;
+    if (!deck) return;
 
-    const getActiveScrollableElement = () =>
-      container.children[activeSlideRef.current]?.querySelector('[data-scrollable="true"]') as HTMLElement | null;
-
-    const resetWheelExitIntent = () => {
-      wheelExitIntentRef.current = { key: '', amount: 0 };
-    };
-
-    // Handle initial hash navigation
-    if (window.location.hash) {
-      const id = window.location.hash.substring(1);
-      const slideIndex = SECTION_TO_SLIDE[id] ?? -1;
-      if (slideIndex >= 0) {
-        // Small delay lets the DOM finish its initial layout before scrolling
-        setTimeout(() => scrollToSlide(slideIndex), 100);
-      }
-    }
-
-    // Intercept anchor link clicks so hash navigation drives horizontal scrolling
-    const handleAnchorClick = (e: MouseEvent) => {
-      const anchor = (e.target as HTMLElement).closest('a[href^="#"]');
-      if (!anchor) return;
-      const href = anchor.getAttribute('href');
-      if (!href) return;
-      const sectionId = href.substring(1);
-      const slideIndex = SECTION_TO_SLIDE[sectionId] ?? -1;
-      if (slideIndex >= 0) {
-        e.preventDefault();
-        scrollToSlide(slideIndex);
-      }
-    };
-    document.addEventListener('click', handleAnchorClick);
-
-    // Notify Header about horizontal scroll position
-    const handleContainerScroll = () => {
-      activeSlideRef.current = Math.round(container.scrollLeft / window.innerWidth);
-
-      window.clearTimeout(settleTimerRef.current);
-      settleTimerRef.current = window.setTimeout(() => {
-        isAnimatingRef.current = false;
-      }, SLIDE_TRANSITION_SETTLE_MS);
-
-      window.dispatchEvent(
-        new CustomEvent('slideScroll', { detail: { scrollLeft: container.scrollLeft } })
-      );
-    };
-    container.addEventListener('scroll', handleContainerScroll, { passive: true });
-
-    // Mouse wheel: translate dominant vertical scroll into horizontal slide change.
-    // Trackpad safety: skip if horizontal delta is dominant (native swipe).
-    // NOTE: passive:false is required so we can call preventDefault() to stop the
-    // browser's default vertical scroll on the outer container.
-    const handleWheel = (e: WheelEvent) => {
-      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
-
-      // Allow normal vertical scrolling inside a content-heavy slide
-      const target = e.target as HTMLElement;
-      const scrollableEl = target.closest('[data-scrollable="true"]') as HTMLElement | null;
-      if (scrollableEl) {
-        const { scrollTop, scrollHeight, clientHeight } = scrollableEl;
-        const remainingTop = scrollTop;
-        const remainingBottom = scrollHeight - clientHeight - scrollTop;
-        const direction = e.deltaY > 0 ? 1 : -1;
-        const atBoundary = direction > 0 ? remainingBottom <= 1 : remainingTop <= 1;
-        if (!atBoundary) {
-          resetWheelExitIntent();
+    let anchorFrame: number;
+    const syncHash = () => {
+      window.cancelAnimationFrame(anchorFrame);
+      anchorFrame = window.requestAnimationFrame(() => {
+        const hash = window.location.hash.slice(1);
+        if (!hash) {
+          deck.scrollTo({ left: 0, behavior: 'instant' });
           return;
         }
-
-        const exitThreshold = Number.parseFloat(scrollableEl.dataset.scrollExitThreshold ?? '');
-        const requiredIntent = Number.isFinite(exitThreshold)
-          ? exitThreshold
-          : DEFAULT_SCROLL_EXIT_THRESHOLD;
-        const wheelIntentKey = `${activeSlideRef.current}:${direction}`;
-        const nextAmount =
-          wheelExitIntentRef.current.key === wheelIntentKey
-            ? wheelExitIntentRef.current.amount + Math.abs(e.deltaY)
-            : Math.abs(e.deltaY);
-
-        wheelExitIntentRef.current = { key: wheelIntentKey, amount: nextAmount };
-        if (nextAmount < requiredIntent) {
-          e.preventDefault();
-          return;
+        const target = document.getElementById(hash);
+        if (target && deck.contains(target)) {
+          target.scrollIntoView({ block: 'start', inline: 'start', behavior: 'instant' });
         }
-      }
+      });
+    };
+    syncHash();
 
-      e.preventDefault();
-      if (isAnimatingRef.current) return;
+    let wheelTimer: number | undefined;
+    const handleWheel = (event: WheelEvent) => {
+      if (event.ctrlKey || event.shiftKey || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+      const content = event.target instanceof Element ? event.target.closest('.pitch-deck-content') : null;
+      if (content && content.scrollHeight > content.clientHeight + 1) return;
 
-      // Use current innerWidth so the value is accurate after any viewport resize
-      const nextIndex = activeSlideRef.current + (e.deltaY > 0 ? 1 : -1);
-      scrollToSlide(nextIndex);
+      event.preventDefault();
+      if (wheelTimer === undefined) moveSlide(deck, Math.sign(event.deltaY));
+      window.clearTimeout(wheelTimer);
+      // Keep a burst of wheel events from skipping multiple slides.
+      wheelTimer = window.setTimeout(() => { wheelTimer = undefined; }, 160);
     };
 
-    // Keyboard: Left/Right navigate slides; Up/Down scroll within vertical slides
-    const handleKeyDown = (e: KeyboardEvent) => {
-      const scrollableEl = getActiveScrollableElement();
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+      if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+      if (event.target instanceof Element &&
+        event.target.closest('input, textarea, select, [contenteditable], [role="dialog"], [role="slider"]')) return;
 
-      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-        if (!scrollableEl) return;
-
-        const direction = e.key === 'ArrowDown' ? 1 : -1;
-        const maxScrollTop = scrollableEl.scrollHeight - scrollableEl.clientHeight;
-        const canScroll = maxScrollTop > 1;
-        if (!canScroll) return;
-
-        const remainingDistance =
-          direction > 0 ? maxScrollTop - scrollableEl.scrollTop : scrollableEl.scrollTop;
-        if (remainingDistance <= 1) return;
-
-        e.preventDefault();
-        resetWheelExitIntent();
-        const delta = Math.min(
-          Math.round(scrollableEl.clientHeight * KEYBOARD_VERTICAL_SCROLL_RATIO),
-          remainingDistance
-        );
-        scrollableEl.scrollBy({ top: delta * direction, behavior: 'smooth' });
-        return;
-      }
-
-      if (isAnimatingRef.current) return;
-
-      if (e.key === 'ArrowRight') {
-        e.preventDefault();
-        scrollToSlide(activeSlideRef.current + 1);
-      } else if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        scrollToSlide(activeSlideRef.current - 1);
-      }
+      event.preventDefault();
+      moveSlide(deck, event.key === 'ArrowRight' ? 1 : -1);
     };
 
-    // passive:false is intentional — we need to call preventDefault() on wheel events
-    container.addEventListener('wheel', handleWheel, { passive: false });
-    window.addEventListener('keydown', handleKeyDown);
-
+    deck.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('keydown', handleKey);
+    window.addEventListener('hashchange', syncHash);
     return () => {
-      document.removeEventListener('click', handleAnchorClick);
-      container.removeEventListener('scroll', handleContainerScroll);
-      container.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('keydown', handleKeyDown);
-      window.clearTimeout(settleTimerRef.current);
+      window.cancelAnimationFrame(anchorFrame);
+      window.clearTimeout(wheelTimer);
+      deck.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('keydown', handleKey);
+      window.removeEventListener('hashchange', syncHash);
     };
-  }, [scrollToSlide]);
+  }, []);
 
   return (
-    <>
+    <div className="pitch-deck-page">
       <Header />
-      <div ref={containerRef} className="slides-container">
-        {/* Slide 0 — Hero (full-screen, centered, no inner scroll) */}
-        <div className="slide" id="slide-hero">
-          <div data-scrollable="true" className="slide-content">
-            <Hero onNext={() => scrollToSlide(1)} />
+      <main
+        ref={deckRef}
+        className="pitch-deck"
+        onScroll={(event) => setActiveSlide(getCurrentSlide(event.currentTarget))}
+      >
+        {slides.map(({ label, content }) => (
+          <div key={label} className="pitch-deck-slide">
+            <div className="pitch-deck-content" role="region" aria-label={label} tabIndex={0}>
+              {content}
+            </div>
           </div>
-        </div>
-
-        {/* Slide 1 — Tech Stack */}
-        <div className="slide" id="slide-tech">
-          <div data-scrollable="true" className="slide-content">
-            <TechStackBlock />
-          </div>
-        </div>
-
-        {/* Slide 2 — Projects (content-heavy, scrollable) */}
-        <div className="slide" id="slide-projects">
-          <div data-scrollable="true" className="slide-content">
-            <ProjectsSection />
-          </div>
-        </div>
-
-        {/* Slide 3 — Experience (content-heavy, scrollable) */}
-        <div className="slide" id="slide-experience">
-          <div data-scrollable="true" className="slide-content">
-            <ExperienceSection />
-          </div>
-        </div>
-
-        {/* Slide 4 — SafeLab */}
-        <div className="slide" id="slide-safelab">
-          <div data-scrollable="true" className="slide-content">
-            <SafeLabSection />
-          </div>
-        </div>
-
-        {/* Slide 5 — AI Research (scrollable) */}
-        <div className="slide" id="slide-ai-research">
-          <div
-            data-scrollable="true"
-            data-scroll-exit-threshold="180"
-            className="slide-content"
-          >
-            <AIResearchSection />
-          </div>
-        </div>
-
-        {/* Slide 6 — Writing (scrollable) */}
-        <div className="slide" id="slide-writing">
-          <div data-scrollable="true" className="slide-content">
-            <WritingSection />
-          </div>
-        </div>
-
-        {/* Slide 7 — About */}
-        <div className="slide" id="slide-about">
-          <div data-scrollable="true" className="slide-content">
-            <AboutSection />
-          </div>
-        </div>
-
-        {/* Slide 8 — Contact + Footer */}
-        <div className="slide" id="slide-contact">
-          <div data-scrollable="true" className="slide-content">
-            <ContactSection />
-            <Footer />
-          </div>
-        </div>
-      </div>
-    </>
+        ))}
+      </main>
+      <nav aria-label="Slide navigation" className="flex items-center justify-center gap-4 border-t px-4 pb-[env(safe-area-inset-bottom)]">
+        <Button type="button" variant="ghost" size="icon" aria-label="Previous slide" disabled={activeSlide === 0}
+          onClick={() => moveSlide(deckRef.current, -1)}>
+          <ArrowLeft className="size-5" aria-hidden="true" />
+        </Button>
+        <span className="text-sm tabular-nums text-muted-foreground" aria-live="polite">
+          {activeSlide + 1} / {slides.length}
+        </span>
+        <Button type="button" variant="ghost" size="icon" aria-label="Next slide" disabled={activeSlide === slides.length - 1}
+          onClick={() => moveSlide(deckRef.current, 1)}>
+          <ArrowRight className="size-5" aria-hidden="true" />
+        </Button>
+      </nav>
+    </div>
   );
 };
 

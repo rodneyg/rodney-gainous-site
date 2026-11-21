@@ -1,55 +1,52 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Card } from '@/components/ui/card';
 import AnimatedCounter from '@/components/AnimatedCounter';
 
 const TechStackBlock = () => {
   return (
-    <section className="py-32 px-6">
+    <section className="px-6 py-24 md:py-32">
       <motion.div 
-        className="max-w-5xl mx-auto"
+        className="mx-auto max-w-5xl"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 0.5 }}
       >
         <motion.h2 
-          className="text-5xl md:text-6xl font-bold mb-16 tracking-tight text-center bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent"
+          className="mb-12 text-center text-4xl font-bold md:mb-16 md:text-6xl"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
         >
           Tech Stack & Methods
         </motion.h2>
         
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid gap-6 md:grid-cols-2 md:gap-8">
           <motion.div 
-            className="enhanced-card p-8 rounded-2xl border border-border/50 relative overflow-hidden group"
+            className="enhanced-card group relative overflow-hidden rounded-2xl border border-border/60 p-6 shadow-sm md:p-8"
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-transparent to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
             <div className="relative z-10">
-              <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
-                <motion.span 
-                  className="text-3xl"
-                  whileHover={{ scale: 1.2, rotate: 10 }}
-                  transition={{ duration: 0.3 }}
+              <h3 className="mb-4 flex items-center gap-3 text-2xl font-bold">
+                <span 
+                  className="flex size-10 items-center justify-center rounded-lg bg-muted text-2xl ring-1 ring-black/10 dark:ring-white/10"
+                  aria-hidden="true"
                 >
                   📈
-                </motion.span>
+                </span>
                 Impact
               </h3>
-              <p className="text-lg leading-relaxed">
+              <p className="text-base leading-8 md:text-lg">
                 Personally shipped products that crossed{' '}
-                <span className="text-foreground font-bold text-xl bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+                <span className="text-xl font-bold text-foreground tabular-nums">
                   <AnimatedCounter value={250} suffix="K+ installs" />
                 </span>
                 {' '}and contributed professionally to early mobile apps that now serve{' '}
-                <span className="text-foreground font-bold text-xl bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+                <span className="text-xl font-bold text-foreground">
                   millions of users
                 </span>
                 {' '}on iOS and Android.
@@ -58,25 +55,23 @@ const TechStackBlock = () => {
           </motion.div>
           
           <motion.div 
-            className="enhanced-card p-8 rounded-2xl border border-border/50 relative overflow-hidden group"
+            className="enhanced-card group relative overflow-hidden rounded-2xl border border-border/60 p-6 shadow-sm md:p-8"
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-transparent to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
             <div className="relative z-10">
-              <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
-                <motion.span 
-                  className="text-3xl"
-                  whileHover={{ scale: 1.2, rotate: -10 }}
-                  transition={{ duration: 0.3 }}
+              <h3 className="mb-4 flex items-center gap-3 text-2xl font-bold">
+                <span 
+                  className="flex size-10 items-center justify-center rounded-lg bg-muted text-2xl ring-1 ring-black/10 dark:ring-white/10"
+                  aria-hidden="true"
                 >
                   ⚡
-                </motion.span>
+                </span>
                 Stack
               </h3>
-              <p className="text-lg leading-relaxed">
+              <p className="text-base leading-8 md:text-lg">
                 <span className="font-semibold text-foreground">TypeScript everywhere</span> — React, Next.js,{' '}
                 <span className="font-semibold text-purple-600">React Native (mobile)</span> — Node/Express APIs, Postgres & Firebase realtime, OpenAI-powered CV pipelines. Native mobile with{' '}
                 <span className="font-semibold text-orange-600">Java/Kotlin (Android)</span> &{' '}

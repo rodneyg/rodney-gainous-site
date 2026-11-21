@@ -2,72 +2,42 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import EnhancedButton from '@/components/EnhancedButton';
 
-interface HeroProps {
-  onNext?: () => void;
-}
+const Hero = () => {
+  const scrollToProjects = () => {
+    document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
+  };
 
-const Hero = ({ onNext }: HeroProps) => {
   return (
-    <section className="w-full h-full flex items-start justify-center px-6 pt-8 md:pt-10 pb-10 relative overflow-hidden">
-      {/* Subtle background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted/20 -z-10" />
-      
-      {/* Animated background elements */}
-      <div className="absolute inset-0 -z-5">
-        <motion.div 
-          className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-primary/5 to-transparent rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.1, 0.3],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div 
-          className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-l from-muted/10 to-transparent rounded-full blur-3xl"
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.2, 0.4, 0.2],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 2
-          }}
-        />
-      </div>
+    <section className="relative flex min-h-full items-center justify-center overflow-hidden px-6 py-10 md:py-14">
+      <div className="absolute inset-x-0 top-0 h-px bg-border" />
 
       <motion.div 
-        className="text-center max-w-5xl relative z-10"
+        className="relative z-10 mx-auto max-w-5xl text-center"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: "easeOut" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
       >
         {/* Personal Avatar */}
         <motion.div
-          className="flex justify-center mb-12"
+          className="mb-6 flex justify-center md:mb-8"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.1, ease: "easeOut" }}
+          transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
         >
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: "spring", duration: 0.3, bounce: 0 }}
           >
-            <Avatar className="w-32 h-32 md:w-40 md:h-40 border-4 border-background shadow-2xl shadow-primary/10">
+            <Avatar className="size-24 border-4 border-background shadow-lg ring-1 ring-black/10 md:size-40 dark:ring-white/10">
               <AvatarImage 
                 src="/temp-avatar.jpg" 
                 alt="Rodney Gainous - Smiling professional headshot"
                 className="object-cover"
               />
-              <AvatarFallback className="text-3xl md:text-4xl font-bold bg-gradient-to-br from-primary/20 to-muted">
+              <AvatarFallback className="bg-muted text-3xl font-bold md:text-4xl">
                 RG
               </AvatarFallback>
             </Avatar>
@@ -75,59 +45,42 @@ const Hero = ({ onNext }: HeroProps) => {
         </motion.div>
 
         <motion.h2 
-          className="text-6xl md:text-8xl lg:text-9xl font-bold mb-8 leading-[0.9] tracking-tighter"
+          className="mb-6 text-4xl font-bold leading-none md:text-7xl"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+          transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
         >
-          <span className="bg-gradient-to-r from-foreground via-foreground to-muted-foreground bg-clip-text text-transparent">
-            Builder.
-          </span>
+          <span>Builder.</span>
           <br />
-          <span className="bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
-            Engineer.
-          </span>
+          <span>Engineer.</span>
           <br />
           <span className="text-muted-foreground font-medium">Problem-solver.</span>
         </motion.h2>
         
         <motion.p 
-          className="text-xl md:text-2xl lg:text-3xl text-muted-foreground mx-auto mb-10 max-w-4xl leading-relaxed font-light"
+          className="mx-auto mb-8 max-w-3xl text-lg leading-8 text-muted-foreground md:mb-10 md:text-2xl md:leading-10"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.4, ease: "easeOut" }}
+          transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
         >
-          I build practical products across <span className="text-foreground font-medium">AI, security, health, and infrastructure</span>.
+          I've been building software since I was 13, starting with Java bots and eventually founding my own{' '}
+          <span className="text-foreground font-medium">venture-backed security startup</span>. 
+          For over a decade, I've tackled challenges across cybersecurity, AI, health technology, and digital infrastructure.
         </motion.p>
         
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
+          transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
         >
           <EnhancedButton
-            onClick={onNext}
+            onClick={scrollToProjects}
             size="lg"
-            rightIcon={<ArrowRight className="h-6 w-6" />}
+            rightIcon={<ArrowRight className="size-5" />}
           >
             See my work
           </EnhancedButton>
         </motion.div>
-
-        <motion.p
-          className="mt-6 inline-flex flex-wrap items-center justify-center gap-3 text-sm md:text-base text-muted-foreground"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.7, ease: "easeOut" }}
-        >
-          <span className="inline-flex items-center gap-1">
-            <ArrowLeft className="h-4 w-4" />
-            <ArrowRight className="h-4 w-4" />
-            move between slides
-          </span>
-          <span className="hidden md:inline text-muted-foreground/60">•</span>
-          <span>↑ ↓ scroll longer pages</span>
-        </motion.p>
       </motion.div>
     </section>
   );

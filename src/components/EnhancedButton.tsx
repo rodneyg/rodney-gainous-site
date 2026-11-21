@@ -22,10 +22,10 @@ const EnhancedButton: React.FC<EnhancedButtonProps> = ({
   disabled,
   ...props
 }) => {
-  const baseClasses = "relative overflow-hidden font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2";
+  const baseClasses = "relative inline-flex min-h-10 items-center justify-center font-medium transition-[background-color,box-shadow,transform,color,border-color] duration-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:ring-offset-2";
   
   const variantClasses = {
-    primary: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-xl",
+    primary: "bg-primary text-primary-foreground shadow-md hover:bg-primary/90 hover:shadow-lg",
     secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/90 border border-border",
     ghost: "bg-transparent text-foreground hover:bg-muted border border-border hover:border-primary/50"
   };
@@ -37,14 +37,9 @@ const EnhancedButton: React.FC<EnhancedButtonProps> = ({
   };
 
   const buttonVariants = {
-    hover: { scale: 1.02 },
-    tap: { scale: 0.98 },
+    hover: { scale: 1.01 },
+    tap: { scale: 0.96 },
     disabled: { scale: 1, opacity: 0.6 }
-  };
-
-  const shimmerVariants = {
-    initial: { x: '-100%' },
-    hover: { x: '100%' }
   };
 
   return (
@@ -62,48 +57,33 @@ const EnhancedButton: React.FC<EnhancedButtonProps> = ({
       disabled={disabled || loading}
       {...props}
     >
-      {/* Shimmer effect */}
-      <motion.div
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-        variants={shimmerVariants}
-        initial="initial"
-        whileHover="hover"
-        transition={{ duration: 0.6, ease: "easeInOut" }}
-      />
-
       {/* Content */}
       <div className="relative z-10 flex items-center justify-center gap-2">
         {loading && (
           <motion.div
-            className="w-4 h-4 border-2 border-current border-t-transparent rounded-full"
+            className="size-4 rounded-full border-2 border-current border-t-transparent"
             animate={{ rotate: 360 }}
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
           />
         )}
         {!loading && leftIcon && (
-          <motion.div
+          <motion.span
             initial={{ x: -10, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.1 }}
           >
             {leftIcon}
-          </motion.div>
+          </motion.span>
         )}
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          {children}
-        </motion.span>
+        <span>{children}</span>
         {!loading && rightIcon && (
-          <motion.div
+          <motion.span
             initial={{ x: 10, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.1 }}
           >
             {rightIcon}
-          </motion.div>
+          </motion.span>
         )}
       </div>
     </motion.button>

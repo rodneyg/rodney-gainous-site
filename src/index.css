@@ -3,55 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Horizontal Pitch Deck Layout ─────────────────────────────────────── */
-
-html, body, #root {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-}
-
-.slides-container {
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  overscroll-behavior-x: contain;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.slides-container::-webkit-scrollbar {
-  display: none;
-}
-
-.slide {
-  flex: none;
-  width: 100vw;
-  height: 100vh;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Scrollable inner wrapper for content-heavy slides */
-.slide-content {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-top: 4rem; /* clear the fixed header */
-  scrollbar-width: thin;
-}
-
-/* ─────────────────────────────────────────────────────────────────────── */
-
 @layer base {
   :root {
     --background: 0 0% 99%;
@@ -83,6 +34,8 @@ html, body, #root {
     --ring: 0 0% 18%;
 
     --radius: 0.75rem;
+    --surface-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.04);
+    --surface-shadow-hover: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.08), 0 8px 20px rgba(0, 0, 0, 0.07);
   }
 
   .dark {
@@ -113,6 +66,8 @@ html, body, #root {
     --border: 0 0% 15%;
     --input: 0 0% 15%;
     --ring: 0 0% 83%;
+    --surface-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+    --surface-shadow-hover: 0 0 0 1px rgba(255, 255, 255, 0.13);
   }
 
   * {
@@ -123,13 +78,25 @@ html, body, #root {
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: 'rlig' 1, 'calt' 1;
-    letter-spacing: -0.01em;
     line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p,
+  li,
+  blockquote {
+    text-wrap: pretty;
   }
 }
 
 .nav-link {
-  @apply relative hover:text-primary transition-colors;
+  @apply relative inline-flex min-h-10 items-center hover:text-primary transition-colors;
 }
 
 .nav-link::after {
@@ -144,49 +111,82 @@ html, body, #root {
 }
 
 .project-card {
-  @apply rounded-xl overflow-hidden border bg-card backdrop-blur-sm transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-1 hover:border-primary/20;
-  background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--muted)) 100%);
+  @apply rounded-xl overflow-hidden border bg-card transition-[box-shadow,transform,border-color] duration-200 hover:shadow-lg hover:-translate-y-1 hover:border-primary/20;
 }
 
 .project-image {
-  @apply w-full h-48 object-cover transition-all duration-500;
+  @apply w-full h-48 object-cover transition-transform duration-200;
 }
 
 .project-card:hover .project-image {
   @apply scale-105 opacity-90;
 }
 
-/* Enhanced button styles */
-.btn-primary {
-  @apply relative overflow-hidden;
-}
-
-.btn-primary::before {
-  content: '';
-  @apply absolute inset-0 bg-gradient-to-r from-primary/0 via-white/10 to-primary/0 translate-x-[-100%] transition-transform duration-700;
-}
-
-.btn-primary:hover::before {
-  @apply translate-x-[100%];
-}
-
-/* Enhanced text gradients */
-.gradient-text {
-  @apply bg-gradient-to-r from-foreground via-foreground to-muted-foreground bg-clip-text text-transparent;
-}
-
-/* Subtle animations */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
-
-.float-animation {
-  animation: float 6s ease-in-out infinite;
-}
-
 /* Enhanced card hover effects */
 .enhanced-card {
-  @apply transition-all duration-500 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-2;
-  background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--muted)/0.5) 100%);
+  @apply bg-card transition-[box-shadow,transform] duration-200 ease-out hover:-translate-y-0.5;
+  box-shadow: var(--surface-shadow);
+}
+
+.enhanced-card:hover,
+.surface-card:hover {
+  box-shadow: var(--surface-shadow-hover);
+}
+
+.surface-card {
+  @apply bg-card transition-[box-shadow,transform] duration-200 ease-out hover:-translate-y-0.5;
+  box-shadow: var(--surface-shadow);
+}
+
+.media-outline {
+  @apply outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10;
+}
+
+.pitch-deck-page {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: clip;
+}
+
+.pitch-deck {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.pitch-deck::-webkit-scrollbar {
+  display: none;
+}
+
+.pitch-deck-slide {
+  flex: 0 0 100vw;
+  min-width: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.pitch-deck-content {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: auto contain;
+}
+
+.pitch-deck-content:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: -2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pitch-deck,
+  .pitch-deck-content {
+    scroll-behavior: auto;
+  }
 }

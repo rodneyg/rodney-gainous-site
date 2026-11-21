@@ -53,58 +53,53 @@ const experiences = [
   },
   {
     id: 5,
-    title: "Founder & Principal Engineer",
+    title: "Founding Principal Engineer",
     company: "Safe",
     location: "Los Angeles, CA, USA",
     startDate: "May 2020",
-    endDate: "November 2025",
-    duration: "5 yrs 7 mos",
+    endDate: "Present",
+    duration: "5 yrs 4 mos",
     type: "Founder",
     icon: "🔐",
-    color: "bg-muted"
-  },
-  {
-    id: 6,
-    title: "Entrepreneur in Residence",
-    company: "Upfront Ventures", 
-    location: "Los Angeles, CA, USA",
-    startDate: "November 2020",
-    endDate: "April 2021",
-    duration: "6 mos",
-    type: "Contract",
-    icon: "💼",
-    color: "bg-muted",
-    isParallel: true, // This overlaps with Safe role
-    description: "Short-term role that contributed to launching and shaping the early direction of Safe."
+    milestone: {
+      title: "Entrepreneur in Residence",
+      company: "Upfront Ventures",
+      dates: "November 2020 - April 2021",
+      outcome: "The residency led to an investment in Safe."
+    },
+    color: "bg-foreground"
   },
   {
     id: 7,
     title: "Staff Software Engineer",
-    company: "Blueprint Bryan Johnson",
-    location: "Remote",
+    company: "Blueprint (now Immortals)",
+    location: "Los Angeles, California, United States · Remote",
     startDate: "November 2025",
     endDate: "Present",
-    duration: "2 mos",
+    duration: "10 mos",
     type: "Full time",
-    icon: "🧬",
-    color: "bg-foreground"
+    icon: "",
+    logo: "https://blueprint.bryanjohnson.com/cdn/shop/files/Logo_Blueprint_Bryan_Johnson_Stacked.svg",
+    logoAlt: "Blueprint",
+    skills: "Mobile Application Development · Mobile Product Development",
+    color: "bg-muted"
   }
 ];
 
 const ExperienceSection = () => {
   return (
-    <section id="experience" className="py-32 px-6">
-      <div className="max-w-6xl mx-auto">
+    <section id="experience" className="px-6 py-20 md:py-24">
+      <div className="mx-auto max-w-6xl">
         {/* Section Header */}
         <motion.div
-          className="text-center mb-20"
+          className="mb-12 text-center"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
           <motion.h2 
-            className="text-4xl font-bold mb-6 tracking-tight"
+            className="mb-4 text-balance text-4xl font-bold md:text-5xl"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -113,7 +108,7 @@ const ExperienceSection = () => {
             Professional <span className="text-muted-foreground">Journey</span>
           </motion.h2>
           <motion.p
-            className="text-xl text-muted-foreground max-w-2xl mx-auto"
+            className="mx-auto max-w-2xl text-pretty text-lg leading-8 text-muted-foreground"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -124,141 +119,94 @@ const ExperienceSection = () => {
         </motion.div>
 
         {/* Timeline Container */}
-        <div className="relative">
+        <div className="relative pl-8 md:pl-0">
           {/* Horizontal Timeline Line */}
-          <div className="absolute top-1/2 left-0 right-0 h-px bg-border transform -translate-y-1/2 hidden md:block" />
+          <div className="absolute bottom-0 left-2 top-0 w-px bg-border md:bottom-auto md:left-0 md:right-0 md:top-3 md:h-px md:w-auto" />
           
           {/* Timeline Items */}
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-4">
-            {experiences.filter(exp => !exp.isParallel).map((experience, index) => (
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-3 xl:grid-cols-6">
+            {experiences.map((experience, index) => (
               <motion.div
                 key={experience.id}
                 className="relative"
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
               >
-                {/* Timeline Node (simplified, no icon) */}
-                <div className="relative md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2">
-                  <motion.div
-                    className={`w-4 h-4 ${experience.color} rounded-full shadow-lg mb-4 md:mb-0 mx-auto relative z-10`}
-                    whileHover={{ scale: 1.2 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                  />
+                {/* Timeline Node */}
+                <div className="absolute -left-[1.9rem] top-4 z-10 md:left-1/2 md:top-1 md:-translate-x-1/2">
+                  <div className={`size-4 rounded-full ${experience.color} ring-4 ring-background shadow-sm`} />
                 </div>
 
                 {/* Experience Card */}
                 <motion.div
-                  className="border border-border rounded-xl p-8 relative"
+                  className="surface-card relative rounded-2xl p-5 md:mt-8"
                   whileHover={{ y: -2 }}
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 >
-                  {/* Icon */}
-                  <div className="mb-6">
-                    <motion.div
-                      className={`w-12 h-12 ${experience.color} rounded-full flex items-center justify-center text-xl ${experience.color === 'bg-foreground' ? 'text-background' : 'text-foreground'}`}
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                    >
-                      {experience.icon}
-                    </motion.div>
-                  </div>
-                  <div className="text-sm text-muted-foreground mb-3">
-                    {experience.startDate} - {experience.endDate}
-                  </div>
-                  <h3 className="font-semibold text-lg mb-3 leading-tight">
-                    {experience.title}
-                  </h3>
-                  <div className="text-muted-foreground mb-4">
-                    <div className="font-medium text-foreground">{experience.company}</div>
-                    <div className="text-sm">{experience.location}</div>
-                  </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">{experience.duration}</span>
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      experience.type === 'Founder' ? 'bg-foreground text-background' :
-                      'bg-muted text-muted-foreground'
+                  <div className="mb-5 flex items-center justify-between gap-3">
+                    {'logo' in experience ? (
+                      <div className="flex h-10 min-w-0 items-center rounded-lg bg-white px-2 ring-1 ring-black/10">
+                        <img
+                          src={experience.logo}
+                          alt={experience.logoAlt}
+                          className="media-outline max-h-7 w-auto max-w-24"
+                          loading="lazy"
+                        />
+                      </div>
+                    ) : (
+                      <div className={`flex size-10 items-center justify-center rounded-lg text-lg ${experience.color} ${experience.color === 'bg-foreground' ? 'text-background' : 'text-foreground'}`}>
+                        {experience.icon}
+                      </div>
+                    )}
+                    <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+                      experience.type === 'Founder' ? 'bg-foreground text-background' : 'bg-muted text-muted-foreground'
                     }`}>
                       {experience.type}
                     </span>
+                  </div>
+                  <div className="mb-3 text-xs leading-5 text-muted-foreground tabular-nums">
+                    {experience.startDate} - {experience.endDate}
+                  </div>
+                  <h3 className="mb-2 text-balance text-lg font-semibold leading-6">
+                    {experience.title}
+                  </h3>
+                  <div className="text-pretty text-sm leading-6 text-muted-foreground">
+                    <div className="font-medium text-foreground">{experience.company}</div>
+                    <div>{experience.location}</div>
+                  </div>
+                  {'skills' in experience && (
+                    <div className="mt-4 rounded-lg bg-muted/60 px-3 py-2 text-xs font-medium leading-5 text-muted-foreground">
+                      {experience.skills}
+                    </div>
+                  )}
+                  {'milestone' in experience && (
+                    <div className="mt-4 rounded-lg bg-muted/60 p-3">
+                      <div className="mb-2 flex items-center gap-2">
+                        <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-background text-sm shadow-[var(--surface-shadow)]" aria-hidden="true">
+                          💼
+                        </span>
+                        <div className="min-w-0">
+                          <div className="text-xs font-semibold text-foreground">{experience.milestone.company}</div>
+                          <div className="text-[11px] leading-4 text-muted-foreground tabular-nums">{experience.milestone.dates}</div>
+                        </div>
+                      </div>
+                      <div className="text-xs font-medium leading-5 text-foreground">{experience.milestone.title}</div>
+                      <p className="mt-1 text-pretty text-xs leading-5 text-muted-foreground">{experience.milestone.outcome}</p>
+                    </div>
+                  )}
+                  <div className="mt-5 border-t border-border/60 pt-3 text-xs font-medium text-muted-foreground tabular-nums">
+                    {experience.duration}
                   </div>
                 </motion.div>
               </motion.div>
             ))}
           </div>
 
-          {/* Parallel Roles */}
-          {experiences.filter(exp => exp.isParallel).length > 0 && (
-            <div className="mt-12 space-y-6">
-              {experiences.filter(exp => exp.isParallel).map((parallelExp, index) => (
-                <motion.div
-                  key={parallelExp.id}
-                  className="max-w-md mx-auto"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.8 + (index * 0.1) }}
-                >
-                  <div className={`bg-gradient-to-r ${
-                    parallelExp.color === 'bg-foreground' 
-                      ? 'from-purple-50 to-indigo-50 border-purple-200' 
-                      : 'from-teal-50 to-cyan-50 border-teal-200'
-                  } rounded-xl p-6 border`}>
-                    <div className="flex items-center mb-3">
-                      <div className={`w-10 h-10 ${
-                        parallelExp.color === 'bg-foreground' 
-                          ? 'bg-purple-500' 
-                          : 'bg-teal-500'
-                      } rounded-full flex items-center justify-center text-white mr-3`}>
-                        {parallelExp.icon}
-                      </div>
-                      <div>
-                        <div className={`text-sm ${
-                          parallelExp.color === 'bg-foreground' 
-                            ? 'text-purple-600' 
-                            : 'text-teal-600'
-                        } font-semibold`}>Parallel Role</div>
-                        <div className={`text-xs ${
-                          parallelExp.color === 'bg-foreground' 
-                            ? 'text-purple-500' 
-                            : 'text-teal-500'
-                        }`}>{parallelExp.startDate} - {parallelExp.endDate}</div>
-                      </div>
-                    </div>
-                    <h4 className="font-bold mb-1">{parallelExp.title}</h4>
-                    <div className="text-slate-600 mb-2">
-                      <div className="font-semibold">{parallelExp.company}</div>
-                      <div className="text-sm">{parallelExp.location}</div>
-                    </div>
-                    {parallelExp.description && (
-                      <p className="text-sm text-slate-600 mb-2">
-                        {parallelExp.description}
-                      </p>
-                    )}
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-slate-500">{parallelExp.duration}</span>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        parallelExp.color === 'bg-foreground' 
-                          ? 'bg-purple-100 text-purple-700' 
-                          : 'bg-teal-100 text-teal-700'
-                      }`}>
-                        {parallelExp.type}
-                      </span>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          )}
         </div>
       </div>
 
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5 pointer-events-none">
-        <div className="absolute top-1/4 left-1/6 w-32 h-32 rounded-full bg-primary blur-2xl" />
-        <div className="absolute bottom-1/4 right-1/6 w-48 h-48 rounded-full bg-secondary blur-3xl" />
-      </div>
     </section>
   );
 };
