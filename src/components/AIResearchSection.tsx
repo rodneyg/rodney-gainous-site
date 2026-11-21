@@ -37,6 +37,15 @@ const aiResearchProjects = [
     demoLabel: "Explore Simulation",
     githubUrl: "https://github.com/rodneyg/AI-Research-1",
     icon: 'CR'
+  },
+  {
+    title: "Approver in the Footer",
+    insight: "Does repeating a name make AI think that person signed off?",
+    description: "Two AI models read club packets with a contact name in the footer. Repeating the name had no clear effect on unsupported sign-offs in this small pilot.",
+    demoUrl: "https://ai-research-3.vercel.app",
+    demoLabel: "Explore Simulation",
+    githubUrl: "https://github.com/rodneyg/AI-Research-3",
+    icon: 'AF'
   }
 ] satisfies AIResearchProject[];
 
