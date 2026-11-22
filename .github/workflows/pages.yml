@@ -27,7 +27,7 @@ jobs:
         id: pages
       - run: npm ci
       - name: Build the static mirror
-        run: npx --no-install vite build --mode pages --base "${PAGES_BASE_PATH:-/}"
+        run: npx --no-install vite build --mode pages --base "${PAGES_BASE_PATH%/}/"
         env:
           PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
       - uses: actions/upload-pages-artifact@v4
