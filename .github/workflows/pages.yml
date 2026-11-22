@@ -2,7 +2,7 @@ name: Deploy portfolio to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [t-11253/pages-bootstrap]
   workflow_dispatch:
 
 permissions:
@@ -35,7 +35,7 @@ jobs:
           path: dist
 
   deploy:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/t-11253/pages-bootstrap'
     needs: build
     runs-on: ubuntu-latest
     permissions:
