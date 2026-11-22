@@ -21,6 +21,8 @@ export const useLiveShorts = (channel: Channel, fallbackShorts: ShortVideo[]) =>
   const [shorts, setShorts] = useState<ShortVideo[]>(() => sortByViews(fallbackShorts));
 
   useEffect(() => {
+    if (import.meta.env.MODE === 'pages') return;
+
     const controller = new AbortController();
 
     const loadShorts = async () => {

@@ -97,7 +97,7 @@ export function InteractiveStoryHero() {
         >
           <div className="mb-5 flex items-center gap-3">
             <img
-              src="/temp-avatar.jpg"
+              src={`${import.meta.env.BASE_URL}temp-avatar.jpg`}
               alt="Rodney Gainous Jr."
               className="size-12 rounded-full object-cover outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10"
             />
