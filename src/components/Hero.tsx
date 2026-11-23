@@ -33,7 +33,7 @@ const Hero = () => {
           >
             <Avatar className="size-24 border-4 border-background shadow-lg ring-1 ring-black/10 sm:size-32 dark:ring-white/10">
               <AvatarImage 
-                src="/temp-avatar.jpg" 
+                src={`${import.meta.env.BASE_URL}temp-avatar.jpg`}
                 alt="Rodney Gainous - Smiling professional headshot"
                 className="object-cover"
               />

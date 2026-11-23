@@ -43,7 +43,7 @@ const App = () => (
       enableSystem
       disableTransitionOnChange={false}
     >
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <TooltipProvider>
           <Toaster />
           <Sonner />
@@ -71,7 +71,7 @@ const App = () => (
           </Routes>
         </TooltipProvider>
       </BrowserRouter>
-      {import.meta.env.PROD && <Analytics beforeSend={filterAnalyticsEvent} />}
+      {import.meta.env.PROD && import.meta.env.MODE !== "pages" && <Analytics beforeSend={filterAnalyticsEvent} />}
     </ThemeProvider>
   </QueryClientProvider>
 );
