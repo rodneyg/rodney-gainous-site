@@ -144,7 +144,7 @@ const PodcastSection = () => {
                     className="media-outline aspect-[9/16] w-full object-cover"
                     loading="lazy"
                   />
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent p-2 text-white">
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/80 to-black/70 p-2 text-white">
                     <div className="mb-1.5 flex size-7 items-center justify-center rounded-full bg-white/90 text-black shadow-sm">
                       <Play className="ml-0.5 size-3 fill-current" aria-hidden="true" />
                     </div>

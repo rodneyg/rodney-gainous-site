@@ -73,9 +73,9 @@ const TechStackBlock = () => {
               </h3>
               <p className="text-base leading-8 md:text-lg">
                 <span className="font-semibold text-foreground">TypeScript everywhere</span> — React, Next.js,{' '}
-                <span className="font-semibold text-purple-600">React Native (mobile)</span> — Node/Express APIs, Postgres & Firebase realtime, OpenAI-powered CV pipelines. Native mobile with{' '}
-                <span className="font-semibold text-orange-600">Java/Kotlin (Android)</span> &{' '}
-                <span className="font-semibold text-blue-600">Objective-C/Swift (iOS)</span>. CI/CD via GitHub Actions → Vercel / Netlify / Render. Mobile builds through Expo & TestFlight.
+                <span className="font-semibold text-purple-600 dark:text-purple-400">React Native (mobile)</span> — Node/Express APIs, Postgres & Firebase realtime, OpenAI-powered CV pipelines. Native mobile with{' '}
+                <span className="font-semibold text-orange-700 dark:text-orange-600">Java/Kotlin (Android)</span> &{' '}
+                <span className="font-semibold text-blue-600 dark:text-blue-400">Objective-C/Swift (iOS)</span>. CI/CD via GitHub Actions → Vercel / Netlify / Render. Mobile builds through Expo & TestFlight.
               </p>
             </div>
           </motion.div>
