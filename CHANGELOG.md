@@ -2,11 +2,17 @@
 
 This history records visitor-facing changes from merged pull requests. Dates use Eastern time. Earlier entries describe what changed at the time, including features that have since been removed.
 
+## 2026-11-21
+
+- Gave the mobile navigation dialog a screen-reader name and made its close button easier to tap. ([#51](https://github.com/rodneyg/rodney-gainous-site/pull/51))
+- Updated the portfolio's search and social sharing previews and added homepage analytics that omit query strings and fragments from the recorded page URL. ([#49](https://github.com/rodneyg/rodney-gainous-site/pull/49))
+- Turned the homepage into a horizontal slide deck with swipe, arrow-key, and button navigation. Links to individual sections still jump to the matching slide. ([#44](https://github.com/rodneyg/rodney-gainous-site/pull/44))
+
 ## 2026-11-20
 
 - Added Slow Burn and Approver in the Footer to AI Research, with links to their demos and source. ([#47](https://github.com/rodneyg/rodney-gainous-site/pull/47), [#46](https://github.com/rodneyg/rodney-gainous-site/pull/46), [#45](https://github.com/rodneyg/rodney-gainous-site/pull/45), [#43](https://github.com/rodneyg/rodney-gainous-site/pull/43))
 - Added a Work with me link in Projects that jumps to Contact. ([#42](https://github.com/rodneyg/rodney-gainous-site/pull/42))
-- Added ScreenHawk to Projects and updated the SeenClearly Visit link. ([#41](https://github.com/rodneyg/rodney-gainous-site/pull/41), [#40](https://github.com/rodneyg/rodney-gainous-site/pull/40))
+- Added a Visit link and icon to the existing ScreenHawk card and updated the SeenClearly Visit link. ([#41](https://github.com/rodneyg/rodney-gainous-site/pull/41), [#40](https://github.com/rodneyg/rodney-gainous-site/pull/40))
 - Brought the live portfolio layout to main, including the interactive introduction, podcast, YouTube Shorts sorted by views, Unsplash photos, and Code Review Signal vs Noise demo. Refreshed the Projects and AI Research cards, and replaced the standalone blog with a Writing section that links to Medium. ([#39](https://github.com/rodneyg/rodney-gainous-site/pull/39))
 - Updated the SafeDose Visit link and added Nearby Awareness and Phantom Audio Lab cards on the release branch. These changes reached main with the live portfolio layout. ([#35](https://github.com/rodneyg/rodney-gainous-site/pull/35))
 
@@ -21,7 +27,7 @@ This history records visitor-facing changes from merged pull requests. Dates use
 ## 2025-10-06
 
 - Added a blog with an index and individual article pages. ([#25](https://github.com/rodneyg/rodney-gainous-site/pull/25))
-- Added automatic light and dark theme switching by time of day, with a manual toggle. ([#21](https://github.com/rodneyg/rodney-gainous-site/pull/21))
+- Set the initial light or dark theme by local time when no preference was saved. The manual toggle remained available. ([#21](https://github.com/rodneyg/rodney-gainous-site/pull/21))
 - Updated the JustTalk link to justtalkgpt.com. ([#23](https://github.com/rodneyg/rodney-gainous-site/pull/23))
 
 ## 2025-10-04
@@ -49,4 +55,4 @@ This history records visitor-facing changes from merged pull requests. Dates use
 
 ## 2025-05-26
 
-- Added a homepage technology stack and technology badges on project cards. ([#2](https://github.com/rodneyg/rodney-gainous-site/pull/2))
+- Added a homepage technology stack and a technology list on project cards. ([#2](https://github.com/rodneyg/rodney-gainous-site/pull/2))
