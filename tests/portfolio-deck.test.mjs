@@ -186,3 +186,47 @@ test('all three sample AI prototypes update independently on desktop and mobile'
     });
   }
 });
+
+test('the YouTube slide stays available when the Shorts response contains an invalid row', async () => {
+  await onPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' }, async (page) => {
+    const liveShort = {
+      id: 'fixture1234',
+      title: 'Fixture live Short',
+      views: 300,
+      viewLabel: '300 views',
+      href: 'https://www.youtube.com/shorts/fixture1234',
+      thumbnail: 'https://i.ytimg.com/vi/fixture1234/frame0.jpg',
+    };
+    const pageErrors = [];
+    page.on('pageerror', (error) => pageErrors.push(error.message));
+    let payload = { shorts: [null, { ...liveShort, title: {} }, liveShort] };
+    await page.route('**/api/top-youtube-shorts?channel=personal', (route) =>
+      route.fulfill({ json: payload }),
+    );
+
+    const openYouTube = async (navigate) => {
+      await Promise.all([
+        page.waitForResponse((response) => response.url().endsWith('/api/top-youtube-shorts?channel=personal')),
+        navigate(),
+      ]);
+      await expectSlide(page, 8).catch((error) => {
+        assert.deepEqual(pageErrors, []);
+        throw error;
+      });
+    };
+
+    await openYouTube(() => page.goto(`${url}/#youtube`));
+    await expectSlide(page, 8);
+    const youtube = page.getByRole('region', { name: 'YouTube', exact: true });
+    const short = youtube.getByRole('link', { name: /Fixture live Short/ });
+    await short.waitFor();
+    assert.equal(await short.getAttribute('href'), liveShort.href);
+
+    for (const response of [{ shorts: [null] }, null, { shorts: 'unavailable' }]) {
+      payload = response;
+      await openYouTube(() => page.reload());
+      await youtube.getByRole('link', { name: /Still pasting code into ChatGPT/ }).waitFor();
+    }
+    assert.deepEqual(pageErrors, []);
+  });
+});

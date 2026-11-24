@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 
 
 function trackWorkWithMe(event: 'work_with_me_view' | 'work_with_me_click') {
+  if (import.meta.env.MODE === 'pages') return;
+
   const body = JSON.stringify({ event });
   if (navigator.sendBeacon) {
     const blob = new Blob([body], { type: 'application/json' });
@@ -29,7 +31,7 @@ const projects = [
     demoUrl: "https://screenhawk.rodneygainous.com",
     githubUrl: "https://github.com/rodneyg/ScreenHawk",
     demoLabel: "View on GitHub",
-    iconImage: '/screenhawk-icon.png',
+    iconImage: `${import.meta.env.BASE_URL}screenhawk-icon.png`,
     tech: "Chrome Extension • TypeScript • OpenAI Vision"
   },
   {
