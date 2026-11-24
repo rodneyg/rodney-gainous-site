@@ -2,6 +2,12 @@
 
 This history records visitor-facing changes from merged pull requests. Dates use Eastern time. Earlier entries describe what changed at the time, including features that have since been removed.
 
+## 2026-11-23
+
+- Improved text contrast on YouTube and Podcast thumbnails, in the tech stack, and on experience badges. ([#55](https://github.com/rodneyg/rodney-gainous-site/pull/55))
+- Published a static copy of the portfolio on [GitHub Pages](https://rodneyg.github.io/rodney-gainous-site/). ([#54](https://github.com/rodneyg/rodney-gainous-site/pull/54))
+- Kept the portfolio visible when the live YouTube or Podcast Shorts feed contains invalid entries. The site shows valid Shorts from the feed or uses bundled videos if none are usable. ([#53](https://github.com/rodneyg/rodney-gainous-site/pull/53))
+
 ## 2026-11-21
 
 - Gave the mobile navigation dialog a screen-reader name and made its close button easier to tap. ([#51](https://github.com/rodneyg/rodney-gainous-site/pull/51))
