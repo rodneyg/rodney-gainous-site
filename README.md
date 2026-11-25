@@ -23,7 +23,7 @@ Run `npm run preview` to serve the built files locally. Vite's development and p
 
 ## GitHub Pages mirror
 
-The [static mirror](https://rodneyg.github.io/rodney-gainous-site/) deploys from `main` through GitHub Actions. The Pages build skips the feed refresh and uses the snapshots stored in the repository. It disables live Shorts requests and Vercel Analytics.
+The [static mirror](https://rodneyg.github.io/rodney-gainous-site/) deploys from `main` through GitHub Actions. The Pages build skips the feed refresh and uses the snapshots stored in the repository. It disables live Shorts requests, Vercel Analytics, and the Work with me view and click events.
 
 ## Stack
 
