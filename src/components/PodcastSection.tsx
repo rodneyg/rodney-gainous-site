@@ -42,8 +42,8 @@ const podcastLinks = [
   },
 ];
 
-const PodcastSection = () => {
-  const podcastClips = useLiveShorts('podcast', fallbackPodcastClips);
+const PodcastSection = ({ isActive }: { isActive: boolean }) => {
+  const podcastClips = useLiveShorts('podcast', fallbackPodcastClips, isActive);
 
   return (
     <section id="podcast" className="border-y bg-muted/30 px-6 py-24 md:py-32">

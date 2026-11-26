@@ -26,8 +26,8 @@ const slides = [
   { title: 'Safe Lab', content: <SafeLabSection /> },
   { title: 'Experience', content: <ExperienceSection /> },
   { title: 'Writing', content: <WritingSection /> },
-  { title: 'Podcast', content: <PodcastSection /> },
-  { title: 'YouTube', content: <YouTubeSection /> },
+  { title: 'Podcast', content: (isActive: boolean) => <PodcastSection isActive={isActive} /> },
+  { title: 'YouTube', content: (isActive: boolean) => <YouTubeSection isActive={isActive} /> },
   { title: 'Photography', content: <UnsplashSection /> },
   { title: 'About', content: <AboutSection /> },
   { title: 'Contact', content: <><ContactSection /><Footer /></> },
@@ -115,9 +115,9 @@ const Index = () => {
     <div className="portfolio-layout">
       <Header />
       <main ref={deckRef} className="portfolio-deck" aria-label="Portfolio slides">
-        {slides.map(({ title, content }) => (
+        {slides.map(({ title, content }, index) => (
           <div key={title} className="portfolio-slide" role="region" aria-label={title} tabIndex={0}>
-            {content}
+            {typeof content === 'function' ? content(activeSlide === index) : content}
           </div>
         ))}
       </main>

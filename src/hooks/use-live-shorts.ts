@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export type ShortVideo = {
   id: string;
@@ -36,11 +36,13 @@ const isShortVideo = (value: unknown): value is ShortVideo => {
   );
 };
 
-export const useLiveShorts = (channel: Channel, fallbackShorts: ShortVideo[]) => {
+export const useLiveShorts = (channel: Channel, fallbackShorts: ShortVideo[], enabled = true) => {
   const [shorts, setShorts] = useState<ShortVideo[]>(() => sortByViews(fallbackShorts));
 
+  const loadedChannel = useRef<Channel>();
+
   useEffect(() => {
-    if (import.meta.env.MODE === 'pages') return;
+    if (!enabled || loadedChannel.current === channel || import.meta.env.MODE === 'pages') return;
 
     const controller = new AbortController();
 
@@ -56,7 +58,8 @@ export const useLiveShorts = (channel: Channel, fallbackShorts: ShortVideo[]) =>
         if (!Array.isArray(data?.shorts)) return;
 
         const liveShorts = data.shorts.filter(isShortVideo);
-        if (liveShorts.length > 0) {
+        if (!controller.signal.aborted && liveShorts.length > 0) {
+          loadedChannel.current = channel;
           setShorts(sortByViews(liveShorts));
         }
       } catch (error) {
@@ -69,7 +72,7 @@ export const useLiveShorts = (channel: Channel, fallbackShorts: ShortVideo[]) =>
     loadShorts();
 
     return () => controller.abort();
-  }, [channel]);
+  }, [channel, enabled]);
 
   return shorts;
 };

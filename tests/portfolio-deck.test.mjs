@@ -201,6 +201,46 @@ test('the code review research card links to the current demo', async () => {
   });
 });
 
+test('the deck fetches Shorts on first visit to each media slide', async () => {
+  await onPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' }, async (page) => {
+    const requestedChannels = [];
+    await page.route('**/api/top-youtube-shorts?*', async (route) => {
+      const channel = new URL(route.request().url()).searchParams.get('channel');
+      requestedChannels.push(channel);
+      await route.fulfill({ json: { shorts: [{
+        id: 'fixture1234',
+        title: `Live ${channel} Short`,
+        views: 300,
+        viewLabel: '300 views',
+        href: 'https://www.youtube.com/shorts/fixture1234',
+        thumbnail: 'https://i.ytimg.com/vi/fixture1234/frame0.jpg',
+      }] } });
+    });
+
+    await page.goto(url);
+    await expectSlide(page, 0);
+    await page.getByRole('button', { name: 'See my work' }).click();
+    await expectSlide(page, 2);
+    assert.deepEqual(requestedChannels, []);
+
+    await page.locator('header').getByRole('link', { name: 'Podcast' }).click();
+    await expectSlide(page, 8);
+    const podcastShort = page.getByRole('link', { name: /Live podcast Short/ });
+    await podcastShort.waitFor();
+    assert.deepEqual(requestedChannels, ['podcast']);
+
+    const next = page.getByRole('button', { name: 'Next slide' });
+    const previous = page.getByRole('button', { name: 'Previous slide' });
+    await next.click();
+    await expectSlide(page, 9);
+    await page.getByRole('link', { name: /Live personal Short/ }).waitFor();
+    await previous.click();
+    await expectSlide(page, 8);
+    await podcastShort.waitFor();
+    assert.deepEqual(requestedChannels, ['podcast', 'personal']);
+  });
+});
+
 test('the YouTube slide stays available when the Shorts response contains an invalid row', async () => {
   await onPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' }, async (page) => {
     const liveShort = {
