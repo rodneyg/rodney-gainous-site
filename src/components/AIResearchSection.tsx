@@ -34,7 +34,7 @@ const aiResearchProjects = [
     title: "Code Review Signal vs Noise",
     insight: "If an AI reviewer is told to find problems, will it find real bugs or just make up things to fix?",
     description: "A simple test of AI code review. The demo shows working code, asks an AI to review it, and separates useful fixes from comments that only waste time.",
-    demoUrl: "https://ai-code-review-demo-fcvgd0mdi-rodneygs-projects.vercel.app/",
+    demoUrl: "https://ai-code-review-demo.vercel.app/",
     demoLabel: "Explore Simulation",
     githubUrl: "https://github.com/rodneyg/AI-Research-1",
     icon: 'CR'
