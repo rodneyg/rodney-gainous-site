@@ -45,16 +45,12 @@ const Hero = () => {
         </motion.div>
 
         <motion.h2 
-          className="mb-5 text-[clamp(2.25rem,8dvh,5rem)] font-bold leading-none"
+          className="mb-5 text-[clamp(2.25rem,min(13vw,8dvh),5rem)] font-bold leading-none"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
         >
-          <span>Builder.</span>
-          <br />
-          <span>Engineer.</span>
-          <br />
-          <span className="text-muted-foreground font-medium">Problem-solver.</span>
+          I build <span className="block text-muted-foreground font-medium">AI products.</span>
         </motion.h2>
         
         <motion.p 
@@ -63,9 +59,7 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
         >
-          I've been building software since I was 13, starting with Java bots and eventually founding my own{' '}
-          <span className="text-foreground font-medium">venture-backed security startup</span>. 
-          For over a decade, I've tackled challenges across cybersecurity, AI, health technology, and digital infrastructure.
+          I’m Rodney Gainous Jr., an AI engineer. I built ScreenHawk to answer questions about what’s on your screen and SafeDose to guide syringe dosing.
         </motion.p>
         
         <motion.div
