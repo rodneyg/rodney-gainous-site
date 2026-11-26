@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import AIResearchSection from '@/components/AIResearchSection';
+import AIEngineerShowcase from '@/components/AIEngineerShowcase';
 import SafeLabSection from '@/components/SafeLabSection';
 import PodcastSection from '@/components/PodcastSection';
 import YouTubeSection from '@/components/YouTubeSection';
@@ -21,6 +22,7 @@ const slides = [
   { title: 'Tech Stack', content: <TechStackBlock /> },
   { title: 'Projects', content: <ProjectsSection /> },
   { title: 'AI Research', content: <AIResearchSection /> },
+  { title: 'Ask Rodney', content: <AIEngineerShowcase /> },
   { title: 'Safe Lab', content: <SafeLabSection /> },
   { title: 'Experience', content: <ExperienceSection /> },
   { title: 'Writing', content: <WritingSection /> },
