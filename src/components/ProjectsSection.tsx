@@ -28,7 +28,7 @@ const projects = [
     title: "ScreenHawk",
     inspiration: "What if you could ask a question about a chart or image without leaving the tab?",
     description: "Select an area of your screen and ask a question about what you see. ScreenHawk is a Chrome extension that uses your OpenAI key.",
-    demoUrl: "https://screenhawk.rodneygainous.com",
+    demoUrl: "https://screenhawk-three.vercel.app/",
     githubUrl: "https://github.com/rodneyg/ScreenHawk",
     demoLabel: "View on GitHub",
     iconImage: `${import.meta.env.BASE_URL}screenhawk-icon.png`,
