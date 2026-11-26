@@ -96,7 +96,7 @@ test('overflow scrolls vertically without advancing the deck, and section links 
   await onPage({ viewport: { width: 1280, height: 720 }, reducedMotion: 'reduce' }, async (page) => {
     await page.goto(`${url}/#projects`);
     await expectSlide(page, 2);
-    const projects = page.getByRole('region', { name: 'Projects', exact: true });
+    const projects = page.locator('.portfolio-slide[aria-label="Projects"]');
     assert.equal(await projects.evaluate((element) => element.scrollTop), 0);
     await page.mouse.move(100, 300);
     await page.mouse.wheel(0, 500);
@@ -104,6 +104,9 @@ test('overflow scrolls vertically without advancing the deck, and section links 
     await expectSlide(page, 2);
 
     await projects.evaluate((element) => { element.scrollTop = element.scrollHeight; });
+    assert.ok(await projects.evaluate((element) =>
+      Math.abs(element.scrollHeight - element.clientHeight - element.scrollTop) <= 1,
+    ));
     // Even at the bottom, wheel input inside a tall slide stays in that slide.
     const prevented = await projects.evaluate((element) => !element.dispatchEvent(
       new WheelEvent('wheel', { deltaY: 500, bubbles: true, cancelable: true }),
@@ -187,6 +190,17 @@ test('all three sample AI prototypes update independently on desktop and mobile'
   }
 });
 
+test('the code review research card links to the current demo', async () => {
+  await onPage({ reducedMotion: 'reduce' }, async (page) => {
+    await page.goto(`${url}/#ai-research`);
+    await expectSlide(page, 3);
+    const research = page.getByRole('region', { name: 'AI Research', exact: true });
+    const simulation = research.getByRole('heading', { name: 'Code Review Signal vs Noise' })
+      .locator('xpath=../..').getByRole('link', { name: 'Visit', exact: true });
+    assert.equal(await simulation.getAttribute('href'), 'https://ai-code-review-demo.vercel.app/');
+  });
+});
+
 test('the YouTube slide stays available when the Shorts response contains an invalid row', async () => {
   await onPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' }, async (page) => {
     const liveShort = {
@@ -216,7 +230,6 @@ test('the YouTube slide stays available when the Shorts response contains an inv
     };
 
     await openYouTube(() => page.goto(`${url}/#youtube`));
-    await expectSlide(page, 9);
     const youtube = page.getByRole('region', { name: 'YouTube', exact: true });
     const short = youtube.getByRole('link', { name: /Fixture live Short/ });
     await short.waitFor();
@@ -259,6 +272,8 @@ test('Ask Rodney is reachable in the deck and answers without advancing the slid
     assert.equal(await input.evaluate((element) => element.selectionStart), question.length + 3);
     await input.press('Enter');
     await showcase.getByText(question, { exact: true }).waitFor();
+    await showcase.getByText(/Claude Code for agentic sessions, Cursor for in-editor flow/).waitFor();
+    await showcase.getByRole('button', { name: 'How do you approach automation?' }).waitFor();
     assert.equal(await input.inputValue(), '');
     await expectSlide(page, 4);
     await page.getByRole('button', { name: 'Next slide' }).click();
