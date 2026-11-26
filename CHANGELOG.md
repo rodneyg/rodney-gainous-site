@@ -2,6 +2,16 @@
 
 This history records visitor-facing changes from merged pull requests. Dates use Eastern time. Earlier entries describe what changed at the time, including features that have since been removed.
 
+## 2026-11-26
+
+- Updated the Code Review Signal vs Noise research card to link to the current simulation. ([#60](https://github.com/rodneyg/rodney-gainous-site/pull/60))
+- Fixed the ScreenHawk Visit link to open the live demo. ([#59](https://github.com/rodneyg/rodney-gainous-site/pull/59))
+
+## 2026-11-25
+
+- Added the Ask Rodney slide, where visitors can type or pick a question and get a curated answer and follow-up suggestions. ([#34](https://github.com/rodneyg/rodney-gainous-site/pull/34))
+- Updated the homepage to focus on Rodney's AI products and added three hands-on demos in the AI Research section. ([#50](https://github.com/rodneyg/rodney-gainous-site/pull/50))
+
 ## 2026-11-23
 
 - Improved text contrast on YouTube and Podcast thumbnails, in the tech stack, and on experience badges. ([#55](https://github.com/rodneyg/rodney-gainous-site/pull/55))

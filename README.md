@@ -1,10 +1,10 @@
 # Personal Portfolio Website
 
-The source for [rodneygainous.com](https://rodneygainous.com), a portfolio of projects, AI research, work history, writing, and media.
+The source for [rodneygainous.com](https://rodneygainous.com), Rodney Gainous Jr.'s portfolio of AI products, research, work history, writing, and media. The homepage includes three AI Prototype Lab demos and an Ask Rodney slide that answers questions using curated responses.
 
 ## Getting started
 
-Install [Node.js](https://nodejs.org/) and npm, then run the following commands.
+Install [Node.js 24](https://nodejs.org/) and npm to match GitHub Actions, then run the following commands.
 
 ```sh
 git clone https://github.com/rodneyg/rodney-gainous-site.git
