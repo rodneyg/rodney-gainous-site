@@ -4,8 +4,8 @@ import { ExternalLink, Play, Youtube } from 'lucide-react';
 import fallbackFeaturedVideos from '@/data/youtube-shorts.json';
 import { useLiveShorts } from '@/hooks/use-live-shorts';
 
-const YouTubeSection = () => {
-  const featuredVideos = useLiveShorts('personal', fallbackFeaturedVideos);
+const YouTubeSection = ({ isActive }: { isActive: boolean }) => {
+  const featuredVideos = useLiveShorts('personal', fallbackFeaturedVideos, isActive);
 
   return (
     <section id="youtube" className="px-6 py-24 md:py-32">
