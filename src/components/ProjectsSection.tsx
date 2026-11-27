@@ -12,6 +12,12 @@ type ProjectVideo = {
   thumbnail: string;
 };
 
+type ProjectVisual = {
+  image: string;
+  alt: string;
+  label: string;
+};
+
 type Project = {
   title: string;
   inspiration: string;
@@ -23,6 +29,7 @@ type Project = {
   icon?: string;
   tech: string;
   videos?: ProjectVideo[];
+  visuals?: ProjectVisual[];
 };
 
 
@@ -44,6 +51,12 @@ function trackWorkWithMe(event: 'work_with_me_view' | 'work_with_me_click') {
   });
 }
 
+const visual = (image: string, alt: string, label: string): ProjectVisual => ({
+  image: `${import.meta.env.BASE_URL}project-visuals/${image}.webp`,
+  alt,
+  label,
+});
+
 // --- Filtered and Enhanced Project Data ---
 const projects: Project[] = [
   {
@@ -54,7 +67,11 @@ const projects: Project[] = [
     githubUrl: "https://github.com/rodneyg/ScreenHawk",
     demoLabel: "View on GitHub",
     iconImage: `${import.meta.env.BASE_URL}screenhawk-icon.png`,
-    tech: "Chrome Extension • TypeScript • OpenAI Vision"
+    tech: "Chrome Extension • TypeScript • OpenAI Vision",
+    visuals: [
+      visual("screenhawk-1", "ScreenHawk website: Ask about what's on your screen", "Website"),
+      visual("screenhawk-2", "ScreenHawk overlay answering a question about a selected area of a web page", "Overlay"),
+    ],
   },
   {
     title: "SafeDose",
@@ -63,7 +80,11 @@ const projects: Project[] = [
     demoUrl: "https://safedose.rodneygainous.com/",
     githubUrl: "https://github.com/rodneyg/SafeDose", // Updated URL
     icon: '💉',
-    tech: "React Native • Expo • TypeScript • OpenAI Vision • Firebase"
+    tech: "React Native • Expo • TypeScript • OpenAI Vision • Firebase",
+    visuals: [
+      visual("safedose-1", "SafeDose home screen: Verify Materials, Calculate Doses", "Home"),
+      visual("safedose-2", "SafeDose pricing screen showing the Photo Scan plan", "Plans"),
+    ],
   },
   {
     title: "SeenClearly",
@@ -73,7 +94,11 @@ const projects: Project[] = [
     githubUrl: null, // Private repository or not yet public
     demoLabel: "See Clearly",
     icon: '🔍',
-    tech: "React • NextJS • TailwindCSS • OpenAI • Vercel"
+    tech: "React • NextJS • TailwindCSS • OpenAI • Vercel",
+    visuals: [
+      visual("seenclearly-1", "SeenClearly metaphor generator with style options", "Generator"),
+      visual("seenclearly-2", "SeenClearly examples of life truths turned into images", "Examples"),
+    ],
   },
   {
     title: "Reddit Post Time Analyzer",
@@ -82,7 +107,11 @@ const projects: Project[] = [
     demoUrl: "https://reddit-analytics-nu.vercel.app/",
     githubUrl: "https://github.com/rodneyg/reddit-analytics",
     icon: '📊', // Simple emoji icon placeholder
-    tech: "React • NextJS • TypeScript • Reddit API • GPT-4 • Vercel"
+    tech: "React • NextJS • TypeScript • Reddit API • GPT-4 • Vercel",
+    visuals: [
+      visual("reddit-analyzer-1", "Reddit Post Time Analyzer showing the best times to post in r/technology", "Best times"),
+      visual("reddit-analyzer-2", "Reddit Post Time Analyzer engagement heatmap by day and hour", "Heatmap"),
+    ],
   },
   {
     title: "Vouch",
@@ -92,7 +121,11 @@ const projects: Project[] = [
     githubUrl: null,
     demoLabel: "Try Vouch",
     icon: '✓',
-    tech: "TypeScript • Chrome Extension • OpenPGP • Privacy"
+    tech: "TypeScript • Chrome Extension • OpenPGP • Privacy",
+    visuals: [
+      visual("vouch-1", "Vouch website: Sign your Hacker News comments, verify signatures", "Website"),
+      visual("vouch-2", "Vouch Chrome extension signing a Hacker News comment", "Signing"),
+    ],
   },
   {
     title: "Nearby Awareness",
@@ -111,7 +144,10 @@ const projects: Project[] = [
     githubUrl: "https://github.com/rodneyg/phantom-audio-lab",
     demoLabel: "View on GitHub",
     icon: '🎙️',
-    tech: "Python • WebSockets • PCM Audio • Testing"
+    tech: "Python • WebSockets • PCM Audio • Testing",
+    visuals: [
+      visual("phantom-audio-lab-1", "Phantom Audio Lab terminal output from a real demo run: 94 packets received, 0 missing, 0 ignored", "Real demo run"),
+    ],
   },
   {
     title: "AutoFighterPro",
@@ -156,7 +192,11 @@ const projects: Project[] = [
     demoUrl: "https://www.didtiktokgetbanned.com/",
     githubUrl: "https://github.com/rodneyg/tiktok-ban-site",
     icon: '🚫',
-    tech: "React • NextJS • TailwindCSS • Vercel"
+    tech: "React • NextJS • TailwindCSS • Vercel",
+    visuals: [
+      visual("tiktok-status-1", "Did TikTok Get Banned? homepage showing TikTok is available in the U.S.", "Status"),
+      visual("tiktok-status-2", "Did TikTok Get Banned? latest update and sharing links", "Latest update"),
+    ],
   },
   {
     title: "TempleToss",
@@ -165,7 +205,11 @@ const projects: Project[] = [
     demoUrl: "https://temple-toss.vercel.app/",
     githubUrl: "https://github.com/rodneyg/TempleToss", // Updated URL
     icon: '🎯',
-    tech: "React Native • Expo • TypeScript • Firebase • Vercel"
+    tech: "React Native • Expo • TypeScript • Firebase • Vercel",
+    visuals: [
+      visual("templetoss-1", "TempleToss start screen", "Start screen"),
+      visual("templetoss-2", "TempleToss gameplay in a night desert", "Gameplay"),
+    ],
   }
 ];
 
@@ -288,7 +332,7 @@ const ProjectsNarrative = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.5, delay: index * 0.06 }}
-                className={`enhanced-card group relative flex overflow-hidden rounded-2xl p-5 ${project.videos ? "" : "aspect-square"}`}
+                className={`enhanced-card group relative flex overflow-hidden rounded-2xl p-5 ${project.videos || project.visuals ? "" : "aspect-square"}`}
               >
                 {/* Project Details */}
                 <div className="relative z-10 flex min-h-0 flex-1 flex-col">
@@ -346,6 +390,34 @@ const ProjectsNarrative = () => {
                           </span>
                           <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-1.5 py-1 text-[10px] font-semibold leading-3 text-white">
                             {video.shortLabel}
+                          </span>
+                        </motion.a>
+                      ))}
+                    </div>
+                  )}
+
+                  {project.visuals && (
+                    <div className={`mt-4 grid gap-1.5 ${project.visuals.length > 1 ? "grid-cols-2" : "grid-cols-1"}`}>
+                      {project.visuals.map((item) => (
+                        <motion.a
+                          key={item.image}
+                          href={project.demoUrl ?? project.githubUrl ?? undefined}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group/visual relative overflow-hidden rounded-md ring-1 ring-black/10 dark:ring-white/10"
+                          whileTap={{ scale: 0.96 }}
+                        >
+                          <img
+                            src={item.image}
+                            alt={item.alt}
+                            width={640}
+                            height={360}
+                            className="aspect-video w-full object-cover"
+                            loading="lazy"
+                          />
+                          <span className="absolute inset-0 bg-black/0 transition-colors group-hover/visual:bg-black/10" />
+                          <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-1.5 py-1 text-[10px] font-semibold leading-3 text-white">
+                            {item.label}
                           </span>
                         </motion.a>
                       ))}
