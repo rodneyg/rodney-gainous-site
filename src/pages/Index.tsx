@@ -51,9 +51,18 @@ const Index = () => {
     const deck = deckRef.current;
     if (!deck) return;
 
-    if (window.location.hash) {
-      document.getElementById(window.location.hash.slice(1))?.scrollIntoView({ behavior: 'instant' });
-    }
+    const navigateToHash = () => {
+      if (!window.location.hash) return;
+      const target = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
+      const targetSlide = target?.closest<HTMLElement>('.portfolio-slide');
+      const targetIndex = targetSlide ? Array.from(deck.children).indexOf(targetSlide) : -1;
+      if (targetIndex >= 0) {
+        deck.scrollTo({ left: targetIndex * deck.clientWidth, behavior: 'instant' });
+        setActiveSlide(targetIndex);
+      }
+    };
+    window.addEventListener('hashchange', navigateToHash);
+    navigateToHash();
 
     let lastWheelTime = -Infinity;
     let wheelDistance = 0;
@@ -108,6 +117,7 @@ const Index = () => {
       deck.removeEventListener('scroll', updateSlide);
       deck.removeEventListener('wheel', handleWheel);
       window.removeEventListener('keydown', handleKey);
+      window.removeEventListener('hashchange', navigateToHash);
     };
   }, []);
 
