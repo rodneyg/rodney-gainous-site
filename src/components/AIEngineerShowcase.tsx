@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { Send } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { matchQA as matchCuratedAnswer } from './askRodneyMatcher.js';
 
 // ─── Data ──────────────────────────────────────────────────────────────────
 
@@ -75,17 +76,7 @@ const STREAM_MS = 18;
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
 function matchQA(input: string): QAPair | null {
-  const lower = input.toLowerCase();
-  let best: QAPair | null = null;
-  let bestScore = 0;
-  for (const pair of QA_PAIRS) {
-    const score = pair.keywords.filter(k => lower.includes(k)).length;
-    if (score > bestScore) {
-      bestScore = score;
-      best = pair;
-    }
-  }
-  return bestScore > 0 ? best : null;
+  return matchCuratedAnswer(input, QA_PAIRS);
 }
 
 // ─── Message types ───────────────────────────────────────────────────────────
@@ -225,7 +216,7 @@ const AIEngineerShowcase = () => {
             Ask Rodney
           </h2>
           <p className="text-muted-foreground text-lg font-light">
-            An AI trained on his work. Start a conversation.
+            Curated answers about his work. Start a conversation.
           </p>
         </motion.div>
 
@@ -244,7 +235,7 @@ const AIEngineerShowcase = () => {
             </Avatar>
             <div>
               <p className="text-sm font-semibold leading-none">Rodney</p>
-              <p className="text-[11px] text-muted-foreground mt-0.5">AI Assistant</p>
+              <p className="text-[11px] text-muted-foreground mt-0.5">Curated answers</p>
             </div>
             <div className="ml-auto flex items-center gap-1.5 text-[10px] text-muted-foreground/50 font-mono">
               <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
