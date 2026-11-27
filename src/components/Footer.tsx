@@ -17,7 +17,6 @@ const Footer = () => {
         <div className="flex flex-col sm:flex-row justify-between items-center gap-6 text-center sm:text-left">
           <div className="text-muted-foreground">
             <div>&copy; {currentYear} Rodney Gainous Jr. All rights reserved.</div>
-            <div className="text-sm mt-1">Built with Next.js, React Native (mobile), Tailwind, and MDX. Deployed with Vercel preview builds on every pull request.</div>
           </div>
           <div className="flex flex-wrap justify-center gap-6">
             <a href="#projects" className="text-muted-foreground hover:text-foreground transition-colors">Projects</a>
