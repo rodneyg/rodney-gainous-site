@@ -383,3 +383,39 @@ test('the AutoFighterPro card links to four verified demo videos and the repo', 
     assert.equal(await source.getAttribute('href'), 'https://github.com/rodneyg/AutoFighterPro');
   });
 });
+
+test('every built project card shows product visuals that link to the product', async () => {
+  await onPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' }, async (page) => {
+    await page.goto(`${url}/#projects`);
+    await expectSlide(page, 2);
+    const projects = page.getByRole('region', { name: 'Projects', exact: true });
+    const expected = {
+      ScreenHawk: 2,
+      SafeDose: 2,
+      SeenClearly: 2,
+      'Reddit Post Time Analyzer': 2,
+      Vouch: 2,
+      'Phantom Audio Lab': 1,
+      'Did TikTok Get Banned?': 2,
+      TempleToss: 2,
+    };
+    for (const [name, count] of Object.entries(expected)) {
+      const heading = projects.getByRole('heading', { name, exact: true });
+      await heading.scrollIntoViewIfNeeded();
+      const card = heading.locator('xpath=ancestor::div[contains(@class,"enhanced-card")][1]');
+      const images = card.locator('img[src*="project-visuals/"]');
+      assert.equal(await images.count(), count, `${name} visual count`);
+      for (let i = 0; i < count; i += 1) {
+        const image = images.nth(i);
+        await image.scrollIntoViewIfNeeded();
+        await page.waitForFunction((el) => el.complete && el.naturalWidth > 0, await image.elementHandle());
+        assert.ok((await image.getAttribute('alt'))?.length > 10, `${name} visual ${i} has alt text`);
+        const href = await image.locator('xpath=ancestor::a[1]').getAttribute('href');
+        assert.match(href, /^https:\/\//);
+      }
+    }
+    const concept = projects.getByRole('heading', { name: 'Nearby Awareness', exact: true });
+    const conceptCard = concept.locator('xpath=ancestor::div[contains(@class,"enhanced-card")][1]');
+    assert.equal(await conceptCard.locator('img[src*="project-visuals/"]').count(), 0);
+  });
+});
