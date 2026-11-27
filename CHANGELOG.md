@@ -4,7 +4,7 @@ This history records visitor-facing changes from merged pull requests. Dates use
 
 ## 2026-11-26
 
-- Added real product screenshots to the project cards for ScreenHawk, SafeDose, SeenClearly, Reddit Post Time Analyzer, Vouch, Phantom Audio Lab, Did TikTok Get Banned? and TempleToss. ([#PR](https://github.com/rodneyg/rodney-gainous-site/pull/PR))
+- Added real product screenshots to the project cards for ScreenHawk, SafeDose, SeenClearly, Reddit Post Time Analyzer, Vouch, Phantom Audio Lab, Did TikTok Get Banned? and TempleToss. ([#67](https://github.com/rodneyg/rodney-gainous-site/pull/67))
 - Made the Podcast slide media first, with a YouTube episode player, Spotify and Apple episode players, cover art, and the existing listen links and clip thumbnails. ([#66](https://github.com/rodneyg/rodney-gainous-site/pull/66))
 - Added 2010 and 2011 AutoFighterPro demo videos to the AutoFighterPro project card. ([#66](https://github.com/rodneyg/rodney-gainous-site/pull/66))
 - Added Safe privacy and support pages at `/safe/privacy` and `/safe/support`. ([#64](https://github.com/rodneyg/rodney-gainous-site/pull/64))
