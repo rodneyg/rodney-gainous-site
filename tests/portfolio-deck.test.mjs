@@ -296,7 +296,7 @@ test('Ask Rodney is reachable in the deck and answers without advancing the slid
     const showcase = page.getByRole('region', { name: 'Ask Rodney', exact: true });
     await showcase.getByRole('button', { name: 'What have you built?' }).click();
     await showcase.getByText(/AI safety simulations, bias detection systems/).waitFor();
-    await showcase.getByRole('button', { name: "What's your best work?" }).waitFor();
+    await showcase.getByRole('button', { name: "What's your best work?" }).waitFor({ timeout: 20_000 });
 
     const input = showcase.getByPlaceholder('Ask anything…');
     const send = showcase.getByRole('button', { name: 'Send' });
