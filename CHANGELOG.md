@@ -2,6 +2,10 @@
 
 This history records visitor-facing changes from merged pull requests. Dates use Eastern time. Earlier entries describe what changed at the time, including features that have since been removed.
 
+## 2026-11-27
+
+- Removed the draft wording from the Safe privacy policy page so it matches the in-repo policy and states the App Store privacy label is Data Not Collected.
+
 ## 2026-11-26
 
 - Added real product screenshots to the project cards for ScreenHawk, SafeDose, SeenClearly, Reddit Post Time Analyzer, Vouch, Phantom Audio Lab, Did TikTok Get Banned? and TempleToss. ([#67](https://github.com/rodneyg/rodney-gainous-site/pull/67))
