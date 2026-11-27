@@ -121,6 +121,18 @@ test('overflow scrolls vertically without advancing the deck, and section links 
   });
 });
 
+test('direct section hashes select their containing slide during startup', async () => {
+  await onPage({ viewport: { width: 1280, height: 720 } }, async (page) => {
+    await page.goto(`${url}/#projects`, { waitUntil: 'networkidle' });
+    await expectSlide(page, 2);
+    for (const [hash, index] of [['#ai-research', 3], ['#contact', 12]]) {
+      await page.goto(`${url}/${hash}`, { waitUntil: 'networkidle' });
+      await expectSlide(page, index);
+      assert.equal(new URL(page.url()).hash, hash);
+    }
+  });
+});
+
 test('mobile swipes and menu links navigate the same deck', async () => {
   await onPage({ ...devices['iPhone 13'], reducedMotion: 'reduce' }, async (page) => {
     await page.goto(url);
