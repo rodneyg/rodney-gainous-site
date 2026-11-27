@@ -4,6 +4,8 @@ This history records visitor-facing changes from merged pull requests. Dates use
 
 ## 2026-11-26
 
+- Made the Podcast slide media first, with a YouTube episode player, Spotify and Apple episode players, cover art, and the existing listen links and clip thumbnails. ([#66](https://github.com/rodneyg/rodney-gainous-site/pull/66))
+- Added 2010 and 2011 AutoFighterPro demo videos to the AutoFighterPro project card. ([#66](https://github.com/rodneyg/rodney-gainous-site/pull/66))
 - Added Safe privacy and support pages at `/safe/privacy` and `/safe/support`. ([#64](https://github.com/rodneyg/rodney-gainous-site/pull/64))
 - Load YouTube Shorts and Podcast feeds when visitors open those slides, while keeping the bundled clips available. ([#63](https://github.com/rodneyg/rodney-gainous-site/pull/63))
 - Updated the Code Review Signal vs Noise research card to link to the current simulation. ([#60](https://github.com/rodneyg/rodney-gainous-site/pull/60))

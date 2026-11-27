@@ -1,0 +1,22 @@
+{
+  "coverArt": {
+    "src": "https://i.scdn.co/image/ab67656300005f1fc9ffb944d9a776a186571929",
+    "alt": "Beat The Odds with Dre, Rodney, and Brylan cover art"
+  },
+  "youtube": {
+    "title": "Anthropic’s IPO Question, NVIDIA After Jensen & The Cybersecurity Infrastructure Threat",
+    "href": "https://www.youtube.com/watch?v=3JFbudnWiB8",
+    "embedSrc": "https://www.youtube.com/embed/3JFbudnWiB8",
+    "thumbnail": "https://i.ytimg.com/vi/3JFbudnWiB8/maxresdefault.jpg"
+  },
+  "spotify": {
+    "title": "NVIDIA’s Jensen Power Struggle, Anthropic’s IPO Windfall & AI’s Money-Making Era",
+    "href": "https://open.spotify.com/episode/0WxjNo1pTiV3qE4F0Lt4DB",
+    "embedSrc": "https://open.spotify.com/embed/episode/0WxjNo1pTiV3qE4F0Lt4DB"
+  },
+  "apple": {
+    "title": "NVIDIA’s Jensen Power Struggle, Anthropic’s IPO Windfall & AI’s Money-Making Era",
+    "href": "https://podcasts.apple.com/us/podcast/nvidias-jensen-power-struggle-anthropics-ipo-windfall/id1639175138?i=1000804241190",
+    "embedSrc": "https://embed.podcasts.apple.com/us/podcast/id1639175138?i=1000804241190"
+  }
+}

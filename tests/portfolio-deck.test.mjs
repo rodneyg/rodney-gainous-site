@@ -320,3 +320,66 @@ test('Ask Rodney is reachable in the deck and answers without advancing the slid
     await expectSlide(page, 5);
   });
 });
+
+test('the Podcast slide is media first and keeps the listen links and clips', async () => {
+  await onPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' }, async (page) => {
+    await page.goto(`${url}/#podcast`);
+    await expectSlide(page, 8);
+    const podcast = page.getByRole('region', { name: 'Podcast', exact: true });
+
+    await podcast.getByRole('heading', { name: 'Beat The Odds', exact: true }).waitFor();
+    await podcast.getByText('with Dre, Rodney, and Brylan', { exact: true }).waitFor();
+    assert.equal(await podcast.getByText('I co-host Beat The Odds').count(), 0);
+    assert.equal(await podcast.getByText('We started it in 2022').count(), 0);
+
+    const links = [
+      ['Apple Podcasts', 'https://podcasts.apple.com/us/podcast/beat-the-odds-with-dre-rodney-brylan/id1639175138'],
+      ['Spotify', 'https://open.spotify.com/show/1ZgWdURhqi0S2q2SExfqbW'],
+      ['YouTube', 'https://www.youtube.com/@beattheoddspod'],
+      ['Patreon', 'https://www.patreon.com/BeatTheOddsPod'],
+      ['Instagram', 'https://www.instagram.com/btopodofficial/'],
+    ];
+    for (const [name, href] of links) {
+      const link = podcast.getByRole('link', { name: new RegExp(`^${name}`) });
+      assert.equal(await link.getAttribute('href'), href);
+    }
+
+    await podcast.getByRole('button', { name: /Play Anthropic/ }).click();
+    const youtube = podcast.locator('iframe[src*="youtube.com/embed/3JFbudnWiB8"]');
+    await youtube.waitFor();
+    assert.match(await youtube.getAttribute('src'), /https:\/\/www\.youtube\.com\/embed\/3JFbudnWiB8/);
+
+    const spotify = podcast.locator('iframe[title^="Spotify:"]');
+    const apple = podcast.locator('iframe[title^="Apple Podcasts:"]');
+    assert.equal(await spotify.getAttribute('src'), 'https://open.spotify.com/embed/episode/0WxjNo1pTiV3qE4F0Lt4DB');
+    assert.equal(await apple.getAttribute('src'), 'https://embed.podcasts.apple.com/us/podcast/id1639175138?i=1000804241190');
+    assert.equal(await spotify.getAttribute('loading'), 'lazy');
+    assert.equal(await apple.getAttribute('loading'), 'lazy');
+
+    await podcast.getByRole('link', { name: /AI Trust Breakdown Is Coming/ }).waitFor();
+  });
+});
+
+test('the AutoFighterPro card links to four verified demo videos and the repo', async () => {
+  await onPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' }, async (page) => {
+    await page.goto(`${url}/#projects`);
+    await expectSlide(page, 2);
+    const projects = page.getByRole('region', { name: 'Projects', exact: true });
+    const heading = projects.getByRole('heading', { name: 'AutoFighterPro', exact: true });
+    await heading.scrollIntoViewIfNeeded();
+    const card = heading.locator('xpath=ancestor::div[contains(@class,"enhanced-card")][1]');
+
+    const videos = [
+      ['AutoFighterPro V4 Dagganoth Killing (2010)', 'https://www.youtube.com/watch?v=QLvFNIMU-_k'],
+      ['RsBots.net promo (2010)', 'https://www.youtube.com/watch?v=4Rs5LXbJPMg'],
+      ['AutoFighterPro, AutoHunterPro and AutoFisherPro running (2010)', 'https://www.youtube.com/watch?v=I4TMz2Kw1x4'],
+      ['75k exp per hour guide (2011)', 'https://www.youtube.com/watch?v=3xbhfX58D7A'],
+    ];
+    for (const [name, href] of videos) {
+      assert.equal(await card.getByRole('link', { name }).getAttribute('href'), href);
+    }
+
+    const source = card.getByRole('link', { name: 'Source' });
+    assert.equal(await source.getAttribute('href'), 'https://github.com/rodneyg/AutoFighterPro');
+  });
+});

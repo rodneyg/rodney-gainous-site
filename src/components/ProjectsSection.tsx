@@ -1,8 +1,30 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import ProjectFilter from '@/components/ProjectFilter';
-import { ExternalLink, Github, SearchX } from 'lucide-react';
+import { ExternalLink, Github, Play, SearchX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+
+
+type ProjectVideo = {
+  title: string;
+  shortLabel: string;
+  href: string;
+  thumbnail: string;
+};
+
+type Project = {
+  title: string;
+  inspiration: string;
+  description: string;
+  demoUrl: string | null;
+  githubUrl: string | null;
+  demoLabel?: string;
+  iconImage?: string;
+  icon?: string;
+  tech: string;
+  videos?: ProjectVideo[];
+};
+
 
 
 function trackWorkWithMe(event: 'work_with_me_view' | 'work_with_me_click') {
@@ -23,7 +45,7 @@ function trackWorkWithMe(event: 'work_with_me_view' | 'work_with_me_click') {
 }
 
 // --- Filtered and Enhanced Project Data ---
-const projects = [
+const projects: Project[] = [
   {
     title: "ScreenHawk",
     inspiration: "What if you could ask a question about a chart or image without leaving the tab?",
@@ -99,7 +121,33 @@ const projects = [
     githubUrl: "https://github.com/rodneyg/AutoFighterPro",
     demoLabel: "Source",
     icon: '⚔️',
-    tech: "Java • Swing • Automation • State Machines"
+    tech: "Java • Swing • Automation • State Machines",
+    videos: [
+      {
+        title: "AutoFighterPro V4 Dagganoth Killing (2010)",
+        shortLabel: "V4 Dagganoth",
+        href: "https://www.youtube.com/watch?v=QLvFNIMU-_k",
+        thumbnail: "https://i.ytimg.com/vi/QLvFNIMU-_k/hqdefault.jpg",
+      },
+      {
+        title: "RsBots.net promo (2010)",
+        shortLabel: "RsBots promo",
+        href: "https://www.youtube.com/watch?v=4Rs5LXbJPMg",
+        thumbnail: "https://i.ytimg.com/vi/4Rs5LXbJPMg/hqdefault.jpg",
+      },
+      {
+        title: "AutoFighterPro, AutoHunterPro and AutoFisherPro running (2010)",
+        shortLabel: "Three bots running",
+        href: "https://www.youtube.com/watch?v=I4TMz2Kw1x4",
+        thumbnail: "https://i.ytimg.com/vi/I4TMz2Kw1x4/hqdefault.jpg",
+      },
+      {
+        title: "75k exp per hour guide (2011)",
+        shortLabel: "75k exp / hour",
+        href: "https://www.youtube.com/watch?v=3xbhfX58D7A",
+        thumbnail: "https://i.ytimg.com/vi/3xbhfX58D7A/hqdefault.jpg",
+      },
+    ],
   },
   {
     title: "Did TikTok Get Banned?",
@@ -240,7 +288,7 @@ const ProjectsNarrative = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.5, delay: index * 0.06 }}
-                className="enhanced-card group relative flex aspect-square overflow-hidden rounded-2xl p-5"
+                className={`enhanced-card group relative flex overflow-hidden rounded-2xl p-5 ${project.videos ? "" : "aspect-square"}`}
               >
                 {/* Project Details */}
                 <div className="relative z-10 flex min-h-0 flex-1 flex-col">
@@ -275,6 +323,35 @@ const ProjectsNarrative = () => {
                     </div>
                   )}
                   
+                  {project.videos && (
+                    <div className="mt-4 grid grid-cols-2 gap-1.5">
+                      {project.videos.map((video) => (
+                        <motion.a
+                          key={video.href}
+                          href={video.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group/video relative overflow-hidden rounded-md ring-1 ring-black/10 dark:ring-white/10"
+                          whileTap={{ scale: 0.96 }}
+                        >
+                          <img
+                            src={video.thumbnail}
+                            alt={video.title}
+                            className="aspect-video w-full object-cover"
+                            loading="lazy"
+                          />
+                          <span className="absolute inset-0 bg-black/20 transition-colors group-hover/video:bg-black/30" />
+                          <span className="absolute left-1.5 top-1.5 flex size-6 items-center justify-center rounded-full bg-white/90 text-black shadow-sm">
+                            <Play className="ml-0.5 size-3 fill-current" aria-hidden="true" />
+                          </span>
+                          <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-1.5 py-1 text-[10px] font-semibold leading-3 text-white">
+                            {video.shortLabel}
+                          </span>
+                        </motion.a>
+                      ))}
+                    </div>
+                  )}
+
                   {/* Links */}
                   <div className="mt-auto flex flex-wrap items-center gap-2 pt-4">
                     {project.demoUrl && (
